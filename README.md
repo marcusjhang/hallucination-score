@@ -1,13 +1,17 @@
 # hallucination-score
 
-A Claude Code skill that scores how much Claude hallucinated in the current session — the way the published hallucination benchmarks score it, not by asking the model to rate itself.
+A Claude Code skill that scores how much a coding agent hallucinated in a session — the way the published hallucination benchmarks score it, not by asking the model to rate itself. It reads **Claude Code**, **Codex CLI**, **Prime Agent** and **OpenCode** transcripts.
 
 ```
-/hallucination-score            # whole session
-/hallucination-score last 5     # last 5 turns
-/hallucination-score judge=sonnet
-/hallucination-score history    # trend across sessions
+/hallucination-score                 # the current Claude Code session
+/hallucination-score last 5          # last 5 turns
+/hallucination-score list            # recent sessions across all four harnesses
+/hallucination-score session=01a08923   # any session, any harness, by id or unique prefix
+/hallucination-score judge=sonnet    # grade with a different model
+/hallucination-score history         # trend across scored sessions
 ```
+
+Real results on 16 local sessions are in [`benchmark-runs/`](benchmark-runs/README.md).
 
 Output is a scorecard:
 
@@ -37,6 +41,17 @@ Three phases; only the middle one involves judgement, and that judgement happens
 1. **Extract** (`scripts/extract_turns.py`, deterministic). Reads the session transcript and packages every user-facing assistant message together with the tool calls and results the assistant had seen when it wrote it.
 2. **Grade** (a fresh-context subagent per packet, following `reference/grader-rubric.md`). Splits each message into atomic claims, verifies each against the in-session tool output first and the live repository second, and labels it `supported`, `contradicted`, `unsupported` or `not_checkable`, with the claim's strength (`asserted` / `hedged` / `abstained`) and type.
 3. **Score** (`scripts/score.py`, deterministic). Computes the scorecard from the labels, persists it to `~/.claude/hallucination-scores/`, and appends to a history so sessions can be compared.
+
+### Harness adapters
+
+| Harness | Transcript store | Notes |
+|---|---|---|
+| Claude Code | `~/.claude/projects/<cwd-slug>/<session>.jsonl` | Sidechains skipped; prose persisted only as a thinking-block paraphrase is recovered as `channel: "paraphrase"` |
+| Codex CLI | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl` | Spawned-subagent rollouts (`thread_source: subagent`) skipped; reasoning is encrypted so only visible messages exist |
+| Prime Agent | `~/.prime/agent/sessions/<session>.jsonl` | pi-agent v3 format; the active branch of the `parentId` tree is followed from the last message |
+| OpenCode | `~/.local/share/opencode/opencode.db` | SQLite; child (subagent) sessions skipped; one model response per `step-start`…`step-finish` |
+
+Adding a harness is one generator that yields `session` / `prompt` / `response` / `tool_result` events in `scripts/extract_turns.py`; the grader and scorer never see a raw transcript.
 
 ### The benchmark mapping
 
@@ -73,11 +88,12 @@ Or copy the skill directory: `skills/hallucination-score` → `~/.claude/skills/
 
 ## Cost
 
-One grader over an 8-turn packet (~20 messages, ~45 tool calls) took about 140k tokens and 11 minutes on Opus. Use `last N` for a cheap check on recent turns.
+One grader costs roughly 40k–230k tokens and 3–15 minutes on Opus, scaling with the packet's messages and tool calls (packets are cut at 8 turns or ~150 KB). Use `last N` for a cheap check on recent turns.
 
 ## Limitations
 
-- The judge is usually the same model family as the assistant, which is measurably lenient toward its own output. Treat the rate as a floor; `judge=<model>` is the benchmark-faithful configuration.
+- For Claude Code sessions the judge is the same model family as the assistant, which is measurably lenient toward its own output. Treat the rate as a floor; `judge=<model>` is the benchmark-faithful configuration. Codex, Prime and OpenCode sessions are judged by a different family by construction.
+- Sessions from ephemeral worktrees often outlive their `cwd`; repo-state claims then fall back to packet evidence and `not_checkable`, lowering coverage rather than inventing a verdict.
 - Only assistant prose is scored. Claims in commit messages, PR bodies or comments the assistant posted are not extracted yet.
 - Claude Code (observed on 2.1.273) sometimes persists prose written between tool calls only as a short paraphrase in a thinking block. The extractor recovers those as `channel: "paraphrase"` messages and the scorecard says how many there were.
 - No judge-vs-human agreement figure. Spot-check the hallucinated-claims list before acting on the band.
@@ -85,7 +101,8 @@ One grader over an 8-turn packet (~20 messages, ~45 tool calls) took about 140k 
 ## Development
 
 ```
-python3 skills/hallucination-score/scripts/test_hallucination_score.py
+python3 skills/hallucination-score/scripts/test_hallucination_score.py   # 18 unit tests, stdlib only
+python3 benchmark-runs/build_index.py                                     # rebuild the runs table
 ```
 
 ## License

@@ -4,6 +4,7 @@
     python3 <skill dir>/scripts/score.py <verdicts-*.json ...> \
         [--packets-dir DIR] [--json] [--no-persist]
     python3 <skill dir>/scripts/score.py --history [N]
+    python3 <skill dir>/scripts/score.py <verdicts...> --export benchmark-runs/<name>
 
 Takes the claim-level verdicts the grader agents wrote, validates them against the
 closed label set, and computes the session scorecard exactly the way the published
@@ -70,6 +71,8 @@ def main() -> None:
 
     if not args.no_persist:
         persist(card, claims)
+    if args.export:
+        export(Path(args.export), card, claims)
     print(json.dumps(card, indent=1) if args.json else render(card))
 
 
@@ -79,6 +82,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--packets-dir", help="packets dir from extract_turns.py, for message coverage")
     p.add_argument("--json", action="store_true", help="print the scorecard as JSON instead of markdown")
     p.add_argument("--no-persist", action="store_true", help="do not write to ~/.claude/hallucination-scores")
+    p.add_argument("--export", help="also write scorecard.md + scorecard.json into this directory (for a benchmark-runs folder)")
     p.add_argument("--history", nargs="?", type=int, const=10, help="print the last N scored sessions and exit")
     return p.parse_args()
 
@@ -129,6 +133,7 @@ def load_coverage(packets_dir: str | None, claims: list[dict]) -> dict:
         fail(f"no index.json in {packets_dir}")
     index = json.loads(index_path.read_text())
     return {
+        "harness": index.get("harness", "claude"),
         "messages_total": index["assistant_messages"],
         "messages_paraphrased": index.get("paraphrased_messages", 0),
         "messages_with_claims": len(graded),
@@ -236,6 +241,7 @@ def persist(card: dict, claims: list[dict]) -> None:
     m = card["metrics"]
     line = {
         "session_id": card["session_id"],
+        "harness": card["coverage"].get("harness") or "claude",
         "scored_at": card["scored_at"],
         "turn_range": card["turn_range"],
         "attempted": m["attempted"],
@@ -247,16 +253,23 @@ def persist(card: dict, claims: list[dict]) -> None:
         fh.write(json.dumps(line) + "\n")
 
 
+def export(out_dir: Path, card: dict, claims: list[dict]) -> None:
+    """Write the run in the shape kept under benchmark-runs/: the card, plus every claim so the labels can be audited."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "scorecard.md").write_text(render(card) + "\n")
+    (out_dir / "scorecard.json").write_text(json.dumps({**card, "claims": claims}, indent=1, ensure_ascii=False) + "\n")
+
+
 def print_history(n: int) -> None:
     path = SCORES_DIR / "history.jsonl"
     if not path.is_file():
         print("no scored sessions yet")
         return
     rows = [json.loads(l) for l in path.read_text().splitlines() if l.strip()][-n:]
-    print("| scored at | session | turns | attempted | halluc. rate | index | band |")
-    print("|---|---|---|---|---|---|---|")
+    print("| scored at | harness | session | turns | attempted | halluc. rate | index | band |")
+    print("|---|---|---|---|---|---|---|---|")
     for r in rows:
-        print(f"| {r['scored_at'][:16]} | {r['session_id'][:8]} | {r['turn_range'][0]}–{r['turn_range'][1]} | {r['attempted']} | {pct(r['hallucination_rate'])} | {signed(r['omniscience_index'])} | {r['band']} |")
+        print(f"| {r['scored_at'][:16]} | {r.get('harness', 'claude')} | {r['session_id'][:8]} | {r['turn_range'][0]}–{r['turn_range'][1]} | {r['attempted']} | {pct(r['hallucination_rate'])} | {signed(r['omniscience_index'])} | {r['band']} |")
 
 
 def render(card: dict) -> str:
@@ -264,7 +277,7 @@ def render(card: dict) -> str:
     cov = card["coverage"]
     lo, hi = card["turn_range"]
     lines = [
-        f"# Hallucination scorecard — session {card['session_id'][:8]} (turns {lo}–{hi})",
+        f"# Hallucination scorecard — {cov.get('harness') or 'claude'} session {card['session_id'][:8]} (turns {lo}–{hi})",
         "",
         f"**Band: {m['band']}** — hallucination rate {pct(m['hallucination_rate'])} over {m['attempted']} asserted, checkable claims.",
         "",

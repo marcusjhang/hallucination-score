@@ -1,0 +1,720 @@
+{
+ "metrics": {
+  "claims_total": 48,
+  "claims_checkable": 47,
+  "attempted": 47,
+  "supported": 46,
+  "contradicted": 1,
+  "unsupported": 0,
+  "abstained": 0,
+  "hallucination_rate": 0.0213,
+  "contradiction_rate": 0.0213,
+  "baseless_rate": 0.0,
+  "omniscience_index": 95.7,
+  "accuracy": 0.9787,
+  "abstention_rate": 0.0,
+  "weighted_hallucination_rate": 0.0361,
+  "grounding_rate": 0.8936,
+  "hedge_calibration": {
+   "hedged": 0,
+   "hedged_wrong": 0,
+   "hedged_supported": 0
+  },
+  "band": "good"
+ },
+ "by_type": {
+  "action": {
+   "attempted": 3,
+   "supported": 3,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "verification": {
+   "attempted": 4,
+   "supported": 4,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "entity": {
+   "attempted": 5,
+   "supported": 4,
+   "contradicted": 1,
+   "unsupported": 0,
+   "hallucination_rate": 0.2
+  },
+  "tool_output": {
+   "attempted": 8,
+   "supported": 8,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "code_behaviour": {
+   "attempted": 4,
+   "supported": 4,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "external": {
+   "attempted": 23,
+   "supported": 23,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  }
+ },
+ "drift": [
+  {
+   "segment": "early",
+   "turns": [
+    1,
+    2
+   ],
+   "attempted": 18,
+   "hallucination_rate": 0.0
+  },
+  {
+   "segment": "middle",
+   "turns": [
+    3,
+    5
+   ],
+   "attempted": 13,
+   "hallucination_rate": 0.0769
+  },
+  {
+   "segment": "late",
+   "turns": [
+    6,
+    7
+   ],
+   "attempted": 16,
+   "hallucination_rate": 0.0
+  }
+ ],
+ "hallucinations": [
+  {
+   "id": "t5-m2-c3",
+   "turn": 5,
+   "message": "t5-m2",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "contradicted",
+   "quote": "`dsh` does not expose those CLI options yet",
+   "claim": "The dsh CLI exposes no resume or fork options.",
+   "check": "t2 evidence #9 (`dsh --help`) lists the example \"dsh --profile tui --resume <session>\", i.e. dsh does expose a --resume option for the tui profile. Only the headless profile's help (t5 #9) lacks it; no fork option was found anywhere",
+   "evidenced_in_session": true
+  }
+ ],
+ "hedged_wrong": [],
+ "session_id": "01a0a2fb-cc27-72c2-834c-e475c0ade8a7",
+ "turn_range": [
+  1,
+  7
+ ],
+ "graders": [
+  {
+   "chunk": 1,
+   "model": "claude-opus-5",
+   "notes": "cwd /Users/marcusjhang/.superset/sessions/spark-meteorology no longer exists, so repo-state claims were checked only against packet evidence; external DeepSeek Harness / DeepSeek platform facts were checked with WebFetch/WebSearch (raw GitHub package.json and docs/user/guide/providers.md, api-docs.deepseek.com error codes; platform.deepseek.com/usage is login-gated, confirmed via search index). Superset in-app browser claim checked against the local ~/.agents/skills/superset-browser/SKILL.md. Turns 6-7 contain no tool evidence; the user's pasted dsh error output in those prompts was treated as in-session context. Note for the scorer: in t5 the assistant could not read the user's screenshot (PermissionError, t5 #0-#2) and inferred the request; and t2-m4 shows a `dsh web` code block although the run that exited 0 was `dsh --help` — neither was extracted as a false claim because the message text does not literally assert either."
+  }
+ ],
+ "coverage": {
+  "harness": "prime",
+  "messages_total": 13,
+  "messages_paraphrased": 0,
+  "messages_with_claims": 11,
+  "tool_calls": 52,
+  "turns_selected": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ]
+ },
+ "scored_at": "2026-09-16T17:19:13+00:00",
+ "claims": [
+  {
+   "id": "t1-m1-c1",
+   "turn": 1,
+   "message": "t1-m1",
+   "quote": "this project is currently empty",
+   "claim": "The working directory /Users/marcusjhang/.superset/sessions/spark-meteorology contains no files apart from the .git directory.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t1 evidence #0 (find . -maxdepth 2 -type f) lists only .git/config, HEAD, description, index, COMMIT_EDITMSG"
+  },
+  {
+   "id": "t1-m1-c2",
+   "turn": 1,
+   "message": "t1-m1",
+   "quote": "the Git repository has only an empty initial commit",
+   "claim": "The git repository has exactly one commit, \"Initial commit\" (9b61d4e), which tracks no files.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t1 evidence #1 (git log --oneline --all) shows only \"9b61d4e Initial commit\"; evidence #2 (git ls-tree -r HEAD) lists no files"
+  },
+  {
+   "id": "t1-m1-c3",
+   "turn": 1,
+   "message": "t1-m1",
+   "quote": "There is no existing harness configuration to assess.",
+   "claim": "No harness configuration file exists in the repository.",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t1 evidence #0/#2: no tracked or untracked files besides .git"
+  },
+  {
+   "id": "t2-m2-c1",
+   "turn": 2,
+   "message": "t2-m2",
+   "quote": "Node.js is `v24.16.0`",
+   "claim": "The installed Node.js version in this environment is v24.16.0.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #3 (node --version) prints v24.16.0"
+  },
+  {
+   "id": "t2-m2-c2",
+   "turn": 2,
+   "message": "t2-m2",
+   "quote": "DeepSeek Harness requires Node `^22.19.0` or `>=24.0.0`",
+   "claim": "The DeepSeek Harness repository package.json declares engines.node as \"^22.19.0 || >=24.0.0\".",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #2 fetched raw package.json (excerpt truncated in packet); live WebFetch of https://raw.githubusercontent.com/deepseek-ai/deepseek-harness/master/package.json shows \"engines\": {\"node\": \"^22.19.0 || >=24.0.0\"}. Note: npm view (evidence #3) returned no engines field for the published 0.1.5-rc.1 package, so the requirement comes from the repo package.json"
+  },
+  {
+   "id": "t2-m2-c3",
+   "turn": 2,
+   "message": "t2-m2",
+   "quote": "I’m running its published CLI once to confirm it starts correctly here.",
+   "claim": "The assistant started a run of the published @deepseek-ai/dsh CLI via npx.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #6 started bash(\"npx -y @deepseek-ai/dsh --help\") pid 77086; evidence #7 shows running True"
+  },
+  {
+   "id": "t2-m3-c1",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "This project can use DeepSeek Harness.",
+   "claim": "DeepSeek Harness can be used from this project/environment.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Node v24.16.0 satisfies the engines range (t2 evidence #2/#3); the npx run subsequently exited 0 (evidence #8/#9). Asserted at after_evidence=8, i.e. before the exit-code notification (#8) was read, but it rested on the Node compatibility check already in hand"
+  },
+  {
+   "id": "t2-m3-c2",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "The repository is empty",
+   "claim": "The git repository at the cwd contains no tracked files.",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t1 evidence #0-#2 (find, git log, git ls-tree)"
+  },
+  {
+   "id": "t2-m3-c3",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "your installed Node.js `v24.16.0` is compatible",
+   "claim": "Node.js v24.16.0 satisfies DeepSeek Harness's Node engine requirement.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "v24.16.0 satisfies \">=24.0.0\" per repo package.json engines (t2 evidence #2; live WebFetch of raw package.json)"
+  },
+  {
+   "id": "t2-m3-c4",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "npx @deepseek-ai/dsh web",
+   "claim": "The documented command to start DeepSeek Harness from npm is `npx @deepseek-ai/dsh web`.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #2 README \"Run from npm\": npx @deepseek-ai/dsh web"
+  },
+  {
+   "id": "t2-m3-c5",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "Open `http://127.0.0.1:3080`.",
+   "claim": "The DeepSeek Harness Web UI listens at http://127.0.0.1:3080 by default.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #2 README: \"starts the Web UI at http://127.0.0.1:3080 by default\""
+  },
+  {
+   "id": "t2-m3-c6",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "Go to **Settings → Models**.",
+   "claim": "In the DeepSeek Harness Web UI the DeepSeek API key is entered under Settings → Models.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 docs/user/guide/index.md: \"Open **Settings → Models**, enter a DeepSeek API key ... and save it\""
+  },
+  {
+   "id": "t2-m3-c7",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "Choose this directory as the workspace",
+   "claim": "The DeepSeek Harness Web UI requires choosing/adding a project directory as the workspace before running tasks.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 docs guide \"Choose a workspace\": click Choose workspace, add the project directory where you started dsh; composer unavailable until selected"
+  },
+  {
+   "id": "t2-m3-c8",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "DeepSeek Harness is currently a developer preview",
+   "claim": "DeepSeek Harness is in developer preview status.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #2 README \"## Developer preview ... DeepSeek Harness is in _developer preview_\""
+  },
+  {
+   "id": "t2-m3-c9",
+   "turn": 2,
+   "message": "t2-m3",
+   "quote": "It can execute commands and modify project files",
+   "claim": "The DeepSeek Harness agent can run commands and edit workspace files.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 docs guide: \"The agent can read and edit workspace files, run commands, delegate work\""
+  },
+  {
+   "id": "t2-m4-c1",
+   "turn": 2,
+   "message": "t2-m4",
+   "quote": "the published DeepSeek Harness CLI runs successfully in this environment",
+   "claim": "The published @deepseek-ai/dsh CLI ran successfully (via npx) in this environment.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #6-#9: `npx -y @deepseek-ai/dsh --help` completed with exit code 0 and printed usage. Caveat: only `--help` was executed, not the `web` command displayed in the message's code block"
+  },
+  {
+   "id": "t2-m4-c2",
+   "turn": 2,
+   "message": "t2-m4",
+   "quote": "The CLI exited normally with code `0`.",
+   "claim": "The npx run of @deepseek-ai/dsh exited with code 0.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #8 (injected shell notification): \"Command completed (pid 77086, exit code 0)\""
+  },
+  {
+   "id": "t2-m4-c3",
+   "turn": 2,
+   "message": "t2-m4",
+   "quote": "Only a non-blocking dependency deprecation warning appeared.",
+   "claim": "The only warning in the npx run output was a dependency deprecation warning (node-domexception).",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #9 output: single line \"npm warn deprecated node-domexception@1.0.0\" followed by the usage text"
+  },
+  {
+   "id": "t3-m2-c1",
+   "turn": 3,
+   "message": "t3-m2",
+   "quote": "You can open its URL inside Superset.",
+   "claim": "Superset can open a URL in an in-app browser pane inside a workspace.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "Live read of /Users/marcusjhang/.agents/skills/superset-browser/SKILL.md: \"Drives the in-app browser pane of a Superset workspace\"; also later t5 evidence #8 (superset-computer skill: \"Use superset:browser for Superset's in-app browser pane\"). The only evidence before this message (t3 #0 superset-setup skill) does not mention a browser pane (grep)"
+  },
+  {
+   "id": "t3-m2-c2",
+   "turn": 3,
+   "message": "t3-m2",
+   "quote": "you must enter your DeepSeek API key in **Settings → Models**",
+   "claim": "DeepSeek Harness requires the DeepSeek API key to be entered in the Web UI under Settings → Models.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 docs/user/guide/index.md \"Configure a model\": Settings → Models, enter a DeepSeek API key"
+  },
+  {
+   "id": "t5-m1-c1",
+   "turn": 5,
+   "message": "t5-m1",
+   "quote": "Superset’s agent/harness picker",
+   "claim": "Superset has a picker/list of selectable agents (harnesses).",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "t5 evidence #3 (superset --help: \"ws create ... --agent claude\") and #6 (superset agents list --local shows configured agent entries); both were read after this message (after_evidence=3 covers only #0-#2, which were the failed screenshot reads)"
+  },
+  {
+   "id": "t5-m2-c1",
+   "turn": 5,
+   "message": "t5-m2",
+   "quote": "Superset supports custom agent entries",
+   "claim": "Superset allows adding custom (non-preset) agent configurations to its host agent list.",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #13 (host_agent_configs table), #20 (settings/agent-configs.ts router over hostAgentConfigs with preset seeding), later confirmed by #32: settings.agentConfigs.add returned 200 with presetId \"custom\""
+  },
+  {
+   "id": "t5-m2-c2",
+   "turn": 5,
+   "message": "t5-m2",
+   "quote": "DeepSeek Harness provides a compatible one-shot headless profile",
+   "claim": "dsh has a headless profile that answers one task passed as command-line arguments and exits, compatible with Superset's argv prompt transport.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #9: `dsh --profile headless --help` — \"Answer one task ... print the final assistant message, and exit\", task as positional args; t5 #6/#7 show Superset agents use promptTransport argv with --prompt"
+  },
+  {
+   "id": "t5-m2-c3",
+   "turn": 5,
+   "message": "t5-m2",
+   "quote": "`dsh` does not expose those CLI options yet",
+   "claim": "The dsh CLI exposes no resume or fork options.",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "contradicted",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #9 (`dsh --help`) lists the example \"dsh --profile tui --resume <session>\", i.e. dsh does expose a --resume option for the tui profile. Only the headless profile's help (t5 #9) lacks it; no fork option was found anywhere"
+  },
+  {
+   "id": "t5-m3-c1",
+   "turn": 5,
+   "message": "t5-m3",
+   "quote": "Installation is running.",
+   "claim": "A global npm install of @deepseek-ai/dsh was in progress at the time of the message.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #27 started `npm install --global @deepseek-ai/dsh@0.1.5-rc.1` (pid 12899); #28 running True"
+  },
+  {
+   "id": "t5-m4-c1",
+   "turn": 5,
+   "message": "t5-m4",
+   "quote": "**DeepSeek Harness** is now registered in Superset’s agent picker.",
+   "claim": "The assistant added a \"DeepSeek Harness\" entry to Superset's host agent configurations.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #32: POST /trpc/settings.agentConfigs.add returned 200 with id 0cb9349a-aa68-4680-9fd8-fa80be9c8bab, label \"DeepSeek Harness\"; #33 `superset agents list --local --json` lists it. Turns 6-7 show the user launching `dsh --profile headless hello` from Superset workspaces"
+  },
+  {
+   "id": "t5-m4-c2",
+   "turn": 5,
+   "message": "t5-m4",
+   "quote": "CLI: `dsh` version `0.1.5-rc.1`",
+   "claim": "The globally installed dsh CLI reports version 0.1.5-rc.1.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #30: `dsh --version` prints 0.1.5-rc.1"
+  },
+  {
+   "id": "t5-m4-c3",
+   "turn": 5,
+   "message": "t5-m4",
+   "quote": "Mode: `headless`",
+   "claim": "The registered Superset entry launches dsh with the headless profile.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #32/#33: args [\"--profile\",\"headless\"]"
+  },
+  {
+   "id": "t5-m4-c4",
+   "turn": 5,
+   "message": "t5-m4",
+   "quote": "Prompt transport: command-line argument",
+   "claim": "The registered entry uses the argv prompt transport.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #32/#33: promptTransport \"argv\""
+  },
+  {
+   "id": "t5-m4-c5",
+   "turn": 5,
+   "message": "t5-m4",
+   "quote": "Superset registration verified",
+   "claim": "The assistant verified that Superset lists the new DeepSeek Harness agent entry.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #33: `superset agents list --local --json` filtered on label \"DeepSeek Harness\" returns the entry"
+  },
+  {
+   "id": "t5-m4-c6",
+   "turn": 5,
+   "message": "t5-m4",
+   "quote": "DeepSeek Harness will still need a DeepSeek API key configured in its own **Settings → Models** page",
+   "claim": "No DeepSeek API key is configured yet, and dsh needs one entered via its Web UI Settings → Models page before it can run a task.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t5 evidence #34: DEEPSEEK_API_KEY not set, no credentials in ~/.dsh (#35); t2 #5 docs: key entered under Settings → Models; confirmed by the t6 prompt error MISSING_CREDENTIAL"
+  },
+  {
+   "id": "t6-m1-c1",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "dsh web",
+   "claim": "Running `dsh web` starts the DeepSeek Harness Web UI.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #9 `dsh --help`: \"web ... boot the web profile\"; t2 #2 README"
+  },
+  {
+   "id": "t6-m1-c2",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "Open `http://127.0.0.1:3080`.",
+   "claim": "The dsh Web UI is served at http://127.0.0.1:3080 by default.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #2 README: Web UI at http://127.0.0.1:3080 by default"
+  },
+  {
+   "id": "t6-m1-c3",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "Go to **Settings → Models**.",
+   "claim": "The DeepSeek API key is entered in the dsh Web UI under Settings → Models.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 docs/user/guide/index.md"
+  },
+  {
+   "id": "t6-m1-c4",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "Find **DeepSeek**.",
+   "claim": "The Settings → Models page has a DeepSeek provider entry.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Live WebFetch of docs/user/guide/providers.md (fetched in-session at t2 #5, truncated in packet): \"The DeepSeek card exposes one API-key field; enter the key and save it.\""
+  },
+  {
+   "id": "t6-m1-c5",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "Enter your API key from <https://platform.deepseek.com/api_keys>.",
+   "claim": "DeepSeek API keys are managed at https://platform.deepseek.com/api_keys.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "Live WebFetch of https://api-docs.deepseek.com/quick_start/error_codes links https://platform.deepseek.com/api_keys for creating API keys; in-session docs (t2 #5) linked only https://platform.deepseek.com/"
+  },
+  {
+   "id": "t6-m1-c6",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "Click **Save**.",
+   "claim": "The DeepSeek key must be saved on the Models page after entry.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 guide \"enter a DeepSeek API key ... and save it\"; live providers.md \"enter the key and save it\""
+  },
+  {
+   "id": "t6-m1-c7",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "The saved credential is shared with the DeepSeek Harness entry in Superset.",
+   "claim": "A key saved through the dsh web Models page is stored in a credentials store that the headless dsh profile launched by Superset also reads.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t6 prompt error text from dsh itself: \"store DEEPSEEK_API_KEY through the credentials service (the web Models page writes it)\"; live providers.md: keys stored in $DSH_HOME/.credentials.yaml; t7 prompt shows the subsequent headless run got past the credential check (QUOTA error instead of MISSING_CREDENTIAL)"
+  },
+  {
+   "id": "t6-m1-c8",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "The alternative is `export DEEPSEEK_API_KEY=...`",
+   "claim": "dsh also accepts the DeepSeek key from a DEEPSEEK_API_KEY environment variable in the launching environment.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t6 prompt error text: \"or export DEEPSEEK_API_KEY in the launching environment\""
+  },
+  {
+   "id": "t6-m1-c9",
+   "turn": 6,
+   "message": "t6-m1",
+   "quote": "apps launched by Superset may not inherit variables from your terminal",
+   "claim": "Processes launched by the Superset desktop app might not inherit environment variables exported in the user's terminal.",
+   "type": "code_behaviour",
+   "strength": "hedged",
+   "label": "not_checkable",
+   "evidenced_in_session": false,
+   "check": "hedged (\"may not\"); no evidence in the packet about Superset's launch environment and the cwd no longer exists for a live check"
+  },
+  {
+   "id": "t7-m1-c1",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "That confirms the Superset and DeepSeek Harness setup is working.",
+   "claim": "The user's pasted output shows Superset launching the registered dsh entry and dsh reaching the DeepSeek API, i.e. the integration works.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t7 prompt: quoted-argv launch `'dsh' '--profile' 'headless' 'hello'` from Superset workspace dir brindle-rattlesnake matches the registered entry (t5 #32); the error is now QUOTA: Insufficient Balance (a DeepSeek API 402) rather than MISSING_CREDENTIAL (t6), so the launch and credential lookup succeeded. Caveat: no task completed end-to-end"
+  },
+  {
+   "id": "t7-m1-c2",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "DeepSeek accepted the credential",
+   "claim": "The DeepSeek API authenticated the supplied key (the failure was not an authentication error).",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Live WebFetch https://api-docs.deepseek.com/quick_start/error_codes: 402 \"Insufficient Balance\" is distinct from 401 \"Authentication Fails\" (wrong API key); t7 prompt shows the 402-class QUOTA error"
+  },
+  {
+   "id": "t7-m1-c3",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "the associated account has no available API credit",
+   "claim": "The \"Insufficient Balance\" error means the DeepSeek account has run out of balance.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Live WebFetch of DeepSeek error codes: 402 Insufficient Balance — \"You have run out of balance\"; t7 prompt error \"QUOTA: Insufficient Balance\""
+  },
+  {
+   "id": "t7-m1-c4",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "Open <https://platform.deepseek.com/top_up>",
+   "claim": "https://platform.deepseek.com/top_up is the DeepSeek top-up page.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "Live WebFetch of https://api-docs.deepseek.com/quick_start/error_codes links the Top up page as https://platform.deepseek.com/top_up"
+  },
+  {
+   "id": "t7-m1-c5",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "Check usage/balance at <https://platform.deepseek.com/usage>",
+   "claim": "https://platform.deepseek.com/usage is the DeepSeek platform usage/balance page.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "WebSearch returns https://platform.deepseek.com/usage (title \"DeepSeek Platform\") and third-party dsh usage plugins cite it as the official Usage page; direct WebFetch returned 403 (login-gated)"
+  },
+  {
+   "id": "t7-m1-c6",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "configure another supported provider under **Settings → Models**",
+   "claim": "The dsh Web UI Settings → Models page supports configuring providers other than DeepSeek.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "t2 evidence #5 guide: \"The model configuration guide covers other providers and custom OpenAI-compatible endpoints\"; live providers.md: \"Add provider\" (anthropic, openai, moonshotai, zai) and custom providers"
+  },
+  {
+   "id": "t7-m1-c7",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "then select one of its models as the default",
+   "claim": "Selecting a model in the dsh Web UI makes it the default model.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Live WebFetch of docs/user/guide/providers.md (fetched in-session at t2 #5): \"Selecting a model also makes it the default for new sessions.\""
+  },
+  {
+   "id": "t7-m1-c8",
+   "turn": 7,
+   "message": "t7-m1",
+   "quote": "This is a DeepSeek billing issue, not a Superset integration issue.",
+   "claim": "The QUOTA: Insufficient Balance failure originates from DeepSeek account billing, not from the Superset agent registration.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Error is DeepSeek API 402 Insufficient Balance (live docs); the Superset launch reached dsh and dsh reached the API (t7 prompt); registration verified at t5 #33"
+  }
+ ]
+}

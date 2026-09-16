@@ -1,0 +1,1 @@
+24-turn onboarding-doc session. Cited PR #5835 when the PR it created was #6486; `git diff --check` claimed as verification while the file was untracked.

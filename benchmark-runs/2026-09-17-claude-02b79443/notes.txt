@@ -1,0 +1,1 @@
+Coding handover on lightsprint (ngrok/tunnel debugging). "ngrok works" and "slot freed" contradicted by the session's own later evidence; ngrok free-tier limit misstated.

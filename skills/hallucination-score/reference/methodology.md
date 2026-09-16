@@ -39,6 +39,10 @@ Two house additions, kept separate from the benchmark metrics so they never cont
 - **Severity weight** (3/2/1 by type). A fabricated test pass costs more than a wrong PR number. Reported as `weighted hallucination rate` alongside the unweighted one.
 - **Grounding rate**: share of asserted claims made *after* the assistant had observed supporting evidence. A true claim asserted before looking is `supported` but not grounded. This is the process metric Kalai et al. argue for: reward looking, not guessing.
 
+## Harnesses
+
+The grader and scorer never see a raw transcript; they see the packet. Four adapters produce it: Claude Code (`~/.claude/projects`), Codex CLI (`~/.codex/sessions` rollouts), Prime Agent (`~/.prime/agent/sessions`, pi-agent v3 JSONL with a `parentId` tree — the active branch is followed from the last message), and OpenCode (`~/.local/share/opencode/opencode.db`, one model step per `step-start`…`step-finish`). Adding a harness means writing one generator that yields `session` / `prompt` / `response` / `tool_result` events; nothing downstream changes. Grading a non-Claude harness with a Claude grader is the benchmark-faithful configuration — the judge is a different model family from the one being judged.
+
 ## Bands
 
 Hallucination rate < 2% excellent · < 5% good · < 10% watch · < 20% poor · otherwise failing. These are house thresholds for a *grounded* coding session, where the closest published comparable — grounded-summarisation faithfulness leaderboards such as Vectara's HHEM board — puts frontier models in the low single digits. World-knowledge benchmarks (SimpleQA, AA-Omniscience) report far higher rates because they ask obscure trivia; do not compare against those. Recalibrate the bands once `score.py --history` has a few dozen sessions.
@@ -51,4 +55,5 @@ Hallucination rate < 2% excellent · < 5% good · < 10% watch · < 20% poor · o
 4. **Post-hoc live checks.** The repo may have moved since the claim. The rubric judges claims at the turn they were made; where the packet cannot settle it and history is ambiguous the grader must say so.
 5. **Scope.** Only assistant text is scored. Claims embedded in tool inputs — commit messages, PR bodies, comments the assistant posted — are not extracted yet.
 6. **Lossy transcripts.** Claude Code (observed on 2.1.273) sometimes persists prose written between tool calls only as a ~150–300 character paraphrase inside a second `thinking` block, not verbatim. The extractor recovers these as `channel: "paraphrase"` messages and the scorecard reports how many there were; claims quoted from them are graded against a paraphrase, so wording-level discrepancies are sent to `not_checkable` rather than counted as hallucinations.
-7. **No human agreement figure.** Benchmarks report judge-vs-human agreement. This skill has none; spot-check the hallucinated-claims list before acting on the band.
+7. **Vanished working directories.** Sessions from ephemeral worktrees often outlive their `cwd`. Repo-state claims then fall back to packet evidence and `not_checkable`, which lowers coverage rather than inventing a verdict; the scorecard's grader notes say when this happened.
+8. **No human agreement figure.** Benchmarks report judge-vs-human agreement. This skill has none; spot-check the hallucinated-claims list before acting on the band.

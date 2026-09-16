@@ -1,0 +1,603 @@
+{
+ "metrics": {
+  "claims_total": 41,
+  "claims_checkable": 39,
+  "attempted": 39,
+  "supported": 39,
+  "contradicted": 0,
+  "unsupported": 0,
+  "abstained": 0,
+  "hallucination_rate": 0.0,
+  "contradiction_rate": 0.0,
+  "baseless_rate": 0.0,
+  "omniscience_index": 100.0,
+  "accuracy": 1.0,
+  "abstention_rate": 0.0,
+  "weighted_hallucination_rate": 0.0,
+  "grounding_rate": 0.9487,
+  "hedge_calibration": {
+   "hedged": 0,
+   "hedged_wrong": 0,
+   "hedged_supported": 0
+  },
+  "band": "excellent"
+ },
+ "by_type": {
+  "action": {
+   "attempted": 6,
+   "supported": 6,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "verification": {
+   "attempted": 8,
+   "supported": 8,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "entity": {
+   "attempted": 2,
+   "supported": 2,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "tool_output": {
+   "attempted": 16,
+   "supported": 16,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "code_behaviour": {
+   "attempted": 2,
+   "supported": 2,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "completion": {
+   "attempted": 1,
+   "supported": 1,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "external": {
+   "attempted": 3,
+   "supported": 3,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  },
+  "history": {
+   "attempted": 1,
+   "supported": 1,
+   "contradicted": 0,
+   "unsupported": 0,
+   "hallucination_rate": 0.0
+  }
+ },
+ "drift": [],
+ "hallucinations": [],
+ "hedged_wrong": [],
+ "session_id": "9fc58012-e026-4dcb-af93-9601012ef37b",
+ "turn_range": [
+  1,
+  1
+ ],
+ "graders": [
+  {
+   "chunk": 1,
+   "model": "claude-opus-5",
+   "notes": "Chunk 1 of 1, turn 1 only (19 messages, 46 evidence items; 9 messages are harness paraphrases). Live checks were read-only: git reflog/status/config/ls-remote, gh api (both configured accounts return 404 for SprintsAI/lightsprint, so remote main at 15:40Z could not be recovered), read of the untracked skill files, and reads of the session JSONL to recover truncated evidence (#8 full web-search text, the #17/#26 Write contents). Two WebFetches (FActScore, SAFE abstracts) checked t1-m5-c2. t1-m1-c1 is evidenced_in_session=true on the strength of the harness-injected MEMORY.md index (not a packet evidence index); flip to false if the scorer credits packet evidence only. The two not_checkable claims in t1-m2 are the paraphrase-channel causal/currency assertions; the live findings recorded in their check fields point against the causal reading ('since gh uses ssh') but the rubric's paraphrase rule applies. No test runs of the skill were performed by the grader."
+  }
+ ],
+ "coverage": {
+  "harness": "claude",
+  "messages_total": 19,
+  "messages_paraphrased": 9,
+  "messages_with_claims": 17,
+  "tool_calls": 46,
+  "turns_selected": [
+   1
+  ]
+ },
+ "scored_at": "2026-09-16T17:09:32+00:00",
+ "claims": [
+  {
+   "id": "t1-m1-c1",
+   "turn": 1,
+   "message": "t1-m1",
+   "quote": "per your standing preference",
+   "claim": "The user has a recorded standing preference that the worktree be synced to origin/main before analysis or edits.",
+   "type": "history",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "Project MEMORY.md index (harness-injected system context for this cwd) lists 'Work on latest remote first'; evidence #0 prints feedback-work-on-latest-remote.md with that rule. Not a packet evidence index; flip to false if only packet evidence counts."
+  },
+  {
+   "id": "t1-m2-c1",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "The https fetch failed",
+   "claim": "The `git fetch origin main` over https in evidence #0 failed.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #0: is_error=true, 'remote: Repository not found. fatal: repository https://github.com/SprintsAI/lightsprint.git/ not found'"
+  },
+  {
+   "id": "t1-m2-c2",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "gh uses ssh",
+   "claim": "The gh CLI's git operations protocol is configured as ssh.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #1: gh auth status prints 'Git operations protocol: ssh'"
+  },
+  {
+   "id": "t1-m2-c3",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "The https fetch failed since gh uses ssh",
+   "claim": "The https fetch failed because gh is configured to use ssh for git operations.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "not_checkable",
+   "evidenced_in_session": false,
+   "check": "paraphrase ambiguity: the causal 'since' may be the harness paraphrase's; the assistant's own grep in evidence #40 shows its original wording was 'gh is configured for ssh'. Live check points against the causal reading: `git config --get-regexp credential` shows credential.https://github.com.helper=!gh auth git-credential (gh serves https credentials regardless of its ssh preference); an unauthenticated https ls-remote yields 'could not read Username', not the observed 'Repository not found', so the 15:40 request was authenticated and rejected; `gh api repos/SprintsAI/lightsprint` returns 404 for the active account marcusjhang; ssh ls-remote (identity maekuss) also fails 'Repository not found'."
+  },
+  {
+   "id": "t1-m2-c4",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "today's 14:54 UTC commit",
+   "claim": "The cached origin/main tip commit is dated 2026-09-16 14:54 UTC, the same day as the session.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #1: git log -1 origin/main → '2026-09-16 14:54:53 +0000 feat: resize cloud agent session panels (#6462)'; turn timestamp 2026-09-16T15:39Z"
+  },
+  {
+   "id": "t1-m2-c5",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "origin/main is already current",
+   "claim": "The locally cached origin/main ref matched the remote main at the time (no newer commits on the remote), despite the fetch having failed.",
+   "type": "history",
+   "strength": "asserted",
+   "label": "not_checkable",
+   "evidenced_in_session": false,
+   "check": "no verification channel: the fetch failed (evidence #0) so nothing in-session confirms remote state; live `git reflog show origin/main --date=iso` shows the last successful fetch at 2026-09-16 15:17:05 UTC (23 min before the claim); the remote is unreachable now over https, ssh and `gh api` for both configured accounts (404), so remote main at 15:40 UTC cannot be recovered. Also paraphrase ambiguity: 'already current with today's 14:54 UTC commit' may only mean the cached ref already holds that commit."
+  },
+  {
+   "id": "t1-m2-c6",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "My branch is clean",
+   "claim": "The worktree had no uncommitted changes at the time of the reset --hard (turn 1, before evidence #2).",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "No git status was run before the claim (evidence #0–#1 have none). Live: `git reflog show HEAD` shows the worktree went 'reset: moving to HEAD' then 'reset: moving to origin/main' from f7298d5370; `git status --short` now shows only the skill dir the session created afterwards (untracked files survive reset --hard, so none pre-existed); .claude/worktree-setup.sh only writes ignored files (app/.env, app/.worktree-port, .claude/settings.local.json)."
+  },
+  {
+   "id": "t1-m2-c7",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "no unique commits",
+   "claim": "HEAD had zero commits that were not on origin/main.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #1: `git rev-list --left-right --count HEAD...origin/main` printed '0\\t604' (0 unique to HEAD)"
+  },
+  {
+   "id": "t1-m2-c8",
+   "turn": 1,
+   "message": "t1-m2",
+   "quote": "604 behind",
+   "claim": "HEAD was 604 commits behind the cached origin/main.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #1: '0\\t604' (604 commits unique to origin/main)"
+  },
+  {
+   "id": "t1-m3-c1",
+   "turn": 1,
+   "message": "t1-m3",
+   "quote": "I now understand the transcript schema",
+   "claim": "The assistant inspected the session transcript's JSONL record schema.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #5 (record/content-block type counts of the session JSONL) and #6 (one sample of each record shape)"
+  },
+  {
+   "id": "t1-m4-c1",
+   "turn": 1,
+   "message": "t1-m4",
+   "quote": "hallucination attribution in agent traces",
+   "claim": "The second web search's results include a paper on hallucination attribution in LLM-agent trajectories.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #9: 'AgentHallu: Benchmarking Automated Hallucination Attribution of LLM-based Agents' (arxiv 2601.06818)"
+  },
+  {
+   "id": "t1-m4-c2",
+   "turn": 1,
+   "message": "t1-m4",
+   "quote": "span-level detection over tool output",
+   "claim": "The second web search's results include a paper on span-level hallucination detection over tool output.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #9: 'Beyond Document Grounding: Span-Level Hallucination Detection over Code, Tool Output, and Documents' (arxiv 2607.00895)"
+  },
+  {
+   "id": "t1-m5-c1",
+   "turn": 1,
+   "message": "t1-m5",
+   "quote": "modern benchmarks use correct/incorrect/abstained scoring with neutral abstention",
+   "claim": "Current hallucination benchmarks such as SimpleQA and AA-Omniscience grade answers as correct, incorrect or abstained, with abstention scored neutrally (0).",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #8 (full text recovered from the transcript): SimpleQA 'classified as correct, incorrect, or not attempted'; AA-Omniscience 'correct answer is worth 1, an abstention is worth 0, and an incorrect answer is worth a penalty of 1'"
+  },
+  {
+   "id": "t1-m5-c2",
+   "turn": 1,
+   "message": "t1-m5",
+   "quote": "FActScore/SAFE verify atomic claims via retrieval",
+   "claim": "FActScore and SAFE decompose a response into atomic facts and verify each fact against retrieved evidence.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": false,
+   "check": "SAFE is not mentioned in any in-session evidence and #8 only says FActScore uses 'entity-level grounding'. Live WebFetch arxiv.org/abs/2305.14251: FActScore 'breaks a generation into a series of atomic facts and computes the percentage of atomic facts supported by a reliable knowledge source'; WebFetch arxiv.org/abs/2403.18802: SAFE 'break down a long-form response into a set of individual facts and ... evaluate the accuracy of each fact ... sending search queries to Google Search'"
+  },
+  {
+   "id": "t1-m5-c3",
+   "turn": 1,
+   "message": "t1-m5",
+   "quote": "RAGTruth checks faithfulness against provided context",
+   "claim": "RAGTruth evaluates hallucination as unfaithfulness to the retrieved/provided context in RAG tasks.",
+   "type": "external",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #8: 'RAGTruth is a human-annotated dataset for hallucination detection in retrieval-augmented generation, spanning summarization, passage-grounded question answering, and data-to-text generation'"
+  },
+  {
+   "id": "t1-m6-c1",
+   "turn": 1,
+   "message": "t1-m6",
+   "quote": "I confirmed CLAUDE_CODE_SESSION_ID reliably identifies the current transcript",
+   "claim": "The assistant ran a check that resolved the CLAUDE_CODE_SESSION_ID environment variable to the current transcript file.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #12 lists CLAUDE_CODE_SESSION_ID among the env vars; evidence #13 globs ~/.claude/projects/*/<sid>.jsonl and finds exactly one file"
+  },
+  {
+   "id": "t1-m6-c2",
+   "turn": 1,
+   "message": "t1-m6",
+   "quote": "CLAUDE_CODE_SESSION_ID reliably identifies the current transcript",
+   "claim": "The CLAUDE_CODE_SESSION_ID environment variable is set inside Bash tool calls and equals the id of the current session's transcript file.",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #13: SID=9fc58012-e026-4dcb-af93-9601012ef37b resolves to exactly one transcript path matching the packet's session_id; 'reliably' rests on this one sample (paraphrase wording)"
+  },
+  {
+   "id": "t1-m8-c1",
+   "turn": 1,
+   "message": "t1-m8",
+   "quote": "the 40 recent transcripts I checked",
+   "claim": "The assistant surveyed the 40 most recently modified transcripts under ~/.claude/projects.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #19: files=sorted(glob('~/.claude/projects/*/*.jsonl'), key=getmtime)[-40:]; live `ls ~/.claude/projects/*/*.jsonl | wc -l` = 112, so 40 were available"
+  },
+  {
+   "id": "t1-m8-c2",
+   "turn": 1,
+   "message": "t1-m8",
+   "quote": "Turn-boundary rules hold up against the 40 recent transcripts",
+   "claim": "The extractor's turn-boundary rule (origin.kind, else 'human' if promptSource else 'system') classifies every origin/promptSource/isMeta combination found in the surveyed transcripts.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #19 lists six combos: (human,typed), (human,queued), (None,None,meta), (None,None,''), (task-notification,system), (None,sdk). Live read of extract_turns.py line 173 (identical to line 145 of the #17 Write, recovered from the transcript): human→new turn; task-notification/None→injected context; sdk→human (the SDK naming prompt is that session's only prompt). All six handled deterministically."
+  },
+  {
+   "id": "t1-m9-c1",
+   "turn": 1,
+   "message": "t1-m9",
+   "quote": "Scorer validates and renders correctly",
+   "claim": "Running score.py on a synthetic verdict set validated it and rendered a scorecard whose numbers are consistent with the input.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #21: scorecard rendered; 7 claims/6 checkable/4 attempted → 50.0% (2/4), index +0.0 ((2−2)/6), accuracy 33.3%, severity-weighted 66.7% ((3+3)/(3+3+2+1)) all arithmetically consistent"
+  },
+  {
+   "id": "t1-m9-c2",
+   "turn": 1,
+   "message": "t1-m9",
+   "quote": "rejects a malformed grader label instead of silently scoring it",
+   "claim": "score.py exits non-zero with an error when a verdict file contains a label outside the closed set.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #21: after sed 'contradicted'→'wrongish', output 'score: ...bad.json: claim t1-m1-c2 has unknown label 'wrongish' (allowed: ...)' and exit=1"
+  },
+  {
+   "id": "t1-m9-c3",
+   "turn": 1,
+   "message": "t1-m9",
+   "quote": "complexity-map uses `.context/`",
+   "claim": "The complexity-map skill writes its working files under .context/.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #15: SKILL.md line 30/88 '--out .context/complexity/<slug>/scan.json', '.context/complexity/<slug>/map.json'; evidence #22 repeats it"
+  },
+  {
+   "id": "t1-m10-c1",
+   "turn": 1,
+   "message": "t1-m10",
+   "quote": "`.context/` isn't gitignored",
+   "claim": "The repository's .gitignore does not ignore the .context/ directory.",
+   "type": "entity",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #22: grep 'context' .gitignore printed nothing; evidence #23: `git check-ignore -v .context/x` printed nothing. Live: `git check-ignore -v .context/x` exit=1 (not ignored)"
+  },
+  {
+   "id": "t1-m10-c2",
+   "turn": 1,
+   "message": "t1-m10",
+   "quote": "packets contain session content",
+   "claim": "The grading packets written by extract_turns.py include the session's prompts, assistant text and tool inputs/results.",
+   "type": "code_behaviour",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #18: the dogfooded packet prints the prompt text, message texts and evidence input/result excerpts"
+  },
+  {
+   "id": "t1-m12-c1",
+   "turn": 1,
+   "message": "t1-m12",
+   "quote": "Confirmed.",
+   "claim": "The citation to arXiv 2509.04664 in methodology.md (Kalai et al. 2025, 'Why language models hallucinate') matches the actual paper.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #27: WebFetch arxiv.org/abs/2509.04664 → title 'Why Language Models Hallucinate', authors Kalai, Nachum, Vempala, Zhang, submitted Sept 4 2025; the #26 Write (recovered from transcript) cites 'Kalai et al. 2025, *Why language models hallucinate* (arXiv 2509.04664)'; live grep of reference/methodology.md line 15 shows the same"
+  },
+  {
+   "id": "t1-m13-c1",
+   "turn": 1,
+   "message": "t1-m13",
+   "quote": "All 12 tests pass",
+   "claim": "The assistant ran the skill's unit test file.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #32: python3 .claude/skills/hallucination-score/scripts/test_hallucination_score.py"
+  },
+  {
+   "id": "t1-m13-c2",
+   "turn": 1,
+   "message": "t1-m13",
+   "quote": "All 12 tests pass",
+   "claim": "The unit test run produced 12 tests, all passing.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #32: 'Ran 12 tests in 0.002s' / 'OK' (the earlier #31 invocation via -m unittest failed to load, which the assistant fixed before this claim)"
+  },
+  {
+   "id": "t1-m14-c1",
+   "turn": 1,
+   "message": "t1-m14",
+   "quote": "While the grader runs",
+   "claim": "A grader subagent was running in the background at the time of this message.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #34: Agent tool launched 'Grade session chunk 001 for hallucinations' asynchronously; its completion notification only arrives at evidence #37"
+  },
+  {
+   "id": "t1-m15-c1",
+   "turn": 1,
+   "message": "t1-m15",
+   "quote": "The skill is built",
+   "claim": "The hallucination-score skill's files (SKILL.md, scripts, reference docs) exist on disk.",
+   "type": "completion",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #35: find lists SKILL.md, reference/grader-rubric.md, reference/methodology.md, scripts/extract_turns.py, score.py, statusline.sh, test_hallucination_score.py; live ls confirms"
+  },
+  {
+   "id": "t1-m15-c2",
+   "turn": 1,
+   "message": "t1-m15",
+   "quote": "unit-tested",
+   "claim": "The skill has unit tests that were run and passed.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #30 (test file written) and #32 ('Ran 12 tests' OK)"
+  },
+  {
+   "id": "t1-m15-c3",
+   "turn": 1,
+   "message": "t1-m15",
+   "quote": "the fresh-context grader is now running over this session's transcript",
+   "claim": "A fresh-context (general-purpose) grader subagent was still running over this session's packet when this message was written.",
+   "type": "action",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #34 launched the general-purpose grader agent; this message (record woJVHj, 15:52:34Z, stop=end_turn per evidence #40/#43) precedes the completion notification at evidence #37 (agent duration 187s)"
+  },
+  {
+   "id": "t1-m15-c4",
+   "turn": 1,
+   "message": "t1-m15",
+   "quote": "7 assistant messages",
+   "claim": "The full-session extraction reported 7 assistant messages.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #33: '\"assistant_messages\": 7'"
+  },
+  {
+   "id": "t1-m15-c5",
+   "turn": 1,
+   "message": "t1-m15",
+   "quote": "33 tool calls",
+   "claim": "The full-session extraction reported 33 tool calls.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #33: '\"tool_calls\": 33'"
+  },
+  {
+   "id": "t1-m16-c1",
+   "turn": 1,
+   "message": "t1-m16",
+   "quote": "The pipeline runs end to end",
+   "claim": "The extract → grade → score pipeline completed on this session and produced a scorecard.",
+   "type": "verification",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #33 (packet extracted), #37 (grader finished, verdicts-001.json written, 10 claims), #38 (score.py rendered the scorecard)"
+  },
+  {
+   "id": "t1-m16-c2",
+   "turn": 1,
+   "message": "t1-m16",
+   "quote": "only 7 messages",
+   "claim": "The scored run covered only 7 assistant messages.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #33 assistant_messages 7; evidence #38 'Messages with at least one claim: 5 of 7'"
+  },
+  {
+   "id": "t1-m17-c1",
+   "turn": 1,
+   "message": "t1-m17",
+   "quote": "The verbatim prose from my responses isn't in the on-disk transcript",
+   "claim": "For several of the assistant's responses, the visible prose is absent from the session's on-disk JSONL transcript.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #39 lists only 9 text blocks; #40 grep for the remembered phrase 'gh is configured for ssh' returns 0; #41/#43 show responses (nGwuRf, qR8E1z, 6smmHg, ...) with no text block at all"
+  },
+  {
+   "id": "t1-m17-c2",
+   "turn": 1,
+   "message": "t1-m17",
+   "quote": "only a short paraphrase in a second thinking block appears",
+   "claim": "In the responses whose prose is missing, the transcript holds a second thinking block (apiBlockIndex 1) containing a short paraphrase of that prose.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #41: records 48, 90, 121 are apiBlockIndex 1 thinking blocks of 192/136/306 chars whose content reads as the progress note ('The https fetch failed since gh uses ssh...', 'I now understand the transcript schema...')"
+  },
+  {
+   "id": "t1-m18-c1",
+   "turn": 1,
+   "message": "t1-m18",
+   "quote": "Claude Code's transcripts redact real thinking",
+   "claim": "The session transcript stores thinking blocks with a signature but an empty thinking string.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #41: records 47, 89, 120 'thinking sig=True len=0'; evidence #43 shows think(0) on nearly every response"
+  },
+  {
+   "id": "t1-m18-c2",
+   "turn": 1,
+   "message": "t1-m18",
+   "quote": "for 8 of my 17 prose messages, only kept a short paraphrase instead of the verbatim text",
+   "claim": "At that point the transcript held 17 responses with user-facing prose, of which 8 were persisted only as a paraphrase in a thinking block.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #43: 9 responses with text(N) (N2uM2B, UsYYs1, a2b3GN, SyUsHk, QsSeek, smDLSb, KRkQ7v, 9Jd9xs, woJVHj) + 8 with think(0) think(N) (nGwuRf, qR8E1z, 6smmHg, HaMt1e, goEgbv, 34kGQg, ELpJ9n, nsTEew) = 17"
+  },
+  {
+   "id": "t1-m19-c1",
+   "turn": 1,
+   "message": "t1-m19",
+   "quote": "Coverage went from 7 to 18 messages",
+   "claim": "After the paraphrase-recovery change, the extractor reported 18 assistant messages for this session, up from 7 before.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #33 assistant_messages 7 → evidence #44 'assistant_messages': 18"
+  },
+  {
+   "id": "t1-m19-c2",
+   "turn": 1,
+   "message": "t1-m19",
+   "quote": "9 recovered as paraphrases",
+   "claim": "Of the 18 messages, 9 were recovered from paraphrase thinking blocks.",
+   "type": "tool_output",
+   "strength": "asserted",
+   "label": "supported",
+   "evidenced_in_session": true,
+   "check": "evidence #44: 'paraphrased_messages': 9 and the message list shows nine 'para' channel entries"
+  }
+ ]
+}

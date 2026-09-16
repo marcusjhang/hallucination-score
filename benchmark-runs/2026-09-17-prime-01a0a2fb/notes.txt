@@ -1,0 +1,1 @@
+DeepSeek-harness question; `dsh --help` did list --resume for the tui profile.

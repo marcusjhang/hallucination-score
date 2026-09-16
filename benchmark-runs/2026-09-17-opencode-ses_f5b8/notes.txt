@@ -1,0 +1,1 @@
+DeepSeek-v4-pro via OpenCode explaining a branch name and trigger architecture; 8 of 30 claims contradicted at the commit the session was on (git show f7298d5370). Only 2 OpenCode sessions on this machine have any assistant prose.

@@ -131,16 +131,120 @@ class ExtractTurnsTest(unittest.TestCase):
         self.assertLess(len(ev["result"]), len(long))
 
     def test_chunk_turns_cuts_on_count_and_on_size(self):
-        small = [{"turn": n, "x": "a" * 10} for n in range(1, 6)]
+        m = [{"text": "x"}]
+        small = [{"turn": n, "messages": m, "x": "a" * 10} for n in range(1, 6)]
         self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns(small, 2, 10_000)], [[1, 2], [3, 4], [5]])
-        sized = [{"turn": 1, "x": "a" * 10}, {"turn": 2, "x": "a" * 500}, {"turn": 3, "x": "a" * 10}, {"turn": 4, "x": "a" * 10}]
-        self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns(sized, 8, 100)], [[1], [2], [3, 4]])
+        sized = [{"turn": 1, "messages": m, "x": "a" * 10}, {"turn": 2, "messages": m, "x": "a" * 500}, {"turn": 3, "messages": m, "x": "a" * 10}, {"turn": 4, "messages": m, "x": "a" * 10}]
+        self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns(sized, 8, 120)], [[1], [2], [3, 4]])
+
+    def test_chunk_turns_never_emits_a_packet_without_prose(self):
+        m = [{"text": "x"}]
+        turns = [{"turn": 1, "messages": [], "x": "a" * 10}, {"turn": 2, "messages": m, "x": "a" * 500}, {"turn": 3, "messages": [], "x": "a" * 10}]
+        # turn 1 has no prose so it rides along with the oversize turn 2; the trailing prose-less turn 3 folds into the last packet
+        self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns(turns, 8, 100)], [[1, 2, 3]])
+        self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns([{"turn": 1, "messages": [], "x": ""}], 8, 100)], [[1]])
 
     def test_select_turns(self):
         turns = [{"turn": n} for n in range(1, 8)]
         self.assertEqual([t["turn"] for t in extract_turns.select_turns(turns, last=2, rng=None)], [6, 7])
         self.assertEqual([t["turn"] for t in extract_turns.select_turns(turns, last=None, rng="3-5")], [3, 4, 5])
         self.assertEqual([t["turn"] for t in extract_turns.select_turns(turns, last=None, rng="4")], [4])
+
+
+class CodexAdapterTest(unittest.TestCase):
+    def _events(self, records, name="rollout-2026-09-15T13-38-06-01a0a392-8f8c-7131-88c8-3f25db350c3b.jsonl"):
+        d = tempfile.mkdtemp()
+        path = Path(d) / name
+        path.write_text("\n".join(json.dumps(r) for r in records) + "\n")
+        return list(extract_turns.codex_events(path)), path
+
+    def test_codex_rollout_maps_to_events(self):
+        recs = [
+            {"type": "session_meta", "payload": {"id": "01a0a392-8f8c-7131-88c8-3f25db350c3b", "session_id": "parent", "cwd": "/repo", "thread_source": "user"}},
+            {"type": "response_item", "payload": {"type": "message", "role": "developer", "content": [{"type": "input_text", "text": "<skills_instructions>"}]}},
+            {"type": "response_item", "payload": {"type": "message", "role": "user", "content": [{"type": "input_text", "text": "<environment_context>cwd</environment_context>"}]}},
+            {"type": "response_item", "payload": {"type": "message", "role": "user", "content": [{"type": "input_text", "text": "fix it"}]}},
+            {"type": "response_item", "payload": {"type": "reasoning", "summary": [], "encrypted_content": "x"}},
+            {"type": "response_item", "payload": {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": "Looking."}]}},
+            {"type": "response_item", "payload": {"type": "function_call", "call_id": "c1", "name": "shell", "arguments": "{\"cmd\":\"ls\"}"}},
+            {"type": "response_item", "payload": {"type": "function_call_output", "call_id": "c1", "output": "a.ts"}},
+            {"type": "response_item", "payload": {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": "One file."}]}},
+        ]
+        events, path = self._events(recs)
+        self.assertEqual(events[0], ("session", {"session_id": "01a0a392-8f8c-7131-88c8-3f25db350c3b", "cwd": "/repo", "harness": "codex"}))
+        turns = extract_turns.build_turns(events, 200, 100)
+        self.assertEqual(len(turns), 1)
+        self.assertEqual(turns[0]["prompt"], "fix it")
+        self.assertEqual([m["text"] for m in turns[0]["messages"]], ["Looking.", "One file."])
+        self.assertEqual([m["after_evidence"] for m in turns[0]["messages"]], [0, 1])
+        self.assertEqual(turns[0]["evidence"][0]["tool"], "shell")
+        self.assertEqual(turns[0]["evidence"][0]["result"], "a.ts")
+        self.assertFalse(extract_turns.codex_is_subagent(path))
+
+    def test_codex_subagent_rollouts_are_flagged(self):
+        recs = [{"type": "session_meta", "payload": {"id": "child", "session_id": "parent", "cwd": "/repo", "thread_source": "subagent"}}]
+        events, path = self._events(recs, name="rollout-2026-09-15T13-38-06-01a0a392-8f8c-7131-88c8-3f25db350c3c.jsonl")
+        self.assertTrue(extract_turns.codex_is_subagent(path))
+        self.assertEqual(events[0][1]["session_id"], "child")
+
+
+class PrimeAdapterTest(unittest.TestCase):
+    def test_prime_follows_the_active_branch_and_maps_roles(self):
+        entries = [
+            {"type": "session", "version": 3, "id": "s1", "cwd": "/repo"},
+            {"type": "message", "id": "u1", "parentId": None, "message": {"role": "user", "content": [{"type": "text", "text": "hello"}]}},
+            {"type": "message", "id": "a1", "parentId": "u1", "message": {"role": "assistant", "content": [
+                {"type": "thinking", "thinking": "real thinking"}, {"type": "toolCall", "id": "tc1", "name": "bash", "arguments": {"command": "ls"}}]}},
+            {"type": "message", "id": "r1", "parentId": "a1", "message": {"role": "toolResult", "toolCallId": "tc1", "toolName": "bash", "content": [{"type": "text", "text": "a.ts"}], "isError": False}},
+            {"type": "message", "id": "a2-abandoned", "parentId": "r1", "message": {"role": "assistant", "content": [{"type": "text", "text": "abandoned branch"}]}},
+            {"type": "message", "id": "a2", "parentId": "r1", "message": {"role": "assistant", "content": [{"type": "text", "text": "One file."}]}},
+        ]
+        d = tempfile.mkdtemp()
+        path = Path(d) / "s1.jsonl"
+        path.write_text("\n".join(json.dumps(e) for e in entries) + "\n")
+        events = list(extract_turns.prime_events(path))
+        self.assertEqual(events[0], ("session", {"session_id": "s1", "cwd": "/repo", "harness": "prime"}))
+        turns = extract_turns.build_turns(events, 200, 100)
+        self.assertEqual([m["text"] for m in turns[0]["messages"]], ["One file."])  # thinking dropped, abandoned branch dropped
+        self.assertEqual(turns[0]["messages"][0]["channel"], "text")
+        self.assertEqual(turns[0]["evidence"][0]["tool"], "bash")
+        self.assertEqual(turns[0]["evidence"][0]["result"], "a.ts")
+
+
+class OpenCodeAdapterTest(unittest.TestCase):
+    def test_opencode_steps_become_responses(self):
+        import sqlite3
+        d = tempfile.mkdtemp()
+        db = Path(d) / "opencode.db"
+        con = sqlite3.connect(db)
+        con.executescript("""
+            create table session (id text primary key, parent_id text, directory text);
+            create table message (id text primary key, session_id text, time_created integer, time_updated integer, data text);
+            create table part (id text primary key, message_id text, session_id text, time_created integer, data text);
+        """)
+        con.execute("insert into session values ('ses1', null, '/repo')")
+        con.execute("insert into message values ('m1','ses1',1000,1000,?)", (json.dumps({"role": "user"}),))
+        con.execute("insert into part values ('p1','m1','ses1',1000,?)", (json.dumps({"type": "text", "text": "explain"}),))
+        con.execute("insert into message values ('m2','ses1',2000,2000,?)", (json.dumps({"role": "assistant"}),))
+        parts = [
+            {"type": "step-start"}, {"type": "reasoning", "text": "hmm"},
+            {"type": "tool", "tool": "bash", "callID": "c1", "state": {"status": "completed", "input": {"command": "ls"}, "output": "a.ts"}},
+            {"type": "step-finish"}, {"type": "step-start"}, {"type": "text", "text": "One file."}, {"type": "step-finish"},
+        ]
+        for i, p in enumerate(parts):
+            con.execute("insert into part values (?,?,?,?,?)", (f"pp{i}", "m2", "ses1", 2000 + i, json.dumps(p)))
+        con.commit(); con.close()
+        original = extract_turns.STORES["opencode"]
+        extract_turns.STORES["opencode"] = db
+        try:
+            events = list(extract_turns.opencode_events("ses1"))
+        finally:
+            extract_turns.STORES["opencode"] = original
+        self.assertEqual(events[0], ("session", {"session_id": "ses1", "cwd": "/repo", "harness": "opencode"}))
+        turns = extract_turns.build_turns(events, 200, 100)
+        self.assertEqual(turns[0]["prompt"], "explain")
+        self.assertEqual([(m["text"], m["after_evidence"]) for m in turns[0]["messages"]], [("One file.", 1)])
+        self.assertEqual(turns[0]["evidence"][0]["result"], "a.ts")
 
 
 def claim(cid, turn, ctype, strength, label, **extra):

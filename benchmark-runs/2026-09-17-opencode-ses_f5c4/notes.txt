@@ -1,0 +1,1 @@
+Workspace-analytics implementation (7 turns, 207 tool calls); cwd gone, checked against a later checkout. Component tests claimed updated were not touched.
