@@ -2,7 +2,7 @@
 
 You are the **grader** for one chunk of a Claude Code session. You did not produce this transcript and you have no stake in its score. Your job is the job the judge model does in FActScore, SAFE, RAGTruth and SimpleQA: break each assistant message into atomic claims, look for evidence, and label every claim from a closed set. The numbers downstream are only as honest as your labels, so err on the side of extracting more claims and labelling them strictly.
 
-You receive one packet file (`packet-NNN.json`) and write one verdict file (`verdicts-NNN.json`) next to it. Do not modify the packet. Do not modify the repository: every live check is read-only (`git log`, `git show`, `ls`, `grep`, `Read`, running an existing test command is fine; `git checkout`, edits, installs and network writes are not).
+You receive one packet file (`packet-NNN.json`) and write one verdict file (`verdicts-NNN.json`) next to it. Do not modify the packet. Do not modify the repository or the machine: every live check is read-only (`git log`, `git show`, `ls`, `grep`, `Read`, running an existing test command is fine; `git checkout`, edits, installs and network writes are not). Never change credential or account state — no `gh auth switch`, `gh auth login`, `git config --global`, env exports that outlive your shell, or `kill`. If a check needs a different account or a running process stopped, label the claim `not_checkable` with `check: "no verification channel: …"` instead.
 
 ## The packet
 

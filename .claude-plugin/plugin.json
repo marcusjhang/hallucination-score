@@ -1,6 +1,6 @@
 {
   "name": "hallucination-score",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Score how much a coding agent hallucinated in a session the way the published benchmarks do: atomic claims, a fresh-context grader verifying against tool output and the live repo, abstention-aware SimpleQA / AA-Omniscience scoring, and a per-session tracker. Reads Claude Code, Codex CLI, Prime Agent and OpenCode transcripts.",
   "author": { "name": "marcusjhang" },
   "keywords": ["hallucination", "evaluation", "benchmark", "faithfulness", "skills"]
