@@ -1,0 +1,92 @@
+---
+name: hallucination-score
+description: Score how much the assistant hallucinated in the current Claude Code session, the way the published hallucination benchmarks score it — atomic claims (FActScore/SAFE), a fresh-context grader that verifies each claim against the session's tool output and the live repo (RAGTruth faithfulness + SAFE retrieval), and abstention-aware scoring (SimpleQA correct/incorrect/not-attempted, AA-Omniscience index). Produces a scorecard with hallucination rate, contradiction vs baseless split, severity-weighted rate, grounding rate, drift across the session and the list of hallucinated claims; persists it so `--history` tracks sessions over time. Use when asked "how much have you hallucinated", "hallucination score", "score this session", "audit your claims", "are you making things up", "check your last answer", or to compare sessions with "hallucination history".
+---
+
+# Hallucination Score
+
+`$SKILL_DIR` below is the directory holding this SKILL.md — the base directory shown when the skill loads (`~/.claude/skills/hallucination-score`, `<repo>/.claude/skills/hallucination-score`, or the plugin's `skills/hallucination-score`).
+
+Three phases, two of them deterministic. The only judgement happens inside a grader that never saw the reasoning that produced the claims.
+
+| Phase | Who | Produces |
+|---|---|---|
+| 1. Extract | `scripts/extract_turns.py` | `~/.claude/hallucination-scores/<session>/packets/packet-NNN.json` — every user-facing assistant message with the tool calls and results it had in hand |
+| 2. Grade | one fresh-context subagent per packet, following `reference/grader-rubric.md` | `~/.claude/hallucination-scores/<session>/verdicts-NNN.json` — atomic claims, each labelled `supported / contradicted / unsupported / not_checkable` |
+| 3. Score | `scripts/score.py` | the scorecard, persisted to `~/.claude/hallucination-scores/<session>.json` + `history.jsonl` |
+
+Read `reference/methodology.md` once if you need to explain *why* the numbers are computed this way. The short version: benchmarks decompose into atomic facts, verify each against a reference with retrieval, label three ways so abstention is neutral, and report incorrect-given-attempted as the hallucination rate. This skill does exactly that with the session's tool output as the reference.
+
+## Arguments
+
+| Invocation | Scope |
+|---|---|
+| `/hallucination-score` | the whole current session |
+| `/hallucination-score last 5` | the last 5 human turns |
+| `/hallucination-score turns 4-9` | an inclusive turn range |
+| `/hallucination-score judge=sonnet` | grade with a different model (`sonnet`, `opus`, `haiku`, `fable`) — the benchmark-faithful configuration, see limitations |
+| `/hallucination-score session=<id>` | another session's transcript (any project) |
+| `/hallucination-score history` | print the last 10 scored sessions and stop |
+
+## Phase 1 — Extract
+
+```bash
+python3 $SKILL_DIR/scripts/extract_turns.py [--last N] [--turns A-B] [--session ID]
+```
+
+It reads `$CLAUDE_CODE_SESSION_ID`, finds the transcript under `~/.claude/projects/`, and prints an index: turn count, assistant messages, tool calls, and one packet path per 8 turns. Packets live outside the repo because they carry session content; never copy them into the working tree.
+
+If it reports zero assistant messages in scope, say so and stop — there is nothing to grade.
+
+## Phase 2 — Grade
+
+Spawn **one `general-purpose` subagent per packet, all in a single message so they run in parallel**. Pass `model: <judge>` when `judge=` was given. The prompt for each:
+
+```
+You are grading chunk NNN of Claude Code session <session_id> for hallucinations.
+Read <absolute $SKILL_DIR>/reference/grader-rubric.md in full and follow it exactly.
+Packet: ~/.claude/hallucination-scores/<session>/packets/packet-NNN.json
+Repository (cwd for live checks): <cwd from the index>
+Write your verdicts to ~/.claude/hallucination-scores/<session>/verdicts-NNN.json.
+Live checks must be read-only. Reply with only the verdict path and the per-label counts.
+```
+
+Rules for this phase:
+
+- **Never grade inline.** The conversation that produced the claims cannot judge them; that is the whole reason the judge is a separate context. If the Agent tool is unavailable, grade inline only as a last resort, and the report must open with **"Self-graded inline — treat as an upper bound on honesty"**.
+- **Never edit a verdict file yourself.** If `score.py` rejects one (unknown label, duplicate id, missing `check`), send the exact error back to that grader with `SendMessage` and let it rewrite. Editing labels in the main conversation is the model grading itself.
+- Do not summarise the packets to the graders or tell them what you think the answer is. They get the path and the rubric, nothing else.
+- Budget: one grader over an 8-turn packet of ~20 messages and ~45 tool calls took about 140k tokens and 11 minutes on Opus (it re-reads truncated evidence and runs live checks). Say so before grading a long session, and offer `last N` if the user only cares about recent turns.
+
+## Phase 3 — Score
+
+```bash
+python3 $SKILL_DIR/scripts/score.py \
+  ~/.claude/hallucination-scores/<session>/verdicts-*.json \
+  --packets-dir ~/.claude/hallucination-scores/<session>/packets
+```
+
+Prints the markdown scorecard and persists it. `--json` for the raw card; `--no-persist` for a dry run.
+
+## Report
+
+1. Paste the scorecard **verbatim**. Every number comes from `score.py`; do not restate, round, or recompute any of them, and do not omit the hallucinated-claims list even when it is long.
+2. Under it, at most five lines of reading: the band, which claim types drove it, whether drift got worse late in the session, and what to redo (a `verification` hallucination means the named tests must actually be run; an `entity` one means the path or symbol in the answer is fiction; a `completion` one means the task is not finished).
+3. State the limitation that applies: same-model judge unless `judge=` was used (self-preference bias, so the rate is a floor), and that only assistant text was scored, not commit messages or PR bodies.
+4. Point to `~/.claude/hallucination-scores/<session>.json` and mention `/hallucination-score history` for the trend. Do not install the statusline snippet unless asked (below).
+
+Do not soften a bad band. If the session's claims were mostly asserted before looking (low grounding rate), say that even when the hallucination rate is fine — it means the model was lucky, not careful.
+
+## Optional: live statusline
+
+`scripts/statusline.sh` reads the session id from the statusline JSON on stdin and prints the latest persisted score for it (`halluc 4.2% · idx +71 · n=48 · good`), or nothing if the session has not been scored. Install only when the user asks:
+
+```json
+{ "statusLine": { "type": "command", "command": "bash <absolute $SKILL_DIR>/scripts/statusline.sh" } }
+```
+
+The score updates each time the skill runs; it is not continuous. Continuous grading would mean a judge call on every stop hook, which is the wrong cost for a metric you read once per session.
+
+## When the answer is "nothing to grade"
+
+A session that is all tool calls and no prose (or a `last N` window that is) yields zero attempted claims. `score.py` prints `n/a` rates and no band. Report that plainly; do not pad the window to manufacture a number.

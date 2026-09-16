@@ -1,0 +1,11 @@
+{
+  "name": "hallucination-score",
+  "owner": { "name": "marcusjhang" },
+  "plugins": [
+    {
+      "name": "hallucination-score",
+      "source": "./",
+      "description": "Benchmark-style hallucination scoring for the current Claude Code session."
+    }
+  ]
+}
