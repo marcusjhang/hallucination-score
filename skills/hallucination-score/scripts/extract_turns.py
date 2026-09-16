@@ -59,7 +59,7 @@ def main() -> None:
         {"turn": t["turn"], "prompt": truncate(t["prompt"], 240), "origin": t["origin"]}
         for t in turns
     ]
-    chunks = [selected[i : i + args.chunk_turns] for i in range(0, len(selected), args.chunk_turns)]
+    chunks = chunk_turns(selected, args.chunk_turns, args.max_packet_bytes)
     written = []
     for n, chunk in enumerate(chunks, start=1):
         packet = {
@@ -99,7 +99,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--out-dir", help="directory for packet-NNN.json + index.json (default ~/.claude/hallucination-scores/<session>/packets)")
     p.add_argument("--last", type=int, help="only the last N human turns")
     p.add_argument("--turns", help="inclusive turn range, e.g. 4-9")
-    p.add_argument("--chunk-turns", type=int, default=8, help="turns per packet (default 8)")
+    p.add_argument("--chunk-turns", type=int, default=8, help="max turns per packet (default 8)")
+    p.add_argument("--max-packet-bytes", type=int, default=150_000, help="start a new packet before exceeding this size; one oversize turn still gets its own packet (default 150000)")
     p.add_argument("--max-result-chars", type=int, default=1500, help="tool result excerpt size (head; a 400-char tail is kept too)")
     p.add_argument("--max-input-chars", type=int, default=600, help="tool input excerpt size")
     return p.parse_args()
@@ -258,6 +259,23 @@ def strip_internal(turn: dict) -> dict:
     out = {k: v for k, v in turn.items() if k not in ("session_id", "cwd")}
     out["evidence"] = [{"index": i, **item} for i, item in enumerate(out["evidence"])]
     return out
+
+
+def chunk_turns(turns: list[dict], max_turns: int, max_bytes: int) -> list[list[dict]]:
+    """Greedy packets: cut on turn count or on size, so one tool-heavy turn does not swamp a grader."""
+    chunks: list[list[dict]] = []
+    current: list[dict] = []
+    current_bytes = 0
+    for turn in turns:
+        size = len(json.dumps(turn, ensure_ascii=False))
+        if current and (len(current) >= max_turns or current_bytes + size > max_bytes):
+            chunks.append(current)
+            current, current_bytes = [], 0
+        current.append(turn)
+        current_bytes += size
+    if current:
+        chunks.append(current)
+    return chunks
 
 
 def select_turns(turns: list[dict], last: int | None, rng: str | None) -> list[dict]:

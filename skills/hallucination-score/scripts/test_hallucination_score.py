@@ -130,6 +130,12 @@ class ExtractTurnsTest(unittest.TestCase):
         self.assertIn("chars omitted", ev["result"])
         self.assertLess(len(ev["result"]), len(long))
 
+    def test_chunk_turns_cuts_on_count_and_on_size(self):
+        small = [{"turn": n, "x": "a" * 10} for n in range(1, 6)]
+        self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns(small, 2, 10_000)], [[1, 2], [3, 4], [5]])
+        sized = [{"turn": 1, "x": "a" * 10}, {"turn": 2, "x": "a" * 500}, {"turn": 3, "x": "a" * 10}, {"turn": 4, "x": "a" * 10}]
+        self.assertEqual([[t["turn"] for t in c] for c in extract_turns.chunk_turns(sized, 8, 100)], [[1], [2], [3, 4]])
+
     def test_select_turns(self):
         turns = [{"turn": n} for n in range(1, 8)]
         self.assertEqual([t["turn"] for t in extract_turns.select_turns(turns, last=2, rng=None)], [6, 7])
