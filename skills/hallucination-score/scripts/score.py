@@ -2,7 +2,7 @@
 """Phase 3 of the hallucination-score skill: deterministic scoring of grader verdicts.
 
     python3 <skill dir>/scripts/score.py <verdicts-*.json ...> \
-        [--packets-dir DIR] [--json] [--no-persist]
+        [--packets-dir DIR] [--jev jev-*.json ...] [--json] [--no-persist]
     python3 <skill dir>/scripts/score.py --history [N]
     python3 <skill dir>/scripts/score.py <verdicts...> --export benchmark-runs/<name>
 
@@ -18,6 +18,11 @@ Per-claim score, following AA-Omniscience / SimpleQA:
   hedged or abstained             →  0   (not attempted; abstention is neutral, never rewarded)
   not_checkable                   → excluded (SAFE's relevance filter: opinions, plans, questions)
 
+With ``--jev`` (the files written by ``jev_second_judge.py``) every claim also carries the
+second judge's label, and the card gains a judge-vs-judge agreement block (Cohen's κ) plus the
+disagreements to spot-check. The headline numbers never change: the second judge is a check
+on the grader, not a replacement for it.
+
 Persists ``~/.claude/hallucination-scores/<session>.json`` and appends one line to
 ``history.jsonl`` so the score can be shown in a statusline or compared across sessions.
 """
@@ -26,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -62,11 +68,14 @@ def main() -> None:
 
     claims, meta = load_verdicts(args.verdicts)
     coverage = load_coverage(args.packets_dir, claims)
+    jev_meta = join_second_judge(args.jev, claims, meta["session_id"]) if args.jev else None
     card = score(claims)
     card["session_id"] = meta["session_id"]
     card["turn_range"] = meta["turn_range"]
     card["graders"] = meta["graders"]
     card["coverage"] = coverage
+    if jev_meta:
+        card["second_judge"] = second_judge(claims, jev_meta)
     card["scored_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     if not args.no_persist:
@@ -80,6 +89,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("verdicts", nargs="*", help="verdict JSON files written by the grader agents")
     p.add_argument("--packets-dir", help="packets dir from extract_turns.py, for message coverage")
+    p.add_argument("--jev", nargs="*", help="jev-*.json files from jev_second_judge.py; adds the judge-agreement block")
     p.add_argument("--json", action="store_true", help="print the scorecard as JSON instead of markdown")
     p.add_argument("--no-persist", action="store_true", help="do not write to ~/.claude/hallucination-scores")
     p.add_argument("--export", help="also write scorecard.md + scorecard.json into this directory (for a benchmark-runs folder)")
@@ -221,8 +231,112 @@ def drift(attempted: list[dict]) -> list[dict]:
 
 
 def slim(c: dict) -> dict:
-    keys = ("id", "turn", "message", "type", "strength", "label", "quote", "claim", "check", "evidenced_in_session")
-    return {k: c.get(k) for k in keys}
+    keys = ("id", "turn", "message", "type", "strength", "label", "quote", "claim", "check", "evidenced_in_session", "jev")
+    return {k: c.get(k) for k in keys if k != "jev" or c.get("jev")}
+
+
+# --- second judge (Jev) -----------------------------------------------------------------
+
+JEV_LABELS = ("supported", "contradicted", "unsupported")
+JEV_CONFIDENT = 0.5  # below this Jev is saying "not sure"; a disagreement there is noise, not a signal
+
+
+def join_second_judge(paths: list[str], claims: list[dict], session_id: str) -> dict:
+    """Attach each claim's Jev verdict as claim["jev"]; return the judge metadata."""
+    verdicts: dict[str, dict] = {}
+    models: set[str] = set()
+    usage = {"requests": 0, "input_tokens": 0, "estimated_cost_usd": 0.0}
+    for path in paths:
+        doc = json.loads(Path(path).read_text())
+        if doc.get("session_id") != session_id:
+            fail(f"{path}: second-judge file is session {doc.get('session_id')}, verdicts are {session_id}")
+        if any(v.get("label") for v in (doc.get("claims") or {}).values()):
+            models.add(str((doc.get("judge") or {}).get("model") or "jev"))
+        for k in usage:
+            usage[k] += (doc.get("usage") or {}).get(k, 0)
+        verdicts.update(doc.get("claims") or {})
+    for c in claims:
+        v = verdicts.get(c["id"])
+        if v and v.get("label") in JEV_LABELS:
+            c["jev"] = {"label": v["label"], "confidence": v.get("confidence"), "p": v.get("p"), "truncated": v.get("truncated", False)}
+    usage["estimated_cost_usd"] = round(usage["estimated_cost_usd"], 5)
+    return {"model": ", ".join(sorted(models)), "usage": usage, "verdicts": len(verdicts)}
+
+
+def second_judge(claims: list[dict], meta: dict) -> dict:
+    """Judge-vs-judge agreement, the benchmark's judge-vs-human figure with Jev standing in for the human.
+
+    Two comparison sets. *Packet-checkable* claims are the ones whose reference is inside the
+    packet — the grader saw the evidence before the message (`evidenced_in_session`), cited an
+    evidence item in its check, or found nothing anywhere (`unsupported`). That is the fair
+    comparison: Jev never sees the repository, so a claim the grader settled with a live check is
+    outside its reach. *All checkable* is every claim both judges labelled, for completeness.
+    """
+    judged = [c for c in claims if c.get("jev") and c["label"] != "not_checkable"]
+    packet = [c for c in judged if reference_in_packet(c)]
+
+    def hallucinated(label: str) -> bool:
+        return label in ("contradicted", "unsupported")
+
+    def agreement(rows: list[dict]) -> dict:
+        grader = [c["label"] for c in rows]
+        jev = [c["jev"]["label"] for c in rows]
+        confusion = {g: {j: 0 for j in JEV_LABELS} for g in JEV_LABELS}
+        for g, j in zip(grader, jev):
+            confusion[g][j] += 1
+        return {
+            "n": len(rows),
+            "label_agreement": ratio(sum(g == j for g, j in zip(grader, jev)), len(rows)),
+            "label_kappa": kappa(grader, jev, JEV_LABELS),
+            "hallucination_agreement": ratio(sum(hallucinated(g) == hallucinated(j) for g, j in zip(grader, jev)), len(rows)),
+            "hallucination_kappa": kappa([hallucinated(g) for g in grader], [hallucinated(j) for j in jev], (False, True)),
+            "confusion": confusion,
+        }
+
+    # Where the two judges part ways, ranked by how sure Jev is. Grader `supported` with a
+    # confident Jev `contradicted` is the leniency signal this block exists to surface.
+    possible_misses = sorted(
+        (slim(c) for c in judged if c["label"] == "supported" and c["strength"] == "asserted"
+         and (c["jev"]["label"] == "contradicted" or (c["jev"]["label"] == "unsupported" and c["evidenced_in_session"]))
+         and (c["jev"].get("confidence") or 0) >= JEV_CONFIDENT),
+        key=lambda c: -(c["jev"].get("confidence") or 0),
+    )
+    possible_false_alarms = sorted(
+        (slim(c) for c in judged if hallucinated(c["label"]) and c["strength"] == "asserted"
+         and c["jev"]["label"] == "supported" and (c["jev"].get("confidence") or 0) >= JEV_CONFIDENT),
+        key=lambda c: -(c["jev"].get("confidence") or 0),
+    )
+    return {
+        "model": meta["model"],
+        "usage": meta["usage"],
+        "claims_judged": len(judged),
+        "claims_out_of_reach": len([c for c in claims if c["label"] != "not_checkable"]) - len(judged),
+        "packet_checkable": agreement(packet),
+        "all_checkable": agreement(judged),
+        "possible_misses": possible_misses,
+        "possible_false_alarms": possible_false_alarms,
+    }
+
+
+def reference_in_packet(c: dict) -> bool:
+    """Did the grader settle this claim from the session evidence (which Jev sees) rather than a live check?"""
+    check = (c.get("check") or "").lower()
+    cites_evidence = bool(re.search(r"(evidence\s*#\d|\bt\d+\s*#\d|#\d+\b)", check))
+    if c["label"] == "unsupported" or cites_evidence:
+        return True
+    return bool(c.get("evidenced_in_session")) and "live" not in check
+
+
+def kappa(a: list, b: list, labels: tuple) -> float | None:
+    """Cohen's κ between two label sequences; None when it is undefined (empty, or chance agreement is 1)."""
+    n = len(a)
+    if n == 0:
+        return None
+    po = sum(x == y for x, y in zip(a, b)) / n
+    pe = sum((a.count(k) / n) * (b.count(k) / n) for k in labels)
+    if pe >= 1.0:
+        return None
+    return round((po - pe) / (1 - pe), 3)
 
 
 def ratio(num: int, den: int) -> float | None:
@@ -249,6 +363,8 @@ def persist(card: dict, claims: list[dict]) -> None:
         "omniscience_index": m["omniscience_index"],
         "band": m["band"],
     }
+    if card.get("second_judge"):
+        line["jev_hallucination_kappa"] = card["second_judge"]["packet_checkable"]["hallucination_kappa"]
     with (SCORES_DIR / "history.jsonl").open("a") as fh:
         fh.write(json.dumps(line) + "\n")
 
@@ -312,6 +428,8 @@ def render(card: dict) -> str:
         lines.append(f"{i}. `{c['id']}` **{c['type']}** · {c['label']} — “{c['quote']}”")
         lines.append(f"   - claim: {c['claim']}")
         lines.append(f"   - check: {c['check']}")
+        if c.get("jev"):
+            lines.append(f"   - second judge: {jev_verdict(c)}")
 
     hc = m["hedge_calibration"]
     lines += ["", "## Hedge calibration", ""]
@@ -322,6 +440,34 @@ def render(card: dict) -> str:
         for c in card["hedged_wrong"]:
             lines.append(f"- `{c['id']}` — “{c['quote']}” — {c['check']}")
 
+    sj = card.get("second_judge")
+    if sj:
+        pc, al = sj["packet_checkable"], sj["all_checkable"]
+        lines += [
+            "",
+            f"## Second judge — {sj['model']} (TypeSafe, different model family)",
+            "",
+            "| Comparison set | Claims | Label agreement | κ | Hallucination agreement | κ |",
+            "|---|---|---|---|---|---|",
+            f"| Packet-checkable (reference in the session evidence) | {pc['n']} | {pct(pc['label_agreement'])} | {kap(pc['label_kappa'])} | {pct(pc['hallucination_agreement'])} | {kap(pc['hallucination_kappa'])} |",
+            f"| All checkable claims both judges labelled | {al['n']} | {pct(al['label_agreement'])} | {kap(al['label_kappa'])} | {pct(al['hallucination_agreement'])} | {kap(al['hallucination_kappa'])} |",
+            "",
+            "Grader × second judge, packet-checkable: " + "; ".join(
+                f"grader {g} → " + ", ".join(f"{j} {n}" for j, n in row.items() if n) for g, row in pc["confusion"].items() if any(row.values())
+            ) + f". {sj['claims_out_of_reach']} checkable claims were out of the second judge's reach (no evidence in the packet).",
+        ]
+        if sj["possible_misses"] or sj["possible_false_alarms"]:
+            lines += ["", "Spot-check first (the two judges disagree, second judge confident):", ""]
+            for c in sj["possible_misses"][:10]:
+                lines.append(f"- `{c['id']}` **{c['type']}** grader supported, {jev_verdict(c, plain=True)} — “{c['quote']}” — possible miss by the grader")
+            for c in sj["possible_false_alarms"][:10]:
+                lines.append(f"- `{c['id']}` **{c['type']}** grader {c['label']}, {jev_verdict(c, plain=True)} — “{c['quote']}” — possible false alarm")
+            hidden = len(sj["possible_misses"]) + len(sj["possible_false_alarms"]) - min(10, len(sj["possible_misses"])) - min(10, len(sj["possible_false_alarms"]))
+            if hidden > 0:
+                lines.append(f"- … {hidden} more in the persisted card")
+        else:
+            lines += ["", "No confident disagreements."]
+
     total = cov.get("messages_total")
     lines += [
         "",
@@ -330,9 +476,21 @@ def render(card: dict) -> str:
         f"Messages with at least one claim: {cov['messages_with_claims']}" + (f" of {total}" if total else "")
         + (f" ({cov['messages_paraphrased']} of the {total} survive only as harness paraphrases, not verbatim)" if cov.get("messages_paraphrased") else "")
         + f". Claims: {m['claims_total']} total, {m['claims_checkable']} checkable, {m['claims_total'] - m['claims_checkable']} excluded as not checkable.",
-        f"Graders: {', '.join(str(g.get('model') or '?') + ' (chunk ' + str(g.get('chunk')) + ')' for g in card['graders'])}.",
+        f"Graders: {', '.join(str(g.get('model') or '?') + ' (chunk ' + str(g.get('chunk')) + ')' for g in card['graders'])}."
+        + (f" Second judge: {sj['model']} on {sj['claims_judged']} claims, {sj['usage']['requests']} requests, ~${sj['usage']['estimated_cost_usd']:.4f}." if sj else ""),
     ]
     return "\n".join(lines)
+
+
+def jev_verdict(c: dict, plain: bool = False) -> str:
+    j = c["jev"]
+    conf = f" ({j['confidence']:.2f})" if j.get("confidence") is not None else ""
+    verdict = f"Jev {j['label']}{conf}"
+    return verdict if plain else f"{verdict} — {'agrees' if j['label'] == c['label'] else 'disagrees'}"
+
+
+def kap(v: float | None) -> str:
+    return "n/a" if v is None else f"{v:.2f}"
 
 
 def pct(v: float | None) -> str:

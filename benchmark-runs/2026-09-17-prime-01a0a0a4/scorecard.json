@@ -98,7 +98,178 @@
    1
   ]
  },
- "scored_at": "2026-09-16T17:19:13+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 46,
+   "input_tokens": 757579,
+   "estimated_cost_usd": 0.03182
+  },
+  "claims_judged": 45,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 45,
+   "label_agreement": 0.8,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.8,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 36,
+     "contradicted": 8,
+     "unsupported": 1
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 45,
+   "label_agreement": 0.8,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.8,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 36,
+     "contradicted": 8,
+     "unsupported": 1
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t1-m5-c3",
+    "turn": 1,
+    "message": "t1-m5",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "explicit uncertainty in every track",
+    "claim": "Each of the 12 result JSON files has a non-empty uncertain list.",
+    "check": "evidence #17 uncertain counts [7,4,4,3,4,4,3,3,9,4,4,4]; live recount over c49d4b8 results matches",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.8,
+     "p": {
+      "supported": 0.01,
+      "contradicted": 0.12,
+      "unsupported": 0.87
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m6-c2",
+    "turn": 1,
+    "message": "t1-m6",
+    "type": "action",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Final report synthesis is in progress",
+    "claim": "The report-synthesis subagent was running at the time of this message.",
+    "check": "evidence #17 spawn at 16:08:17; completion message #19 arrived 16:12:59, after this 16:08:24 message",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.68,
+     "p": {
+      "supported": 0.19,
+      "contradicted": 0.78,
+      "unsupported": 0.03
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m13-c2",
+    "turn": 1,
+    "message": "t1-m13",
+    "type": "action",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Both reviewers are performing the final verification pass now.",
+    "claim": "Both audit subagents were running their re-verification when this message was written.",
+    "check": "evidence #40 verification request delivered to psf-source-audit; #42 agent_message.list_agents shows both psf-decision-audit and psf-source-audit \"running\"",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.61,
+     "p": {
+      "unsupported": 0.02,
+      "contradicted": 0.75,
+      "supported": 0.23
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m2-c1",
+    "turn": 1,
+    "message": "t1-m2",
+    "type": "completion",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "The recovery phase is complete.",
+    "claim": "By the time of this message the assistant had finished recovering the prior research state: fast-forwarded the worktree to origin/polar-weight, established that no result JSON files survived, and regenerated outline.yaml and fields.yaml from the interrupted transcript.",
+    "check": "evidence #3 (git merge --ff-only to 20d06bd), #4 (results dir exists False), #5 (find found nothing), #9 (git log found nothing), #10 (exec of recovered outline code printed \"12 16\" and wrote outline.yaml/fields.yaml)",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.54,
+     "p": {
+      "supported": 0.28,
+      "unsupported": 0.03,
+      "contradicted": 0.69
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c1",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "action",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Research reconstruction is running.",
+    "claim": "The four reconstruction workers were running when this message was written.",
+    "check": "evidence #11 spawned the workers at 16:02:14; first completion (#12) arrived 16:07:36, after this 16:02:21 message",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.54,
+     "p": {
+      "contradicted": 0.7,
+      "unsupported": 0.19,
+      "supported": 0.11
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:46+00:00",
  "claims": [
   {
    "id": "t1-m2-c1",
@@ -110,7 +281,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (git merge --ff-only to 20d06bd), #4 (results dir exists False), #5 (find found nothing), #9 (git log found nothing), #10 (exec of recovered outline code printed \"12 16\" and wrote outline.yaml/fields.yaml)"
+   "check": "evidence #3 (git merge --ff-only to 20d06bd), #4 (results dir exists False), #5 (find found nothing), #9 (git log found nothing), #10 (exec of recovered outline code printed \"12 16\" and wrote outline.yaml/fields.yaml)",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.54,
+    "p": {
+     "supported": 0.28,
+     "unsupported": 0.03,
+     "contradicted": 0.69
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c2",
@@ -122,7 +303,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11: groups of 3 items and four RLM handles psf-results-1..4 returned"
+   "check": "evidence #11: groups of 3 items and four RLM handles psf-results-1..4 returned",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.86,
+    "p": {
+     "supported": 0.9,
+     "contradicted": 0.09,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c3",
@@ -134,7 +325,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #4 \"exists False\" for research/personal-software-factory, #5 find returned nothing, #9 git log --all returned nothing; #11 lists the 12 target paths"
+   "check": "evidence #4 \"exists False\" for research/personal-software-factory, #5 find returned nothing, #9 git log --all returned nothing; #11 lists the 12 target paths",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.38,
+    "p": {
+     "contradicted": 0.58,
+     "unsupported": 0.02,
+     "supported": 0.4
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c4",
@@ -146,7 +347,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 prompt (full text read from raw transcript): \"verify current/direct sources as needed with Serper and official pages\" and \"Run python3 .../validate_json.py -f ... -j EACH_OUTPUT\""
+   "check": "evidence #11 prompt (full text read from raw transcript): \"verify current/direct sources as needed with Serper and official pages\" and \"Run python3 .../validate_json.py -f ... -j EACH_OUTPUT\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.76,
+    "p": {
+     "supported": 0.84,
+     "unsupported": 0.14,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c1",
@@ -158,7 +369,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 spawned the workers at 16:02:14; first completion (#12) arrived 16:07:36, after this 16:02:21 message"
+   "check": "evidence #11 spawned the workers at 16:02:14; first completion (#12) arrived 16:07:36, after this 16:02:21 message",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.54,
+    "p": {
+     "contradicted": 0.7,
+     "unsupported": 0.19,
+     "supported": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c1",
@@ -170,7 +391,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #15 lists 12 JSON files 01-..12-; #12/#14/#16 child completion messages"
+   "check": "evidence #15 lists 12 JSON files 01-..12-; #12/#14/#16 child completion messages",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.94,
+    "p": {
+     "supported": 0.96,
+     "unsupported": 0.01,
+     "contradicted": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c1",
@@ -182,7 +413,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 (full output in raw transcript record 56): every file [PASS] Coverage 100.0% (16/16), \"Validation passed: 12/12\"; live read-only rerun of the validator in cwd gives \"Validation passed: 12/12\""
+   "check": "evidence #17 (full output in raw transcript record 56): every file [PASS] Coverage 100.0% (16/16), \"Validation passed: 12/12\"; live read-only rerun of the validator in cwd gives \"Validation passed: 12/12\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c2",
@@ -194,7 +435,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 per-file source counts (15,12,14,15,11,10,13,12,14,12,13,10) sum to 151; #48 prints \"entries 151\"; live recount over c49d4b8 results = 151"
+   "check": "evidence #17 per-file source counts (15,12,14,15,11,10,13,12,14,12,13,10) sum to 151; #48 prints \"entries 151\"; live recount over c49d4b8 results = 151",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c3",
@@ -206,7 +457,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 uncertain counts [7,4,4,3,4,4,3,3,9,4,4,4]; live recount over c49d4b8 results matches"
+   "check": "evidence #17 uncertain counts [7,4,4,3,4,4,3,3,9,4,4,4]; live recount over c49d4b8 results matches",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.8,
+    "p": {
+     "supported": 0.01,
+     "contradicted": 0.12,
+     "unsupported": 0.87
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c4",
@@ -218,7 +479,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 RLMSpawnHandle psf-report-synth; #19 child later confirms report written"
+   "check": "evidence #17 RLMSpawnHandle psf-report-synth; #19 child later confirms report written",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c1",
@@ -230,7 +501,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 validator output 12/12 PASS"
+   "check": "evidence #17 validator output 12/12 PASS",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c2",
@@ -242,7 +523,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 spawn at 16:08:17; completion message #19 arrived 16:12:59, after this 16:08:24 message"
+   "check": "evidence #17 spawn at 16:08:17; completion message #19 arrived 16:12:59, after this 16:08:24 message",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.68,
+    "p": {
+     "supported": 0.19,
+     "contradicted": 0.78,
+     "unsupported": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c1",
@@ -254,7 +545,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #19 child reports report.md written and validated; #20 read shows 5516 words, 404 lines, 82 URLs with the required headings"
+   "check": "evidence #19 child reports report.md written and validated; #20 read shows 5516 words, 404 lines, 82 URLs with the required headings",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.3,
+    "p": {
+     "contradicted": 0.53,
+     "unsupported": 0.03,
+     "supported": 0.44
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m8-c1",
@@ -266,7 +567,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #19, #20 (report read: 5516 words / 404 lines / 82 URLs)"
+   "check": "evidence #19, #20 (report read: 5516 words / 404 lines / 82 URLs)",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.21,
+    "p": {
+     "supported": 0.46,
+     "unsupported": 0.06,
+     "contradicted": 0.48
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m8-c2",
@@ -278,7 +589,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #20 RLMSpawnHandles sub-0895fb9e psf-decision-audit and sub-4b991dd0 psf-source-audit"
+   "check": "evidence #20 RLMSpawnHandles sub-0895fb9e psf-decision-audit and sub-4b991dd0 psf-source-audit",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.28,
+    "p": {
+     "contradicted": 0.48,
+     "unsupported": 0.0,
+     "supported": 0.52
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c1",
@@ -290,7 +611,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #21 \"0 failed/dead/malformed\"; #22 source-audit.md table \"Failed/dead/malformed | 0\""
+   "check": "evidence #21 \"0 failed/dead/malformed\"; #22 source-audit.md table \"Failed/dead/malformed | 0\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "supported": 0.92,
+     "unsupported": 0.0,
+     "contradicted": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c2",
@@ -302,7 +633,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #21 \"SOURCE/CITATION AUDIT VERDICT: FAIL\"; #22 \"**Verdict: FAIL**\""
+   "check": "evidence #21 \"SOURCE/CITATION AUDIT VERDICT: FAIL\"; #22 \"**Verdict: FAIL**\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c3",
@@ -314,7 +655,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #21 required fixes (1) cutoff contradiction, (2) L17 bundled Warp claims, (3) L54/L268 isolation claims, (4) L185 OSS TCO label, (5) 2 inline-only vs 9 bibliography-only URLs"
+   "check": "evidence #21 required fixes (1) cutoff contradiction, (2) L17 bundled Warp claims, (3) L54/L268 isolation claims, (4) L185 OSS TCO label, (5) 2 inline-only vs 9 bibliography-only URLs",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.81,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.88,
+     "contradicted": 0.12
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c4",
@@ -326,7 +677,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #22 rlm.list_subagents shows (\"psf-decision-audit\",\"running\"); its verdict (#26) arrived 16:18:51, after this 16:17:50 message"
+   "check": "evidence #22 rlm.list_subagents shows (\"psf-decision-audit\",\"running\"); its verdict (#26) arrived 16:18:51, after this 16:17:50 message",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.71,
+    "p": {
+     "contradicted": 0.09,
+     "supported": 0.8,
+     "unsupported": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m10-c1",
@@ -338,7 +699,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #26 \"Verdict: FAIL ... Two critical blockers\"; #27 decision-audit.md \"Verdict: **FAIL**\""
+   "check": "evidence #26 \"Verdict: FAIL ... Two critical blockers\"; #27 decision-audit.md \"Verdict: **FAIL**\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.64,
+    "p": {
+     "supported": 0.76,
+     "contradicted": 0.24,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m10-c2",
@@ -350,7 +721,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #27 \"These are design defects, not missing polish.\""
+   "check": "evidence #27 \"These are design defects, not missing polish.\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.02,
+     "supported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m10-c3",
@@ -362,7 +743,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #26 \"effectful MCP/tool traffic is not forced through an exclusive controller-owned broker (and Phase 1 mutates before interception)\""
+   "check": "evidence #26 \"effectful MCP/tool traffic is not forced through an exclusive controller-owned broker (and Phase 1 mutates before interception)\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m10-c4",
@@ -374,7 +765,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #26 \"effect authorization/INTENDED receipt/outbox are not defined as one atomic transaction\"; #41 C2 required fix"
+   "check": "evidence #26 \"effect authorization/INTENDED receipt/outbox are not defined as one atomic transaction\"; #41 C2 required fix",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.0,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m11-c1",
@@ -386,7 +787,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #24, #25 (source-audit fixes: Warp bundle split, Docker/NIST/Git citations, UTBoost removal, TCO label, bibliography harmonised) and #29-#35 (decision-audit fixes) precede the message; later #39 confirms \"All other requested remediation passed\" and #45 confirms all critical/high blockers closed (the one remaining item in #39 was a new wrong URL introduced by the fix, not an unremediated finding)"
+   "check": "evidence #24, #25 (source-audit fixes: Warp bundle split, Docker/NIST/Git citations, UTBoost removal, TCO label, bibliography harmonised) and #29-#35 (decision-audit fixes) precede the message; later #39 confirms \"All other requested remediation passed\" and #45 confirms all critical/high blockers closed (the one remaining item in #39 was a new wrong URL introduced by the fix, not an unremediated finding)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.3,
+    "p": {
+     "contradicted": 0.45,
+     "unsupported": 0.02,
+     "supported": 0.53
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m11-c2",
@@ -398,7 +809,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live: git show c49d4b8:research/personal-software-factory/report.md lines 323 (Phase 1 non-mutating), 332-335 (Phase 2 implements atomic authorize_effect and exclusive tool/effect broker); edit #35 rewrote the phases before the message"
+   "check": "live: git show c49d4b8:research/personal-software-factory/report.md lines 323 (Phase 1 non-mutating), 332-335 (Phase 2 implements atomic authorize_effect and exclusive tool/effect broker); edit #35 rewrote the phases before the message",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.26,
+    "p": {
+     "contradicted": 0.51,
+     "supported": 0.27,
+     "unsupported": 0.22
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m11-c3",
@@ -410,7 +831,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live: c49d4b8 report.md line 163-164 (SpecApproval/CapabilityException/ActionApproval/PrHeadApproval, MergeAuthorization), 123/338 (trusted bootstrap from protected base), 112/199/339 (off-host SQLite/WAL snapshots, restore drill), 330 (\"Early value gate\"), 319/356 (pilot-policy.yaml fixed promotion samples; 100 fixed predeclared shadow decisions); edits #32, #34, #35 precede the message"
+   "check": "live: c49d4b8 report.md line 163-164 (SpecApproval/CapabilityException/ActionApproval/PrHeadApproval, MergeAuthorization), 123/338 (trusted bootstrap from protected base), 112/199/339 (off-host SQLite/WAL snapshots, restore drill), 330 (\"Early value gate\"), 319/356 (pilot-policy.yaml fixed promotion samples; 100 fixed predeclared shadow decisions); edits #32, #34, #35 precede the message",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.89,
+    "p": {
+     "supported": 0.93,
+     "unsupported": 0.01,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m11-c4",
@@ -422,7 +853,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #37 agent_message.send to both children, \"delivered delivered\""
+   "check": "evidence #37 agent_message.send to both children, \"delivered delivered\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m12-c1",
@@ -434,7 +875,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #24, #25, #29-#35 edits precede the message; #36 grep confirms removed/added phrasing; later #39/#45 confirm the requested remediations"
+   "check": "evidence #24, #25, #29-#35 edits precede the message; #36 grep confirms removed/added phrasing; later #39/#45 confirm the requested remediations",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.54,
+    "p": {
+     "contradicted": 0.28,
+     "supported": 0.7,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m12-c2",
@@ -446,7 +897,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #37 \"delivered delivered\"; #42 later shows both running"
+   "check": "evidence #37 \"delivered delivered\"; #42 later shows both running",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "contradicted": 0.03,
+     "supported": 0.97,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m13-c1",
@@ -458,7 +919,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #40 count 2 then write_text replace; #43 child verifies lines 55 and 397 corrected and HTTP 200; live: grep -c of old URL in c49d4b8 report.md = 0"
+   "check": "evidence #40 count 2 then write_text replace; #43 child verifies lines 55 and 397 corrected and HTTP 200; live: grep -c of old URL in c49d4b8 report.md = 0",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.85,
+    "p": {
+     "supported": 0.89,
+     "contradicted": 0.03,
+     "unsupported": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m13-c2",
@@ -470,7 +941,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #40 verification request delivered to psf-source-audit; #42 agent_message.list_agents shows both psf-decision-audit and psf-source-audit \"running\""
+   "check": "evidence #40 verification request delivered to psf-source-audit; #42 agent_message.list_agents shows both psf-decision-audit and psf-source-audit \"running\"",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.61,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.75,
+     "supported": 0.23
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m14-c1",
@@ -482,7 +963,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #43 \"FINAL SOURCE/CITATION VERDICT: PASS\"; #45 \"Re-audit verdict: PASS\"; live: c49d4b8 decision-audit.md line 172 \"Current verdict: **PASS**\", source-audit.md line 226 \"**Final verdict: PASS.**\""
+   "check": "evidence #43 \"FINAL SOURCE/CITATION VERDICT: PASS\"; #45 \"Re-audit verdict: PASS\"; live: c49d4b8 decision-audit.md line 172 \"Current verdict: **PASS**\", source-audit.md line 226 \"**Final verdict: PASS.**\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m14-c2",
@@ -494,7 +985,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #45 \"I recorded four non-blocking clarifications: split ... WAITING_HEAD_APPROVAL ..., narrow ... tracked exception ..., distinguish queue permission ..., revisit the explicit 24h pilot RPO\""
+   "check": "evidence #45 \"I recorded four non-blocking clarifications: split ... WAITING_HEAD_APPROVAL ..., narrow ... tracked exception ..., distinguish queue permission ..., revisit the explicit 24h pilot RPO\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "supported": 0.97,
+     "contradicted": 0.03,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c1",
@@ -506,7 +1007,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #51 git commit output \"[findt-the-session-on-perosnal c49d4b8] ... 20 files changed\"; live git log shows c49d4b8 on findt-the-session-on-perosnal"
+   "check": "evidence #51 git commit output \"[findt-the-session-on-perosnal c49d4b8] ... 20 files changed\"; live git log shows c49d4b8 on findt-the-session-on-perosnal",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.97,
+     "contradicted": 0.03,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c2",
@@ -518,7 +1029,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #51/#52 (git rev-parse HEAD = c49d4b81ed2c...); live git log --oneline shows c49d4b8"
+   "check": "evidence #51/#52 (git rev-parse HEAD = c49d4b81ed2c...); live git log --oneline shows c49d4b8",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c3",
@@ -530,7 +1051,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #51 \"create mode 100644 research/personal-software-factory/report.md\"; live git show --stat c49d4b8 lists it (424 lines)"
+   "check": "evidence #51 \"create mode 100644 research/personal-software-factory/report.md\"; live git show --stat c49d4b8 lists it (424 lines)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c4",
@@ -542,7 +1073,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #48 and #50 \"Validation passed: 12/12 / Average coverage: 100.0%\"; live read-only rerun of validate_json.py in cwd gives the same"
+   "check": "evidence #48 and #50 \"Validation passed: 12/12 / Average coverage: 100.0%\"; live read-only rerun of validate_json.py in cwd gives the same",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c5",
@@ -554,7 +1095,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #45; live c49d4b8 decision-audit.md \"## Re-audit after remediation\" / \"Current verdict: **PASS**\""
+   "check": "evidence #45; live c49d4b8 decision-audit.md \"## Re-audit after remediation\" / \"Current verdict: **PASS**\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c6",
@@ -566,7 +1117,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #43; live c49d4b8 source-audit.md line 226 \"**Final verdict: PASS.**\""
+   "check": "evidence #43; live c49d4b8 source-audit.md line 226 \"**Final verdict: PASS.**\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c7",
@@ -578,7 +1139,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #43 \"41 unique URLs / 90 occurrences\"; live grep on c49d4b8 report.md: 41 unique, 90 occurrences (edit #47 after the audit added no URLs)"
+   "check": "evidence #43 \"41 unique URLs / 90 occurrences\"; live grep on c49d4b8 report.md: 41 unique, 90 occurrences (edit #47 after the audit added no URLs)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.79,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.13,
+     "supported": 0.86
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c8",
@@ -590,7 +1161,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #43 \"40 reachable\"; live source-audit.md final section \"40 reachable\" (reported by the auditor; not independently re-fetched)"
+   "check": "evidence #43 \"40 reachable\"; live source-audit.md final section \"40 reachable\" (reported by the auditor; not independently re-fetched)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c9",
@@ -602,7 +1183,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #43 \"1 restricted (ACM Queue 403)\"; #50 source-audit tail"
+   "check": "evidence #43 \"1 restricted (ACM Queue 403)\"; #50 source-audit tail",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c10",
@@ -614,7 +1205,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #43 \"0 failed/dead/malformed\"; #50 source-audit tail"
+   "check": "evidence #43 \"0 failed/dead/malformed\"; #50 source-audit tail",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c11",
@@ -626,7 +1227,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #51 commit file list; live git show --stat c49d4b8 lists all 20 files and ls research/personal-software-factory confirms"
+   "check": "evidence #51 commit file list; live git show --stat c49d4b8 lists all 20 files and ls research/personal-software-factory confirms",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c12",
@@ -638,7 +1249,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #52 agent_message.send to receiver 01a0a099-... with \"committed at c49d4b8\", deliveryStatus \"delivered\"; earlier milestone #10 also delivered"
+   "check": "evidence #52 agent_message.send to receiver 01a0a099-... with \"committed at c49d4b8\", deliveryStatus \"delivered\"; earlier milestone #10 also delivered",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   }
  ]
 }

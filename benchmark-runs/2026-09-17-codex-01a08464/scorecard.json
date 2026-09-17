@@ -78,7 +78,17 @@
    "quote": "The first check shows this is Superset’s bundled Codex binary",
    "claim": "The file at /Users/marcusjhang/.superset/bin/codex is a Codex binary that Superset bundles.",
    "check": "t1 #2 (seen) shows a 6813-byte file, far too small to be the Codex binary; t1 #7 shows it is a bash script (`# Superset agent-wrapper v3`) whose find_real_binary() searches PATH for a non-Superset `codex` and exits 127 with 'codex not found in PATH. Install it' when none exists, i.e. Superset does not bundle Codex. Live: `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex` line 215 execs the found binary. The assistant itself reverses this in t1-m5/t1-m7 ('Superset's wrapper ... forwards to the real Codex binary').",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.8,
+    "p": {
+     "supported": 0.12,
+     "contradicted": 0.87,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c3",
@@ -90,7 +100,17 @@
    "quote": "the practical path is Homebrew cask install/upgrade because the binary is under `/opt/homebrew/bin`",
    "claim": "The codex at /opt/homebrew/bin/codex is a Homebrew-cask-managed install, so `brew install`/`brew upgrade` of the cask is the way to update it.",
    "check": "t1 #8 (seen before this message) `brew info codex` -> 'Not installed'; t1 #13 `ls -l /opt/homebrew/bin/codex` -> symlink to ../lib/node_modules/@openai/codex/bin/codex.js and t1 #14 reads its package.json, i.e. an npm global install under the Homebrew prefix, not a cask. The assistant drops the cask route in t1-m7 and recommends `codex update` / `npm install --prefix /opt/homebrew` instead. Live: `ls -l /opt/homebrew/bin/codex` still a symlink into node_modules.",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.74,
+    "p": {
+     "contradicted": 0.83,
+     "supported": 0.12,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   }
  ],
  "hedged_wrong": [],
@@ -117,7 +137,156 @@
    2
   ]
  },
- "scored_at": "2026-09-16T17:14:42+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 45,
+   "input_tokens": 568635,
+   "estimated_cost_usd": 0.02388
+  },
+  "claims_judged": 42,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 40,
+   "label_agreement": 0.75,
+   "label_kappa": 0.228,
+   "hallucination_agreement": 0.75,
+   "hallucination_kappa": 0.219,
+   "confusion": {
+    "supported": {
+     "supported": 28,
+     "contradicted": 7,
+     "unsupported": 3
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 2,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 42,
+   "label_agreement": 0.7143,
+   "label_kappa": 0.195,
+   "hallucination_agreement": 0.7143,
+   "hallucination_kappa": 0.182,
+   "confusion": {
+    "supported": {
+     "supported": 28,
+     "contradicted": 7,
+     "unsupported": 5
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 2,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t2-m4-c2",
+    "turn": 2,
+    "message": "t2-m4",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "`/opt/homebrew/bin/codex` still reports `0.142.5`",
+    "claim": "After `codex update`, `/opt/homebrew/bin/codex --version` still prints codex-cli 0.142.5.",
+    "check": "t2 #2 `/opt/homebrew/bin/codex --version` -> codex-cli 0.142.5; t2 #4 package.json there still 0.142.5",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.97,
+     "p": {
+      "supported": 0.02,
+      "unsupported": 0.0,
+      "contradicted": 0.98
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m2-c1",
+    "turn": 2,
+    "message": "t2-m2",
+    "type": "action",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "The built-in updater is running",
+    "claim": "The assistant launched `/opt/homebrew/bin/codex update` and it is still running.",
+    "check": "t2 #0 `/opt/homebrew/bin/codex update` -> 'Process running with session ID 95049' after 30s yield",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.92,
+     "p": {
+      "unsupported": 0.0,
+      "supported": 0.05,
+      "contradicted": 0.95
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m7-c6",
+    "turn": 2,
+    "message": "t2-m7",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "You’ll need to restart any already-open Codex sessions or Superset agent terminals for the running process to pick up the new CLI.",
+    "claim": "Already-running Codex processes keep using the old binary until they are restarted.",
+    "check": "t2 #1 updater output 'Please restart Codex.'; standard process semantics (a running process does not reload its executable image)",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.75,
+     "p": {
+      "unsupported": 0.83,
+      "contradicted": 0.04,
+      "supported": 0.13
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m5-c3",
+    "turn": 2,
+    "message": "t2-m5",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "the stale `/opt/homebrew` copy",
+    "claim": "The @openai/codex copy under /opt/homebrew is still the old 0.142.5 at this point.",
+    "check": "t2 #2 `/opt/homebrew/bin/codex --version` -> 0.142.5; t2 #4 package.json -> 0.142.5; t2 #6 codex.js still dated Jul 1",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.68,
+     "p": {
+      "contradicted": 0.79,
+      "supported": 0.2,
+      "unsupported": 0.01
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:45+00:00",
  "claims": [
   {
    "id": "t1-m2-c1",
@@ -129,7 +298,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0 (`which codex && codex --version`) prints /Users/marcusjhang/.superset/bin/codex"
+   "check": "t1 evidence #0 (`which codex && codex --version`) prints /Users/marcusjhang/.superset/bin/codex",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "contradicted": 0.05,
+     "unsupported": 0.0,
+     "supported": 0.95
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c2",
@@ -141,7 +320,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0 prints `codex-cli 0.142.5`"
+   "check": "t1 evidence #0 prints `codex-cli 0.142.5`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "supported": 0.95,
+     "contradicted": 0.04,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c3",
@@ -153,7 +342,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "True, but asserted at after_evidence=1 when only the path (#0) had been seen; confirmed later by t1 #7 (`sed` of the file: `#!/bin/bash` / `# Superset agent-wrapper v3`) and live `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex`"
+   "check": "True, but asserted at after_evidence=1 when only the path (#0) had been seen; confirmed later by t1 #7 (`sed` of the file: `#!/bin/bash` / `# Superset agent-wrapper v3`) and live `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c1",
@@ -165,7 +364,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0: `which codex` -> /Users/marcusjhang/.superset/bin/codex"
+   "check": "t1 evidence #0: `which codex` -> /Users/marcusjhang/.superset/bin/codex",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.71,
+    "p": {
+     "supported": 0.81,
+     "unsupported": 0.01,
+     "contradicted": 0.18
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c2",
@@ -177,7 +386,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": false,
-   "check": "t1 #2 (seen) shows a 6813-byte file, far too small to be the Codex binary; t1 #7 shows it is a bash script (`# Superset agent-wrapper v3`) whose find_real_binary() searches PATH for a non-Superset `codex` and exits 127 with 'codex not found in PATH. Install it' when none exists, i.e. Superset does not bundle Codex. Live: `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex` line 215 execs the found binary. The assistant itself reverses this in t1-m5/t1-m7 ('Superset's wrapper ... forwards to the real Codex binary')."
+   "check": "t1 #2 (seen) shows a 6813-byte file, far too small to be the Codex binary; t1 #7 shows it is a bash script (`# Superset agent-wrapper v3`) whose find_real_binary() searches PATH for a non-Superset `codex` and exits 127 with 'codex not found in PATH. Install it' when none exists, i.e. Superset does not bundle Codex. Live: `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex` line 215 execs the found binary. The assistant itself reverses this in t1-m5/t1-m7 ('Superset's wrapper ... forwards to the real Codex binary').",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.8,
+    "p": {
+     "supported": 0.12,
+     "contradicted": 0.87,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c3",
@@ -189,7 +408,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 `npm list -g @openai/codex --depth=0` -> `(empty)`, exit 1"
+   "check": "t1 evidence #3 `npm list -g @openai/codex --depth=0` -> `(empty)`, exit 1",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.27,
+    "p": {
+     "contradicted": 0.51,
+     "unsupported": 0.01,
+     "supported": 0.48
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c4",
@@ -201,7 +430,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 `brew list --versions codex` -> empty output, exit 1; later t1 #8 `brew info codex` -> 'Not installed'"
+   "check": "t1 evidence #4 `brew list --versions codex` -> empty output, exit 1; later t1 #8 `brew info codex` -> 'Not installed'",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.32,
+    "p": {
+     "unsupported": 0.05,
+     "contradicted": 0.55,
+     "supported": 0.4
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c1",
@@ -213,7 +452,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (`whence -a codex`) lists /opt/homebrew/bin/codex; #6 runs it successfully"
+   "check": "t1 evidence #5 (`whence -a codex`) lists /opt/homebrew/bin/codex; #6 runs it successfully",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.0,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c1",
@@ -225,7 +474,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #0 (which codex -> .superset/bin/codex); t1 #7 shows that file is `# Superset agent-wrapper v3`"
+   "check": "t1 #0 (which codex -> .superset/bin/codex); t1 #7 shows that file is `# Superset agent-wrapper v3`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "contradicted": 0.04,
+     "unsupported": 0.01,
+     "supported": 0.95
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c2",
@@ -237,7 +496,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #6 `/opt/homebrew/bin/codex --version` -> codex-cli 0.142.5; t1 #5 shows /opt/homebrew/bin/codex is the only non-Superset codex on PATH; t1 #7 find_real_binary() picks the first non-.superset codex on PATH"
+   "check": "t1 #6 `/opt/homebrew/bin/codex --version` -> codex-cli 0.142.5; t1 #5 shows /opt/homebrew/bin/codex is the only non-Superset codex on PATH; t1 #7 find_real_binary() picks the first non-.superset codex on PATH",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.85,
+    "p": {
+     "supported": 0.9,
+     "unsupported": 0.01,
+     "contradicted": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c3",
@@ -249,7 +518,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #8 `brew info codex` -> `codex (Codex): 0.153.4`"
+   "check": "t1 #8 `brew info codex` -> `codex (Codex): 0.153.4`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c4",
@@ -261,7 +540,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "User's pasted error in turn 1 literally says the model 'requires a newer version of Codex'; t1 #6 installed 0.142.5 vs t1 #8 latest 0.153.4. Live: `codex debug models --bundled` on codex-cli 0.153.4 lists slug gpt-5.6-sol"
+   "check": "User's pasted error in turn 1 literally says the model 'requires a newer version of Codex'; t1 #6 installed 0.142.5 vs t1 #8 latest 0.153.4. Live: `codex debug models --bundled` on codex-cli 0.153.4 lists slug gpt-5.6-sol",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.49,
+    "p": {
+     "supported": 0.09,
+     "contradicted": 0.25,
+     "unsupported": 0.66
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c1",
@@ -273,7 +562,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #12 is the manual's 'CLI command reference' global-flags table (7993 tokens, under the 16000 limit, so the assistant saw it in full; the packet excerpt truncates the table). Live: `codex --help` line 76 `-m, --model <MODEL>` / 'Model the agent should use'. The cached manual at /var/folders/.../openai-docs-cache/codex-manual.md no longer exists, so the manual text itself could not be re-read."
+   "check": "t1 #12 is the manual's 'CLI command reference' global-flags table (7993 tokens, under the 16000 limit, so the assistant saw it in full; the packet excerpt truncates the table). Live: `codex --help` line 76 `-m, --model <MODEL>` / 'Model the agent should use'. The cached manual at /var/folders/.../openai-docs-cache/codex-manual.md no longer exists, so the manual text itself could not be re-read.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c2",
@@ -285,7 +584,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Asserted before checking: t1 #13 (`/opt/homebrew/bin/codex update --help`, run 3s after this message) prints 'Update Codex to the latest version / Usage: codex update [OPTIONS]'. The seen excerpt of #12 ends at `codex apply` and #10's rg pattern would not match 'codex update', so no earlier evidence shows it."
+   "check": "Asserted before checking: t1 #13 (`/opt/homebrew/bin/codex update --help`, run 3s after this message) prints 'Update Codex to the latest version / Usage: codex update [OPTIONS]'. The seen excerpt of #12 ends at `codex apply` and #10's rg pattern would not match 'codex update', so no earlier evidence shows it.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.03,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c3",
@@ -297,7 +606,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": false,
-   "check": "t1 #8 (seen before this message) `brew info codex` -> 'Not installed'; t1 #13 `ls -l /opt/homebrew/bin/codex` -> symlink to ../lib/node_modules/@openai/codex/bin/codex.js and t1 #14 reads its package.json, i.e. an npm global install under the Homebrew prefix, not a cask. The assistant drops the cask route in t1-m7 and recommends `codex update` / `npm install --prefix /opt/homebrew` instead. Live: `ls -l /opt/homebrew/bin/codex` still a symlink into node_modules."
+   "check": "t1 #8 (seen before this message) `brew info codex` -> 'Not installed'; t1 #13 `ls -l /opt/homebrew/bin/codex` -> symlink to ../lib/node_modules/@openai/codex/bin/codex.js and t1 #14 reads its package.json, i.e. an npm global install under the Homebrew prefix, not a cask. The assistant drops the cask route in t1-m7 and recommends `codex update` / `npm install --prefix /opt/homebrew` instead. Live: `ls -l /opt/homebrew/bin/codex` still a symlink into node_modules.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.74,
+    "p": {
+     "contradicted": 0.83,
+     "supported": 0.12,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c4",
@@ -309,7 +628,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #5 whence -a lists /opt/homebrew/bin/codex; t1 #6 runs it"
+   "check": "t1 #5 whence -a lists /opt/homebrew/bin/codex; t1 #6 runs it",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.62,
+    "p": {
+     "supported": 0.75,
+     "unsupported": 0.02,
+     "contradicted": 0.23
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c1",
@@ -321,7 +650,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "User's error message ('requires a newer version of Codex'); t1 #6/#14 installed 0.142.5; t1 #15 latest 0.153.4. Live: codex-cli 0.153.4 `debug models --bundled` includes slug gpt-5.6-sol"
+   "check": "User's error message ('requires a newer version of Codex'); t1 #6/#14 installed 0.142.5; t1 #15 latest 0.153.4. Live: codex-cli 0.153.4 `debug models --bundled` includes slug gpt-5.6-sol",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.36,
+    "p": {
+     "unsupported": 0.13,
+     "contradicted": 0.29,
+     "supported": 0.58
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c2",
@@ -333,7 +672,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #0, #6 (`--version` -> codex-cli 0.142.5), #14 (package.json version 0.142.5)"
+   "check": "t1 #0, #6 (`--version` -> codex-cli 0.142.5), #14 (package.json version 0.142.5)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c3",
@@ -345,7 +694,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #15 `npm view @openai/codex version` -> 0.153.4; t1 #8 `brew info codex` -> 0.153.4"
+   "check": "t1 #15 `npm view @openai/codex version` -> 0.153.4; t1 #8 `brew info codex` -> 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.01,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c4",
@@ -357,7 +716,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #13 `/opt/homebrew/bin/codex -> ../lib/node_modules/@openai/codex/bin/codex.js`; t1 #14 `/opt/homebrew/lib/node_modules/@openai/codex/package.json` version 0.142.5"
+   "check": "t1 #13 `/opt/homebrew/bin/codex -> ../lib/node_modules/@openai/codex/bin/codex.js`; t1 #14 `/opt/homebrew/lib/node_modules/@openai/codex/package.json` version 0.142.5",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.76,
+    "p": {
+     "supported": 0.84,
+     "contradicted": 0.14,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c5",
@@ -369,7 +738,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #7: wrapper only locates a real codex and passes through args, no version pinning. Live `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex` line 215: `\"$REAL_BIN\" \"${_superset_codex_args[@]}\" --enable hooks ... \"$@\"`. Confirmed by t2 #11: wrapper reports 0.153.4 once a newer real binary is on PATH"
+   "check": "t1 #7: wrapper only locates a real codex and passes through args, no version pinning. Live `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex` line 215: `\"$REAL_BIN\" \"${_superset_codex_args[@]}\" --enable hooks ... \"$@\"`. Confirmed by t2 #11: wrapper reports 0.153.4 once a newer real binary is on PATH",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.33,
+    "p": {
+     "unsupported": 0.55,
+     "supported": 0.29,
+     "contradicted": 0.16
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c6",
@@ -381,7 +760,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 #7 find_real_binary() returns the first executable `codex` in a non-.superset PATH dir; t1 #5 `whence -a codex` shows only /Users/marcusjhang/.superset/bin/codex and /opt/homebrew/bin/codex at that time"
+   "check": "t1 #7 find_real_binary() returns the first executable `codex` in a non-.superset PATH dir; t1 #5 `whence -a codex` shows only /Users/marcusjhang/.superset/bin/codex and /opt/homebrew/bin/codex at that time",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.28,
+    "p": {
+     "supported": 0.3,
+     "unsupported": 0.18,
+     "contradicted": 0.52
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c7",
@@ -393,7 +782,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Not exercised in the session (gpt-5.6-sol never invoked after the update). Live: `codex debug models --bundled` on codex-cli 0.153.4 lists slug gpt-5.6-sol"
+   "check": "Not exercised in the session (gpt-5.6-sol never invoked after the update). Live: `codex debug models --bundled` on codex-cli 0.153.4 lists slug gpt-5.6-sol",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.48,
+    "p": {
+     "contradicted": 0.34,
+     "unsupported": 0.66,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c1",
@@ -405,7 +804,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #0 `/opt/homebrew/bin/codex update` -> 'Process running with session ID 95049' after 30s yield"
+   "check": "t2 #0 `/opt/homebrew/bin/codex update` -> 'Process running with session ID 95049' after 30s yield",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.92,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.05,
+     "contradicted": 0.95
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c2",
@@ -417,7 +826,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #0 output: 'Updating Codex via `npm install -g @openai/codex`...'"
+   "check": "t2 #0 output: 'Updating Codex via `npm install -g @openai/codex`...'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c1",
@@ -429,7 +848,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #1 (write_stdin on session 95049): exit 0, 'added 2 packages in 31s' / '🎉 Update ran successfully! Please restart Codex.'"
+   "check": "t2 #1 (write_stdin on session 95049): exit 0, 'added 2 packages in 31s' / '🎉 Update ran successfully! Please restart Codex.'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.01,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c2",
@@ -441,7 +870,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #1 output ends with 'Please restart Codex.'"
+   "check": "t2 #1 output ends with 'Please restart Codex.'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c3",
@@ -453,7 +892,17 @@
    "strength": "hedged",
    "label": "not_checkable",
    "evidenced_in_session": false,
-   "check": "no verification channel: the running session's own binary version is never observed in the session; hedged prediction"
+   "check": "no verification channel: the running session's own binary version is never observed in the session; hedged prediction",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.28,
+    "p": {
+     "unsupported": 0.18,
+     "contradicted": 0.52,
+     "supported": 0.3
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c4",
@@ -465,7 +914,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Asserted before checking; t2 #3 (run after this message) `codex --version` -> codex-cli 0.153.4"
+   "check": "Asserted before checking; t2 #3 (run after this message) `codex --version` -> codex-cli 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.54,
+    "p": {
+     "supported": 0.69,
+     "contradicted": 0.26,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c1",
@@ -477,7 +936,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #3 `codex --version` -> codex-cli 0.153.4"
+   "check": "t2 #3 `codex --version` -> codex-cli 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.57,
+    "p": {
+     "contradicted": 0.15,
+     "unsupported": 0.13,
+     "supported": 0.72
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c2",
@@ -489,7 +958,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #2 `/opt/homebrew/bin/codex --version` -> codex-cli 0.142.5; t2 #4 package.json there still 0.142.5"
+   "check": "t2 #2 `/opt/homebrew/bin/codex --version` -> codex-cli 0.142.5; t2 #4 package.json there still 0.142.5",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.02,
+     "unsupported": 0.0,
+     "contradicted": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m5-c1",
@@ -501,7 +980,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #7 `npm root -g` -> /Users/marcusjhang/.nvm/versions/node/v24.16.0/lib/node_modules; t2 #8 `npm list -g` -> @openai/codex@0.153.4 there (was empty in t1 #3); t2 #5 whence -a now lists the nvm bin codex"
+   "check": "t2 #7 `npm root -g` -> /Users/marcusjhang/.nvm/versions/node/v24.16.0/lib/node_modules; t2 #8 `npm list -g` -> @openai/codex@0.153.4 there (was empty in t1 #3); t2 #5 whence -a now lists the nvm bin codex",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.61,
+    "p": {
+     "unsupported": 0.12,
+     "supported": 0.74,
+     "contradicted": 0.14
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m5-c2",
@@ -513,7 +1002,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #5 `whence -a codex`: /Users/marcusjhang/.nvm/versions/node/v24.16.0/bin/codex precedes /opt/homebrew/bin/codex; t1 #7 find_real_binary() returns the first match; confirmed by t2 #11 wrapper `--version` -> 0.153.4"
+   "check": "t2 #5 `whence -a codex`: /Users/marcusjhang/.nvm/versions/node/v24.16.0/bin/codex precedes /opt/homebrew/bin/codex; t1 #7 find_real_binary() returns the first match; confirmed by t2 #11 wrapper `--version` -> 0.153.4",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.42,
+    "p": {
+     "unsupported": 0.29,
+     "contradicted": 0.61,
+     "supported": 0.1
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m5-c3",
@@ -525,7 +1024,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #2 `/opt/homebrew/bin/codex --version` -> 0.142.5; t2 #4 package.json -> 0.142.5; t2 #6 codex.js still dated Jul 1"
+   "check": "t2 #2 `/opt/homebrew/bin/codex --version` -> 0.142.5; t2 #4 package.json -> 0.142.5; t2 #6 codex.js still dated Jul 1",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.68,
+    "p": {
+     "contradicted": 0.79,
+     "supported": 0.2,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m6-c1",
@@ -537,7 +1046,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #9 `npm install --prefix /opt/homebrew -g @openai/codex@latest`"
+   "check": "t2 #9 `npm install --prefix /opt/homebrew -g @openai/codex@latest`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m6-c2",
@@ -549,7 +1068,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #9 exit 0, output 'changed 2 packages in 9s'; t2 #12 confirms /opt/homebrew/bin/codex -> 0.153.4"
+   "check": "t2 #9 exit 0, output 'changed 2 packages in 9s'; t2 #12 confirms /opt/homebrew/bin/codex -> 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c1",
@@ -561,7 +1090,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #0/#1 (`codex update`, success) and t2 #9 (`npm install --prefix /opt/homebrew`); t2 #10-#12 all report codex-cli 0.153.4"
+   "check": "t2 #0/#1 (`codex update`, success) and t2 #9 (`npm install --prefix /opt/homebrew`); t2 #10-#12 all report codex-cli 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.05,
+    "p": {
+     "supported": 0.37,
+     "contradicted": 0.26,
+     "unsupported": 0.37
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c2",
@@ -573,7 +1112,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #10 `codex --version`, #11 `/Users/marcusjhang/.superset/bin/codex --version`, #12 `/opt/homebrew/bin/codex --version`"
+   "check": "t2 #10 `codex --version`, #11 `/Users/marcusjhang/.superset/bin/codex --version`, #12 `/opt/homebrew/bin/codex --version`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.91,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.04,
+     "supported": 0.94
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c3",
@@ -585,7 +1134,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #10 -> codex-cli 0.153.4"
+   "check": "t2 #10 -> codex-cli 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c4",
@@ -597,7 +1156,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #11 -> codex-cli 0.153.4"
+   "check": "t2 #11 -> codex-cli 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "supported": 0.93,
+     "contradicted": 0.03,
+     "unsupported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c5",
@@ -609,7 +1178,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #12 -> codex-cli 0.153.4"
+   "check": "t2 #12 -> codex-cli 0.153.4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.81,
+    "p": {
+     "supported": 0.88,
+     "contradicted": 0.12,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c6",
@@ -621,7 +1200,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 #1 updater output 'Please restart Codex.'; standard process semantics (a running process does not reload its executable image)"
+   "check": "t2 #1 updater output 'Please restart Codex.'; standard process semantics (a running process does not reload its executable image)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.75,
+    "p": {
+     "unsupported": 0.83,
+     "contradicted": 0.04,
+     "supported": 0.13
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m7-c7",
@@ -633,7 +1222,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Not exercised in the session. Live: `codex debug models --bundled` on codex-cli 0.153.4 (the codex currently on PATH) lists slug gpt-5.6-sol"
+   "check": "Not exercised in the session. Live: `codex debug models --bundled` on codex-cli 0.153.4 (the codex currently on PATH) lists slug gpt-5.6-sol",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.81,
+    "p": {
+     "unsupported": 0.87,
+     "contradicted": 0.09,
+     "supported": 0.04
+    },
+    "truncated": false
+   }
   }
  ]
 }

@@ -29,15 +29,33 @@
 1. `t1-m3-c2` **code_behaviour** · contradicted — “The first check shows this is Superset’s bundled Codex binary”
    - claim: The file at /Users/marcusjhang/.superset/bin/codex is a Codex binary that Superset bundles.
    - check: t1 #2 (seen) shows a 6813-byte file, far too small to be the Codex binary; t1 #7 shows it is a bash script (`# Superset agent-wrapper v3`) whose find_real_binary() searches PATH for a non-Superset `codex` and exits 127 with 'codex not found in PATH. Install it' when none exists, i.e. Superset does not bundle Codex. Live: `grep -n REAL_BIN /Users/marcusjhang/.superset/bin/codex` line 215 execs the found binary. The assistant itself reverses this in t1-m5/t1-m7 ('Superset's wrapper ... forwards to the real Codex binary').
+   - second judge: Jev contradicted (0.80) — agrees
 2. `t1-m6-c3` **code_behaviour** · contradicted — “the practical path is Homebrew cask install/upgrade because the binary is under `/opt/homebrew/bin`”
    - claim: The codex at /opt/homebrew/bin/codex is a Homebrew-cask-managed install, so `brew install`/`brew upgrade` of the cask is the way to update it.
    - check: t1 #8 (seen before this message) `brew info codex` -> 'Not installed'; t1 #13 `ls -l /opt/homebrew/bin/codex` -> symlink to ../lib/node_modules/@openai/codex/bin/codex.js and t1 #14 reads its package.json, i.e. an npm global install under the Homebrew prefix, not a cask. The assistant drops the cask route in t1-m7 and recommends `codex update` / `npm install --prefix /opt/homebrew` instead. Live: `ls -l /opt/homebrew/bin/codex` still a symlink into node_modules.
+   - second judge: Jev contradicted (0.74) — agrees
 
 ## Hedge calibration
 
 3 hedged claims: 0 turned out wrong (hedge warranted), 3 were right (over-hedged).
 
+## Second judge — jev-1.13.0 (TypeSafe, different model family)
+
+| Comparison set | Claims | Label agreement | κ | Hallucination agreement | κ |
+|---|---|---|---|---|---|
+| Packet-checkable (reference in the session evidence) | 40 | 75.0% | 0.23 | 75.0% | 0.22 |
+| All checkable claims both judges labelled | 42 | 71.4% | 0.20 | 71.4% | 0.18 |
+
+Grader × second judge, packet-checkable: grader supported → supported 28, contradicted 7, unsupported 3; grader contradicted → contradicted 2. 0 checkable claims were out of the second judge's reach (no evidence in the packet).
+
+Spot-check first (the two judges disagree, second judge confident):
+
+- `t2-m4-c2` **tool_output** grader supported, Jev contradicted (0.97) — “`/opt/homebrew/bin/codex` still reports `0.142.5`” — possible miss by the grader
+- `t2-m2-c1` **action** grader supported, Jev contradicted (0.92) — “The built-in updater is running” — possible miss by the grader
+- `t2-m7-c6` **external** grader supported, Jev unsupported (0.75) — “You’ll need to restart any already-open Codex sessions or Superset agent terminals for the running process to pick up the new CLI.” — possible miss by the grader
+- `t2-m5-c3` **tool_output** grader supported, Jev contradicted (0.68) — “the stale `/opt/homebrew` copy” — possible miss by the grader
+
 ## Coverage
 
 Messages with at least one claim: 12 of 14. Claims: 43 total, 42 checkable, 1 excluded as not checkable.
-Graders: claude-opus-5 (chunk 1).
+Graders: claude-opus-5 (chunk 1). Second judge: jev-1.13.0 on 42 claims, 45 requests, ~$0.0239.

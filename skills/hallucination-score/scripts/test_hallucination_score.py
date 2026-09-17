@@ -13,6 +13,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(__file__))
 
 import extract_turns  # noqa: E402
+import jev_second_judge  # noqa: E402
 import score  # noqa: E402
 
 
@@ -327,6 +328,260 @@ class ScoreTest(unittest.TestCase):
             b.write_text(json.dumps({"session_id": "other", "claims": [claim("t2-m1-c1", 2, "entity", "asserted", "supported")]}))
             with self.assertRaises(SystemExit):
                 score.load_verdicts([str(a), str(b)])
+
+
+def packet(turns):
+    """A packet with the given turns; each turn is (turn_no, [(tool, input, result), ...])."""
+    return {
+        "session_id": "s",
+        "harness": "claude",
+        "cwd": "/repo",
+        "chunk": 1,
+        "turns": [
+            {"turn": n, "prompt": f"prompt {n}", "messages": [], "evidence": [
+                {"index": i, "tool": tool, "input": inp, "result": res, "is_error": False, "timestamp": "t"}
+                for i, (tool, inp, res) in enumerate(evidence)
+            ]}
+            for n, evidence in turns
+        ],
+    }
+
+
+class JevSecondJudgeTest(unittest.TestCase):
+    def test_state_keeps_own_turn_and_adds_earlier_turns_nearest_first_under_budget(self):
+        pk = packet([(1, [("Bash", "ls", "a" * 3000)]), (2, [("Bash", "pwd", "b" * 3000)]), (3, [("Bash", "cat", "c" * 3000)])])
+        state, meta = jev_second_judge.build_state(pk, 3, budget=8_000)
+        # own turn (3) in full; turn 2 fits in full; turn 1 only as tool+input (results omitted)
+        self.assertEqual(meta["turns_in_state"], [1, 2, 3])
+        by_turn = {b["turn"]: b for b in state["turns"]}
+        self.assertEqual(by_turn[3]["evidence"][0]["result"], "c" * 3000)
+        self.assertEqual(by_turn[2]["evidence"][0]["result"], "b" * 3000)
+        self.assertNotIn("result", by_turn[1]["evidence"][0])
+        self.assertTrue(meta["truncated"])
+        self.assertEqual(state["claim_turn"], 3)
+
+        state, meta = jev_second_judge.build_state(pk, 3, budget=100_000)
+        self.assertFalse(meta["truncated"])
+        self.assertTrue(all("result" in b["evidence"][0] for b in state["turns"]))
+
+    def test_state_shrinks_an_oversized_own_turn_head_and_tail(self):
+        pk = packet([(1, [("Bash", "big", "HEAD" + "x" * 20000 + "TAIL")])])
+        state, meta = jev_second_judge.build_state(pk, 1, budget=5_000)
+        result = state["turns"][0]["evidence"][0]["result"]
+        self.assertTrue(meta["truncated"])
+        self.assertLess(len(json.dumps(state)), 5_200)
+        self.assertTrue(result.startswith("HEAD") and result.endswith("TAIL") and "chars omitted" in result)
+
+    def test_plan_batches_questions_and_never_leaks_the_grader_verdict(self):
+        pk = packet([(1, [("Bash", "bun test", "12 passed, 2 failed")]), (2, [])])
+        claims = [
+            claim("t1-m1-c1", 1, "verification", "asserted", "contradicted", check="evidence #0 shows 2 failed"),
+            claim("t1-m1-c2", 1, "action", "asserted", "supported", check="evidence #0"),
+            claim("t1-m1-c3", 1, "entity", "asserted", "unsupported", check="grep found nothing"),
+            claim("t2-m1-c1", 2, "external", "asserted", "supported", check="docs"),  # turn 2 has no evidence but turn 1 does
+            claim("t5-m1-c1", 5, "external", "asserted", "supported", check="docs"),  # not in the packet
+        ]
+        plan = jev_second_judge.build_plan(pk, claims, max_state_chars=50_000, batch=2)
+        self.assertEqual([(r["turn"], r["claim_ids"]) for r in plan["requests"]],
+                         [(1, ["t1-m1-c1", "t1-m1-c2"]), (1, ["t1-m1-c3"]), (2, ["t2-m1-c1"])])
+        self.assertEqual(list(plan["skipped"]), ["t5-m1-c1"])
+        req = plan["requests"][0]
+        q = req["questions"]["t1-m1-c1"]
+        self.assertEqual(q["type"], "choice")
+        self.assertEqual(set(q["criteria"]), {"supported", "contradicted", "unsupported"})
+        self.assertEqual(q["instructions"]["claim"], claims[0]["claim"])
+        self.assertEqual(q["instructions"]["quote"], claims[0]["quote"])
+        # the request carries no grader label, check or evidenced_in_session — Jev must judge blind
+        wire = json.dumps({"state": req["state"], "questions": req["questions"]})
+        self.assertNotIn("evidence #0 shows 2 failed", wire)
+        self.assertNotIn('"label"', wire)
+        self.assertNotIn("evidenced_in_session", wire)
+        self.assertIn("12 passed, 2 failed", wire)
+
+    def test_run_plan_parses_answers_and_halves_the_budget_when_the_api_says_too_big(self):
+        pk = packet([(1, [("Bash", "bun test", "x" * 6000)])])
+        claims = [claim("t1-m1-c1", 1, "verification", "asserted", "supported", check="e")]
+        plan = jev_second_judge.build_plan(pk, claims, max_state_chars=50_000, batch=40)
+        calls = []
+
+        def fake_post(body):
+            calls.append(len(json.dumps(body["state"])))
+            if len(calls) == 1:
+                raise jev_second_judge.ApiError(400, '{"detail":{"error_type":"max_tokens_exceeded"}}')
+            return {"model": "jev-1.13", "answers": {"t1-m1-c1": {"type": "choice", "choice": "contradicted",
+                    "probabilities": {"supported": 0.1, "contradicted": 0.85, "unsupported": 0.05}, "confidence": 0.81}},
+                    "usage": {"input_tokens": 1500, "output_tokens": 10}}, 420
+
+        client = FakeClient(fake_post)
+        results = jev_second_judge.run_plan(plan, pk, client)
+        self.assertEqual(len(calls), 2)
+        self.assertLess(calls[1], calls[0])
+        self.assertEqual(results["t1-m1-c1"]["label"], "contradicted")
+        self.assertEqual(results["t1-m1-c1"]["confidence"], 0.81)
+        self.assertTrue(results["t1-m1-c1"]["truncated"])
+        self.assertEqual((client.usage["requests"], client.usage["input_tokens"]), (1, 1500))
+
+    def test_unusable_answers_are_recorded_not_invented(self):
+        self.assertIsNone(jev_second_judge.parse_answer(None, 0)["label"])
+        self.assertIsNone(jev_second_judge.parse_answer({"type": "choice", "choice": "maybe"}, 0)["label"])
+
+    # --- focused mode ---
+
+    def test_lexical_retrieval_finds_the_item_that_names_what_the_claim_names(self):
+        pk = packet([(1, [("Bash", "ls src", "a.ts b.ts"), ("Bash", "docker compose up -d", "Cannot connect to the Docker daemon. Is the docker daemon running?"),
+                          ("Read", "README.md", "# hello")]), (2, [("Bash", "bun test", "12 passed, 2 failed")])])
+        c = claim("t2-m1-c1", 2, "tool_output", "asserted", "supported")
+        c["claim"] = "At this point the Docker daemon was not running."
+        c["quote"] = "the Docker daemon is not running"
+        top = jev_second_judge.lexical_top(c, jev_second_judge.candidates_for(pk, 2), {}, 4)
+        self.assertEqual(top[0], "t1#1")
+        c2 = claim("t2-m1-c2", 2, "verification", "asserted", "supported")
+        c2["claim"], c2["quote"] = "Running bun test produced 14 passing tests.", "all 14 tests pass"
+        self.assertEqual(jev_second_judge.lexical_top(c2, jev_second_judge.candidates_for(pk, 2), {}, 4)[0], "t2#0")
+
+    def test_focused_state_holds_only_the_selected_items_untruncated_plus_the_turn_call_list(self):
+        pk = packet([(1, [("Bash", "ls", "short"), ("Bash", "cat big", "HEAD…[9000 chars omitted]…TAIL")])])
+        full = {(1, 1): {"tool": "Bash", "input": "cat big", "result": "HEAD" + "y" * 900 + "TAIL", "is_error": False}}
+        state = jev_second_judge.focused_state(pk, 1, ("t1#1",), full)
+        self.assertEqual([e["id"] for e in state["evidence"]], ["t1#1"])
+        self.assertEqual(state["evidence"][0]["result"], "HEAD" + "y" * 900 + "TAIL")  # untruncated
+        self.assertEqual([c["id"] for c in state["tool_calls_in_claim_turn"]], ["t1#0", "t1#1"])
+        self.assertNotIn("short", json.dumps(state["evidence"]))
+
+    def test_judge_focused_ranks_only_when_there_are_many_items_and_groups_claims_by_evidence(self):
+        many = [("Bash", f"cmd{i}", f"out{i}") for i in range(12)] + [("Bash", "bun test", "12 passed, 2 failed")]
+        pk = packet([(1, [("Bash", "pwd", "/repo")]), (2, many)])
+        a = claim("t1-m1-c1", 1, "tool_output", "asserted", "supported")
+        a["claim"], a["quote"] = "The working directory is /repo.", "/repo"
+        b = claim("t2-m1-c1", 2, "verification", "asserted", "contradicted", check="evidence #12")
+        b["claim"], b["quote"] = "bun test passed all tests.", "tests pass"
+        b2 = claim("t2-m1-c2", 2, "verification", "asserted", "contradicted", check="evidence #12")
+        b2["claim"], b2["quote"] = "bun test reported no failures.", "no failures"
+        d = claim("t9-m1-c1", 9, "external", "asserted", "supported")
+        seen = []
+
+        def fake_post(body):
+            seen.append(body)
+            answers = {}
+            for qid, q in body["questions"].items():
+                if "supported" in q["criteria"]:
+                    answers[qid] = {"type": "choice", "choice": "contradicted", "probabilities": {"supported": 0.05, "contradicted": 0.9, "unsupported": 0.05}, "confidence": 0.88}
+                else:  # ranking question: point at the test run
+                    answers[qid] = {"type": "choice", "choice": "t2#12", "probabilities": {k: (0.7 if k == "t2#12" else 0.3 / (len(q["criteria"]) - 1)) for k in q["criteria"]}, "confidence": 0.6}
+            return {"model": "jev-1.13", "answers": answers, "usage": {"input_tokens": 100, "output_tokens": 5}}, 300
+
+        results, skipped = jev_second_judge.judge_focused(pk, [a, b, b2, d], {}, FakeClient(fake_post))
+        self.assertEqual(list(skipped), ["t9-m1-c1"])
+        rank_calls = [x for x in seen if "supported" not in next(iter(x["questions"].values()))["criteria"]]
+        judge_calls = [x for x in seen if x not in rank_calls]
+        self.assertEqual(len(rank_calls), 1)              # turn 1 has 1 item: no ranking; turn 2 has 13: ranked
+        self.assertEqual(set(rank_calls[0]["questions"]), {"t2-m1-c1", "t2-m1-c2"})
+        self.assertEqual(len(judge_calls), 2)             # a alone; b and b2 share turn 2 and the same evidence set
+        self.assertIn("t2#12", results["t2-m1-c1"]["evidence"])
+        self.assertEqual(results["t2-m1-c1"]["retrieval"]["jev"][0], "t2#12")
+        self.assertEqual(results["t2-m1-c1"]["label"], "contradicted")
+        for body in seen:  # the grader's verdict never goes over the wire
+            wire = json.dumps(body)
+            self.assertNotIn("evidence #12", wire)
+            self.assertNotIn('"label"', wire)
+
+    def test_full_evidence_falls_back_to_excerpts_when_the_transcript_is_gone(self):
+        pk = packet([(1, [("Bash", "ls", "a…[500 chars omitted]…z")])])
+        pk["transcript"] = "/nowhere/rollout.jsonl"
+        full, ok = jev_second_judge.load_full_evidence(pk)
+        self.assertFalse(ok)
+        self.assertEqual(full[(1, 0)]["result"], "a…[500 chars omitted]…z")
+
+
+class FakeClient:
+    def __init__(self, post):
+        self._post = post
+        self.model = "jev-latest"
+        self.model_seen = "jev-1.13"
+        self.usage = {"requests": 0, "input_tokens": 0, "output_tokens": 0}
+
+    def post(self, body):
+        response, ms = self._post(body)
+        self.usage["requests"] += 1
+        self.usage["input_tokens"] += response.get("usage", {}).get("input_tokens", 0)
+        return response, ms
+
+    def map(self, fn, jobs):
+        return [fn(j) for j in jobs]
+
+
+class SecondJudgeScoreTest(unittest.TestCase):
+    def _joined(self):
+        claims = [
+            claim("t1-m1-c1", 1, "verification", "asserted", "supported", evidenced_in_session=True),
+            claim("t1-m1-c2", 1, "verification", "asserted", "contradicted", check="evidence #3 shows exit 1"),
+            claim("t1-m1-c3", 1, "entity", "asserted", "supported", check="ls in cwd"),  # live check: out of the packet set
+            claim("t1-m1-c4", 1, "action", "asserted", "unsupported"),
+            claim("t1-m1-c5", 1, "completion", "asserted", "not_checkable", check=""),
+            claim("t1-m1-c6", 1, "tool_output", "asserted", "supported", evidenced_in_session=True),
+        ]
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "jev-001.json"
+            path.write_text(json.dumps({"session_id": "s", "chunk": 1, "judge": {"model": "jev-1.13"},
+                "usage": {"requests": 2, "input_tokens": 3000, "estimated_cost_usd": 0.0001},
+                "claims": {
+                    "t1-m1-c1": {"label": "contradicted", "confidence": 0.9, "p": {}},   # grader lenient?
+                    "t1-m1-c2": {"label": "contradicted", "confidence": 0.95, "p": {}},  # agree
+                    "t1-m1-c3": {"label": "unsupported", "confidence": 0.7, "p": {}},    # expected: Jev cannot see the repo
+                    "t1-m1-c4": {"label": "supported", "confidence": 0.6, "p": {}},      # false alarm?
+                    "t1-m1-c5": {"label": "unsupported", "confidence": 0.5, "p": {}},    # not_checkable: excluded
+                    "t1-m1-c6": {"label": "supported", "confidence": 0.3, "p": {}},      # agree
+                }}))
+            meta = score.join_second_judge([str(path)], claims, "s")
+        return claims, meta
+
+    def test_agreement_sets_kappa_and_disagreement_lists(self):
+        claims, meta = self._joined()
+        sj = score.second_judge(claims, meta)
+        self.assertEqual(sj["model"], "jev-1.13")
+        self.assertEqual(sj["claims_judged"], 5)  # c5 is not_checkable
+        self.assertEqual(sj["claims_out_of_reach"], 0)
+        pc, al = sj["packet_checkable"], sj["all_checkable"]
+        self.assertEqual((pc["n"], al["n"]), (4, 5))  # c3 was a live check
+        self.assertEqual(pc["label_agreement"], 0.5)   # c2, c6 agree; c1, c4 do not
+        self.assertEqual(pc["hallucination_agreement"], 0.5)
+        self.assertEqual(pc["confusion"]["supported"]["contradicted"], 1)
+        self.assertEqual([c["id"] for c in sj["possible_misses"]], ["t1-m1-c1"])
+        self.assertEqual([c["id"] for c in sj["possible_false_alarms"]], ["t1-m1-c4"])
+
+    def test_join_rejects_other_sessions_and_ignores_unlabelled(self):
+        claims = [claim("t1-m1-c1", 1, "entity", "asserted", "supported")]
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "jev-001.json"
+            path.write_text(json.dumps({"session_id": "other", "claims": {}}))
+            with self.assertRaises(SystemExit):
+                score.join_second_judge([str(path)], claims, "s")
+            path.write_text(json.dumps({"session_id": "s", "claims": {"t1-m1-c1": {"label": None, "reason": "no evidence"}}}))
+            score.join_second_judge([str(path)], claims, "s")
+            self.assertNotIn("jev", claims[0])
+
+    def test_kappa(self):
+        self.assertEqual(score.kappa(["a", "b", "a", "b"], ["a", "b", "a", "b"], ("a", "b")), 1.0)
+        self.assertEqual(score.kappa(["a", "a", "b", "b"], ["a", "b", "a", "b"], ("a", "b")), 0.0)
+        self.assertIsNone(score.kappa(["a", "a"], ["a", "a"], ("a", "b")))  # chance agreement is 1: undefined
+        self.assertIsNone(score.kappa([], [], ("a", "b")))
+
+    def test_render_adds_the_second_judge_block_and_annotates_hallucinations(self):
+        claims, meta = self._joined()
+        card = score.score(claims)
+        card.update(session_id="s", turn_range=[1, 1], graders=[{"chunk": 1, "model": "claude-opus-5"}],
+                    coverage={"messages_total": None, "messages_with_claims": 1}, second_judge=score.second_judge(claims, meta))
+        text = score.render(card)
+        self.assertIn("## Second judge — jev-1.13", text)
+        self.assertIn("possible miss by the grader", text)
+        self.assertIn("possible false alarm", text)
+        self.assertIn("second judge: Jev contradicted (0.95) — agrees", text)
+        self.assertIn("Second judge: jev-1.13 on 5 claims, 2 requests", text)
+        # and nothing of it without --jev
+        del card["second_judge"]
+        for c in claims:
+            c.pop("jev", None)
+        self.assertNotIn("Second judge", score.render({**card, **score.score(claims)}))
 
 
 if __name__ == "__main__":

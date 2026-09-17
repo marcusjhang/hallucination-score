@@ -70,7 +70,90 @@
    1
   ]
  },
- "scored_at": "2026-09-16T17:14:43+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 49,
+   "input_tokens": 759915,
+   "estimated_cost_usd": 0.03192
+  },
+  "claims_judged": 50,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 48,
+   "label_agreement": 0.9792,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.9792,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 47,
+     "contradicted": 1,
+     "unsupported": 0
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 50,
+   "label_agreement": 0.98,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.98,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 49,
+     "contradicted": 1,
+     "unsupported": 0
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t1-m5-c26",
+    "turn": 1,
+    "message": "t1-m5",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "package.json:46",
+    "claim": "The eval:planning:braintrust package scripts sit at line 46 of app/package.json.",
+    "check": "live `grep -n 'eval:planning' app/package.json`: the five braintrust scripts are lines 44-48, line 46 being eval:planning:braintrust:build-golden; evidence #5 was sed 1,220p of app/package.json (scripts block in the omitted span)",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.5,
+     "p": {
+      "unsupported": 0.06,
+      "contradicted": 0.67,
+      "supported": 0.27
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:45+00:00",
  "claims": [
   {
    "id": "t1-m2-c1",
@@ -82,7 +165,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #0 (`rg --files | rg -i 'braintrust|eval|...'`) excerpt is truncated, but re-running that exact command live lists app/src/lib/server/braintrust/index.ts and index.test.ts; `ls app/src/lib/server/braintrust` confirms both files"
+   "check": "evidence #0 (`rg --files | rg -i 'braintrust|eval|...'`) excerpt is truncated, but re-running that exact command live lists app/src/lib/server/braintrust/index.ts and index.test.ts; `ls app/src/lib/server/braintrust` confirms both files",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c2",
@@ -94,7 +187,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live re-run of the evidence #0 command lists nine files under app/scripts/evals/planning/ (export-wizard-runs.ts, run-braintrust-conversation-judge.ts, sync-braintrust-conversation-dataset.ts, ...); `ls app/scripts/evals/planning` confirms"
+   "check": "live re-run of the evidence #0 command lists nine files under app/scripts/evals/planning/ (export-wizard-runs.ts, run-braintrust-conversation-judge.ts, sync-braintrust-conversation-dataset.ts, ...); `ls app/scripts/evals/planning` confirms",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c1",
@@ -106,7 +209,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (app/src/lib/server/braintrust/index.ts tracing wrapper) and evidence #7 (docs/ai-prompt-eval/README.md 'active Braintrust-native POC' eval pipeline); live `ls` shows the two consumers app/src/lib/server/braintrust and app/src/lib/server/evals/planning"
+   "check": "evidence #3 (app/src/lib/server/braintrust/index.ts tracing wrapper) and evidence #7 (docs/ai-prompt-eval/README.md 'active Braintrust-native POC' eval pipeline); live `ls` shows the two consumers app/src/lib/server/braintrust and app/src/lib/server/evals/planning",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c2",
@@ -118,7 +231,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (initLogger/startRootSpan wrapper) and evidence #8 (rg shows hooks.server.ts:123 initBraintrust() and agent/*.ts importing safeStartSpan)"
+   "check": "evidence #3 (initLogger/startRootSpan wrapper) and evidence #8 (rg shows hooks.server.ts:123 initBraintrust() and agent/*.ts importing safeStartSpan)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c3",
@@ -130,7 +253,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #7 README steps 3-4: 'Sync raw conversation rows into the Braintrust dataset' and 'Run the Claude judge as a Braintrust experiment'"
+   "check": "evidence #7 README steps 3-4: 'Sync raw conversation rows into the Braintrust dataset' and 'Run the Claude judge as a Braintrust experiment'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c1",
@@ -142,7 +275,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (import from 'braintrust'), #8 (hooks.server.ts:123 initBraintrust()), #12 (startup block calling initBraintrust)"
+   "check": "evidence #3 (import from 'braintrust'), #8 (hooks.server.ts:123 initBraintrust()), #12 (startup block calling initBraintrust)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c2",
@@ -154,7 +297,17 @@
    "strength": "abstained",
    "label": "not_checkable",
    "evidenced_in_session": false,
-   "check": "explicit abstention about a secret; the assistant did not read app/.env (only app/.env.example in evidence #18, which holds the placeholder sk-xxx) and the grader does not inspect secrets either"
+   "check": "explicit abstention about a secret; the assistant did not read app/.env (only app/.env.example in evidence #18, which holds the placeholder sk-xxx) and the grader does not inspect secrets either",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.46,
+    "p": {
+     "supported": 0.65,
+     "unsupported": 0.14,
+     "contradicted": 0.21
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c1",
@@ -166,7 +319,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3, #8, #12; live `grep -n '\"braintrust\"' app/package.json` -> line 112 \"braintrust\": \"^3.23.1\""
+   "check": "evidence #3, #8, #12; live `grep -n '\"braintrust\"' app/package.json` -> line 112 \"braintrust\": \"^3.23.1\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.85,
+    "p": {
+     "contradicted": 0.09,
+     "supported": 0.9,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c2",
@@ -178,7 +341,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (tracing wrapper) and #7/#19 (eval pipeline docs); live: app/src/lib/server/braintrust and app/src/lib/server/evals/planning (+ jobs/weekly-eval-report.ts which drives the same eval library)"
+   "check": "evidence #3 (tracing wrapper) and #7/#19 (eval pipeline docs); live: app/src/lib/server/braintrust and app/src/lib/server/evals/planning (+ jobs/weekly-eval-report.ts which drives the same eval library)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.92,
+    "p": {
+     "contradicted": 0.05,
+     "unsupported": 0.01,
+     "supported": 0.94
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c3",
@@ -190,7 +363,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #8 (hooks.server.ts:15 import, :123 initBraintrust()) and #12 (call sits after registerWithWebhookProxy in the startup sequence); live awk shows line 123 is inside `(globalThis as any).__appInitialized = (async () => {` opened at line 75"
+   "check": "evidence #8 (hooks.server.ts:15 import, :123 initBraintrust()) and #12 (call sits after registerWithWebhookProxy in the startup sequence); live awk shows line 123 is inside `(globalThis as any).__appInitialized = (async () => {` opened at line 75",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c4",
@@ -202,7 +385,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #8 output line `app/src/hooks.server.ts:123:    initBraintrust();`; live grep confirms line 123"
+   "check": "evidence #8 output line `app/src/hooks.server.ts:123:    initBraintrust();`; live grep confirms line 123",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "contradicted": 0.06,
+     "unsupported": 0.01,
+     "supported": 0.93
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c5",
@@ -214,7 +407,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (sed of that file shows initBraintrust/startRootSpan/safeStartSpan/flushBraintrust); live `ls app/src/lib/server/braintrust`"
+   "check": "evidence #3 (sed of that file shows initBraintrust/startRootSpan/safeStartSpan/flushBraintrust); live `ls app/src/lib/server/braintrust`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c6",
@@ -226,7 +429,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 line 1 `import { initLogger, NOOP_SPAN, ... } from 'braintrust'`; live app/package.json:112 \"braintrust\": \"^3.23.1\""
+   "check": "evidence #3 line 1 `import { initLogger, NOOP_SPAN, ... } from 'braintrust'`; live app/package.json:112 \"braintrust\": \"^3.23.1\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c7",
@@ -238,7 +451,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3: `const apiKey = env.BRAINTRUST_API_KEY;`"
+   "check": "evidence #3: `const apiKey = env.BRAINTRUST_API_KEY;`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c8",
@@ -250,7 +473,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3: `const projectName = env.BRAINTRUST_PROJECT || 'lightsprint';`"
+   "check": "evidence #3: `const projectName = env.BRAINTRUST_PROJECT || 'lightsprint';`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.0,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c9",
@@ -262,7 +495,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (`if (!apiKey) { ... _enabled = false; return; }` leaving _logger null) and evidence #8 line 77 `if (!_logger) return NOOP_SPAN;`; live sed 76-77 of index.ts confirms"
+   "check": "evidence #3 (`if (!apiKey) { ... _enabled = false; return; }` leaving _logger null) and evidence #8 line 77 `if (!_logger) return NOOP_SPAN;`; live sed 76-77 of index.ts confirms",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c10",
@@ -274,7 +517,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3: `initLogger<true>({ projectName, apiKey, asyncFlush: true, ...`"
+   "check": "evidence #3: `initLogger<true>({ projectName, apiKey, asyncFlush: true, ...`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c11",
@@ -286,7 +539,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #8: hooks.server.ts:177, :229, :320 call flushBraintrust(); live sed shows :177 in a process.on('beforeExit') handler, :229 in the SIGTERM/SIGINT shutdown path before process.exit(0), :320 in the Promise.allSettled shutdown block"
+   "check": "evidence #8: hooks.server.ts:177, :229, :320 call flushBraintrust(); live sed shows :177 in a process.on('beforeExit') handler, :229 in the SIGTERM/SIGINT shutdown path before process.exit(0), :320 in the Promise.allSettled shutdown block",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c12",
@@ -298,7 +561,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3: CIRCUIT_BREAKER_THRESHOLD = 3, onFlushError increments _consecutiveFlushErrors and sets _enabled = false at the threshold; live sed 76-90 shows half-open reset after CIRCUIT_BREAKER_COOLDOWN_MS"
+   "check": "evidence #3: CIRCUIT_BREAKER_THRESHOLD = 3, onFlushError increments _consecutiveFlushErrors and sets _enabled = false at the threshold; live sed 76-90 shows half-open reset after CIRCUIT_BREAKER_COOLDOWN_MS",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c13",
@@ -310,7 +583,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (flush wrapped in try/catch with a 5s timeout race) and #8 line 94 'Returns NOOP_SPAN on failure — all subsequent .log() and .end() calls are safe no-ops'; live index.ts safeStartSpan catches and returns NOOP_SPAN"
+   "check": "evidence #3 (flush wrapped in try/catch with a 5s timeout race) and #8 line 94 'Returns NOOP_SPAN on failure — all subsequent .log() and .end() calls are safe no-ops'; live index.ts safeStartSpan catches and returns NOOP_SPAN",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c14",
@@ -322,7 +605,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #13 (`const span = startRootSpan(\\`pending:${resolvedSpanName}\\`, baseTraceMetadata)` in run-ai.ts) and evidence #19 runbook 'Live `runAI` traces ... one trace per planning turn'; live grep: `export function runAI(` at line 465, startRootSpan at line 891"
+   "check": "evidence #13 (`const span = startRootSpan(\\`pending:${resolvedSpanName}\\`, baseTraceMetadata)` in run-ai.ts) and evidence #19 runbook 'Live `runAI` traces ... one trace per planning turn'; live grep: `export function runAI(` at line 465, startRootSpan at line 891",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "contradicted": 0.02,
+     "unsupported": 0.02,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c15",
@@ -334,7 +627,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #8 was `rg -n 'initBraintrust|flushBraintrust|startRootSpan|...' app/src`, whose full output necessarily contained run-ai.ts:891 (the packet excerpt omits 8505 chars); evidence #13 sed 860-925 shows the call; live `grep -n startRootSpan app/src/lib/server/agent/run-ai.ts` -> 891"
+   "check": "evidence #8 was `rg -n 'initBraintrust|flushBraintrust|startRootSpan|...' app/src`, whose full output necessarily contained run-ai.ts:891 (the packet excerpt omits 8505 chars); evidence #13 sed 860-925 shows the call; live `grep -n startRootSpan app/src/lib/server/agent/run-ai.ts` -> 891",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.94,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.03,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c16",
@@ -346,7 +649,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #13 baseTraceMetadata = { repoId, workspaceId, stackId, taskId, planId, userId, streamId, spanName, threadIdentifier, workflowName, turnName, promptVersion, requestId }"
+   "check": "evidence #13 baseTraceMetadata = { repoId, workspaceId, stackId, taskId, planId, userId, streamId, spanName, threadIdentifier, workflowName, turnName, promptVersion, requestId }",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c17",
@@ -358,7 +671,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #10 was sed 1560-1685 (ROOT SPAN CLOSE block; span.log call falls in the omitted 3132 chars); live sed 1629-1657 shows `span.log({ input: latestUserMessage, output: ..., ... })` in both error and success branches"
+   "check": "evidence #10 was sed 1560-1685 (ROOT SPAN CLOSE block; span.log call falls in the omitted 3132 chars); live sed 1629-1657 shows `span.log({ input: latestUserMessage, output: ..., ... })` in both error and success branches",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c18",
@@ -370,7 +693,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #10 shows elapsedMs and estimatedCostUsd computed; live sed 1600-1626: metrics include prompt_tokens, completion_tokens, prompt_cached_tokens, cachedWriteTokens, elapsedMs and estimatedCostUsd"
+   "check": "evidence #10 shows elapsedMs and estimatedCostUsd computed; live sed 1600-1626: metrics include prompt_tokens, completion_tokens, prompt_cached_tokens, cachedWriteTokens, elapsedMs and estimatedCostUsd",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c19",
@@ -382,7 +715,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live sed 1600-1657 of run-ai.ts: metrics.iterationCount, metrics.toolCallCount, `tags: [envTag, pathType, 'error']` / `[envTag, pathType]`, and `error: { type, message }`; the assistant's evidence #10 sed covered this range"
+   "check": "live sed 1600-1657 of run-ai.ts: metrics.iterationCount, metrics.toolCallCount, `tags: [envTag, pathType, 'error']` / `[envTag, pathType]`, and `error: { type, message }`; the assistant's evidence #10 sed covered this range",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c20",
@@ -394,7 +737,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #14 (simple-path.ts safeStartSpan name 'llm', type 'llm'), evidence #15 (acp-path.ts safeStartSpan name 'acp:prompt'; acp-prompt-utils.ts toolSpan = safeStartSpan(ctx.parentSpan, ...))"
+   "check": "evidence #14 (simple-path.ts safeStartSpan name 'llm', type 'llm'), evidence #15 (acp-path.ts safeStartSpan name 'acp:prompt'; acp-prompt-utils.ts toolSpan = safeStartSpan(ctx.parentSpan, ...))",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c21",
@@ -406,7 +759,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #14 sed started at line 100 and the `const toolSpan = safeStartSpan(parentSpan, {` line is the 16th printed line (=115); live `grep -n safeStartSpan simple-path.ts` -> 115 and 178"
+   "check": "evidence #14 sed started at line 100 and the `const toolSpan = safeStartSpan(parentSpan, {` line is the 16th printed line (=115); live `grep -n safeStartSpan simple-path.ts` -> 115 and 178",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.89,
+    "p": {
+     "contradicted": 0.06,
+     "supported": 0.93,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c22",
@@ -418,7 +781,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #15 sed started at line 2200 and `const promptSpan = safeStartSpan(parentSpan, {` is the 13th printed line (=2212); live grep -> 2212"
+   "check": "evidence #15 sed started at line 2200 and `const promptSpan = safeStartSpan(parentSpan, {` is the 13th printed line (=2212); live grep -> 2212",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.03,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c23",
@@ -430,7 +803,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #8 output line `app/src/lib/server/agent/acp-prompt-utils.ts:1997:          const toolSpan = safeStartSpan(ctx.parentSpan, {`; live grep -> 1997"
+   "check": "evidence #8 output line `app/src/lib/server/agent/acp-prompt-utils.ts:1997:          const toolSpan = safeStartSpan(ctx.parentSpan, {`; live grep -> 1997",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.02,
+     "supported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c24",
@@ -442,7 +825,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #16 (evals/planning/shared.ts, DEFAULT_EVAL_PROJECT) and #20 (evals/planning/weekly-report.ts imports initDataset from 'braintrust'); live `ls app/src/lib/server/evals/planning` lists 19 files"
+   "check": "evidence #16 (evals/planning/shared.ts, DEFAULT_EVAL_PROJECT) and #20 (evals/planning/weekly-report.ts imports initDataset from 'braintrust'); live `ls app/src/lib/server/evals/planning` lists 19 files",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c25",
@@ -454,7 +847,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 and #21 (both scripts describe themselves as 'Thin wrapper over' the library); live `ls app/scripts/evals/planning` lists 9 files"
+   "check": "evidence #17 and #21 (both scripts describe themselves as 'Thin wrapper over' the library); live `ls app/scripts/evals/planning` lists 9 files",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c26",
@@ -466,7 +869,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live `grep -n 'eval:planning' app/package.json`: the five braintrust scripts are lines 44-48, line 46 being eval:planning:braintrust:build-golden; evidence #5 was sed 1,220p of app/package.json (scripts block in the omitted span)"
+   "check": "live `grep -n 'eval:planning' app/package.json`: the five braintrust scripts are lines 44-48, line 46 being eval:planning:braintrust:build-golden; evidence #5 was sed 1,220p of app/package.json (scripts block in the omitted span)",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.5,
+    "p": {
+     "unsupported": 0.06,
+     "contradicted": 0.67,
+     "supported": 0.27
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c27",
@@ -478,7 +891,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live app/package.json:44; also evidence #19 runbook `bun run eval:planning:braintrust:sync-conversations`"
+   "check": "live app/package.json:44; also evidence #19 runbook `bun run eval:planning:braintrust:sync-conversations`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c28",
@@ -490,7 +913,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live app/package.json:45 -> run-braintrust-conversation-judge.ts (evidence #17 read that script)"
+   "check": "live app/package.json:45 -> run-braintrust-conversation-judge.ts (evidence #17 read that script)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c29",
@@ -502,7 +935,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live app/package.json:46; also evidence #7 README step 6 names `eval:planning:braintrust:build-golden`"
+   "check": "live app/package.json:46; also evidence #7 README step 6 names `eval:planning:braintrust:build-golden`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c30",
@@ -514,7 +957,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live app/package.json:47 -> report-braintrust-failure-modes.ts"
+   "check": "live app/package.json:47 -> report-braintrust-failure-modes.ts",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c31",
@@ -526,7 +979,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live app/package.json:48 -> sync-braintrust-traces.ts"
+   "check": "live app/package.json:48 -> sync-braintrust-traces.ts",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c32",
@@ -538,7 +1001,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #19 POC_RUNBOOK 'Eval project: `lightsprint-evals`'; evidence #16 `DEFAULT_EVAL_PROJECT = 'lightsprint-evals'`"
+   "check": "evidence #19 POC_RUNBOOK 'Eval project: `lightsprint-evals`'; evidence #16 `DEFAULT_EVAL_PROJECT = 'lightsprint-evals'`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c33",
@@ -550,7 +1023,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 default project 'lightsprint'; evidence #19 'Runtime trace project: `lightsprint`'"
+   "check": "evidence #3 default project 'lightsprint'; evidence #19 'Runtime trace project: `lightsprint`'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c34",
@@ -562,7 +1045,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #19 (sed of that file: '# Planning Mode Eval POC Runbook'); live ls -la confirms the file"
+   "check": "evidence #19 (sed of that file: '# Planning Mode Eval POC Runbook'); live ls -la confirms the file",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c35",
@@ -574,7 +1067,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 (sed of that file; header 'Weekly planning-eval report job'); live ls -la confirms"
+   "check": "evidence #11 (sed of that file; header 'Weekly planning-eval report job'); live ls -la confirms",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c36",
@@ -586,7 +1089,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #20 weekly-report.ts imports fetchRawWizardRuns and type Sql from 'postgres'; evidence #18 runbook WEEKLY_EVAL_SETTLE_DAYS (2); live weekly-report.ts:109-115 '// 1+2: export settled production conversations' with settleDays"
+   "check": "evidence #20 weekly-report.ts imports fetchRawWizardRuns and type Sql from 'postgres'; evidence #18 runbook WEEKLY_EVAL_SETTLE_DAYS (2); live weekly-report.ts:109-115 '// 1+2: export settled production conversations' with settleDays",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c37",
@@ -598,7 +1111,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #20 imports initDataset from 'braintrust' and upsertConversationRows; live weekly-report.ts:134 `upsertConversationRows(rawDataset, rows, ...)`"
+   "check": "evidence #20 imports initDataset from 'braintrust' and upsertConversationRows; live weekly-report.ts:134 `upsertConversationRows(rawDataset, rows, ...)`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c38",
@@ -610,7 +1133,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #7 README step 4 'Run the Claude judge as a Braintrust experiment'; evidence #20 runConversationJudge; live planning-judge-core.ts:15 DEFAULT_JUDGE_MODEL = 'claude-sonnet-5'"
+   "check": "evidence #7 README step 4 'Run the Claude judge as a Braintrust experiment'; evidence #20 runConversationJudge; live planning-judge-core.ts:15 DEFAULT_JUDGE_MODEL = 'claude-sonnet-5'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c39",
@@ -622,7 +1155,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 tail `promoted: result.promoted`; evidence #7 README step 5; live weekly-report.ts:155 `promoteReviewed: true`"
+   "check": "evidence #11 tail `promoted: result.promoted`; evidence #7 README step 5; live weekly-report.ts:155 `promoteReviewed: true`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c40",
@@ -634,7 +1177,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 header 'posts its digest to Slack #alerts' and import of publishOpsAlert; evidence #20 buildDigest"
+   "check": "evidence #11 header 'posts its digest to Slack #alerts' and import of publishOpsAlert; evidence #20 buildDigest",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c41",
@@ -646,7 +1199,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 header 'on the first production cron tick' and isStaging import; live weekly-eval-report.ts:176-177 `const isProduction = deps.isProduction ?? !isStaging(); if (!isProduction) return 'not-production';`"
+   "check": "evidence #11 header 'on the first production cron tick' and isStaging import; live weekly-eval-report.ts:176-177 `const isProduction = deps.isProduction ?? !isStaging(); if (!isProduction) return 'not-production';`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c42",
@@ -658,7 +1221,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #18 POC_RUNBOOK:101 lists both keys; evidence #11 sed 1-260 covered the gate; live weekly-eval-report.ts:178-183 `if (!braintrustApiKey || !anthropicApiKey) { ... return 'missing-keys'; }`"
+   "check": "evidence #18 POC_RUNBOOK:101 lists both keys; evidence #11 sed 1-260 covered the gate; live weekly-eval-report.ts:178-183 `if (!braintrustApiKey || !anthropicApiKey) { ... return 'missing-keys'; }`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c43",
@@ -670,7 +1243,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #11 header 'A redis done-marker + lock gate the week across instances'; evidence #20 isoWeekKey; live weekly-eval-report.ts:189-215 doneKey/lockKey `weekly-eval-report:${week}:done|lock` with SET NX"
+   "check": "evidence #11 header 'A redis done-marker + lock gate the week across instances'; evidence #20 isoWeekKey; live weekly-eval-report.ts:189-215 doneKey/lockKey `weekly-eval-report:${week}:done|lock` with SET NX",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c44",
@@ -682,7 +1265,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3: initBraintrust returns with tracing DISABLED when env.BRAINTRUST_API_KEY is falsy, otherwise initLogger is created; evidence #6 shows Playwright blanks BRAINTRUST_API_KEY to disable it"
+   "check": "evidence #3: initBraintrust returns with tracing DISABLED when env.BRAINTRUST_API_KEY is falsy, otherwise initLogger is created; evidence #6 shows Playwright blanks BRAINTRUST_API_KEY to disable it",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   }
  ]
 }

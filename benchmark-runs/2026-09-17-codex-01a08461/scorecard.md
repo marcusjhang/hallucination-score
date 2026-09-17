@@ -29,7 +29,20 @@ None.
 
 1 hedged claims: 0 turned out wrong (hedge warranted), 1 were right (over-hedged).
 
+## Second judge — jev-1.13.0 (TypeSafe, different model family)
+
+| Comparison set | Claims | Label agreement | κ | Hallucination agreement | κ |
+|---|---|---|---|---|---|
+| Packet-checkable (reference in the session evidence) | 48 | 97.9% | 0.00 | 97.9% | 0.00 |
+| All checkable claims both judges labelled | 50 | 98.0% | 0.00 | 98.0% | 0.00 |
+
+Grader × second judge, packet-checkable: grader supported → supported 47, contradicted 1. 0 checkable claims were out of the second judge's reach (no evidence in the packet).
+
+Spot-check first (the two judges disagree, second judge confident):
+
+- `t1-m5-c26` **tool_output** grader supported, Jev contradicted (0.50) — “package.json:46” — possible miss by the grader
+
 ## Coverage
 
 Messages with at least one claim: 4 of 5. Claims: 51 total, 50 checkable, 1 excluded as not checkable.
-Graders: claude-opus-5 (chunk 1).
+Graders: claude-opus-5 (chunk 1). Second judge: jev-1.13.0 on 50 claims, 49 requests, ~$0.0319.

@@ -113,7 +113,17 @@
    "quote": "`gbrain sync` reads from the git working tree into the DB",
    "claim": "gbrain sync imports the git working tree (checked-out files) of ~/brain into the DB.",
    "check": "t7 evidence #5: 'NOTE: 21 uncommitted file(s) not synced (20 untracked/added, 1 modified) — commit them or run gbrain sync --working-tree'; gbrain source src/commands/sync.ts:279 'Working-tree files invisible to commit-driven sync (attached HEAD without --working-tree)'; the assistant itself said in t7-m4 that sync only indexes committed files.",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.79,
+    "p": {
+     "contradicted": 0.02,
+     "unsupported": 0.86,
+     "supported": 0.12
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c14",
@@ -125,7 +135,17 @@
    "quote": "nothing else feeds it",
    "claim": "Nothing other than gbrain sync from ~/brain writes content into the PGLite DB.",
    "check": "The `remember` MCP verb writes facts directly into the DB (t1 evidence #1 fact with source 'setup'; t5 evidence #1 'remembered as fact #2'); t2 evidence #3 `gbrain --help` lists `import <dir>`, `transcripts ingest`, `files sync <dir>` as other feeders; the assistant also said it could not run `gbrain sources list` to confirm registered sources.",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.56,
+    "p": {
+     "contradicted": 0.71,
+     "unsupported": 0.29,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   }
  ],
  "hedged_wrong": [],
@@ -158,7 +178,398 @@
    8
   ]
  },
- "scored_at": "2026-09-16T17:09:32+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 86,
+   "input_tokens": 765085,
+   "estimated_cost_usd": 0.03213
+  },
+  "claims_judged": 101,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 90,
+   "label_agreement": 0.6889,
+   "label_kappa": 0.069,
+   "hallucination_agreement": 0.7,
+   "hallucination_kappa": 0.091,
+   "confusion": {
+    "supported": {
+     "supported": 61,
+     "contradicted": 11,
+     "unsupported": 16
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 1,
+     "unsupported": 1
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 101,
+   "label_agreement": 0.6238,
+   "label_kappa": 0.05,
+   "hallucination_agreement": 0.6337,
+   "hallucination_kappa": 0.062,
+   "confusion": {
+    "supported": {
+     "supported": 62,
+     "contradicted": 11,
+     "unsupported": 26
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 1,
+     "unsupported": 1
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t1-m3-c5",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "the quickest paths per your CLAUDE.md are ingesting Granola meetings, running `gbrain transcripts ingest --all` for past chat sessions, or `gbrain import <dir>` for any existing markdown notes",
+    "claim": "The user's ~/.claude/CLAUDE.md lists Granola meeting ingest, `gbrain transcripts ingest --all` for past chat sessions, and `gbrain import <dir>` for bulk markdown as ingest flows.",
+    "check": "~/.claude/CLAUDE.md injected at session start (transcript row 18): '## Ingest flows' lists Granola meetings, 'Past chat sessions: gbrain transcripts ingest --all', 'Bulk markdown: gbrain import <dir>'.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.99,
+     "p": {
+      "supported": 0.0,
+      "contradicted": 0.0,
+      "unsupported": 1.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c6",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "the `github` and `serena` MCP servers failed to connect this session (connection closed)",
+    "claim": "The github and serena MCP servers failed to connect in this session with 'Connection closed'.",
+    "check": "transcript row 34 attachment (16:11:40.973Z, before t1-m3) failedMcpServers: github CONNECTION_CLOSED, serena CONNECTION_CLOSED.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.97,
+     "p": {
+      "unsupported": 0.98,
+      "contradicted": 0.02,
+      "supported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c1",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "entity",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "all 7 tools available (`recall`, `remember`, `entity`, `synthesize`, `forget`, `context_pack`, `delta`)",
+    "claim": "The gbrain MCP server has 7 tools available: recall, remember, entity, synthesize, forget, context_pack, delta.",
+    "check": "transcript row 31 ToolSearch matches list exactly those 7 tools.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.96,
+     "p": {
+      "supported": 0.0,
+      "contradicted": 0.03,
+      "unsupported": 0.97
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c7",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "`auggie` isn't on `$PATH`",
+    "claim": "The auggie MCP server failed because its executable is not on $PATH.",
+    "check": "transcript rows 13 and 34: failedMcpServers auggie ENOENT 'Executable not found in $PATH: auggie'.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.96,
+     "p": {
+      "unsupported": 0.97,
+      "contradicted": 0.03,
+      "supported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t3-m2-c11",
+    "turn": 3,
+    "message": "t3-m2",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "## Heng Hong's private notes, shared with you — 2",
+    "claim": "2 meetings are private (non-workspace-visible) notes by Heng Hong Lee shared with Marcus: Sep 14 'lightsprint discussion' (with Chailing Cheong of SGCarMart) and Aug 21 'first principles'.",
+    "check": "Parsed t3 evidence #3: exactly 2 entries with captured_by_me=false, listed_as_participant=false, is_workspace_visible=false, creator Heng Hong Lee; 'lightsprint discussion' participants include chailing.cheong@sgcarmart.com; 'first principles' dated Aug 21.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.96,
+     "p": {
+      "supported": 0.01,
+      "unsupported": 0.02,
+      "contradicted": 0.97
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m2-c2",
+    "turn": 1,
+    "message": "t1-m2",
+    "type": "entity",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "I have all seven tools: `recall`, `remember`, `entity`, `synthesize`, `forget`, `context_pack`, and `delta`",
+    "claim": "The gbrain MCP server exposes exactly seven tools: recall, remember, entity, synthesize, forget, context_pack, delta.",
+    "check": "transcript row 31 (t1 evidence #0 ToolSearch result) matches = [context_pack, delta, entity, forget, recall, remember, synthesize] — exactly those seven.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.94,
+     "p": {
+      "supported": 0.0,
+      "contradicted": 0.04,
+      "unsupported": 0.96
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t3-m2-c8",
+    "turn": 3,
+    "message": "t3-m2",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "## You attended, someone else captured — 2",
+    "claim": "Exactly 2 meetings list Marcus as participant but were captured by someone else: Sep 15 'Multiplayer + Role-aware sessions' (Heng Hong Lee, with Benedict) and Aug 19 'Onboarding Fuzzy' (Ben Ong, with Bladen of Fuzzy Sequence).",
+    "check": "Parsed t3 evidence #3: exactly 2 entries with captured_by_me=false and listed_as_participant=true; participants: Heng Hong Lee (creator), Marcus, Benedict Chan; and Benjamin Ong (creator), Bladen <bladen@fuzzysequence.com>, Marcus et al.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.85,
+     "p": {
+      "unsupported": 0.1,
+      "contradicted": 0.9,
+      "supported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m8-c13",
+    "turn": 7,
+    "message": "t7-m8",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "`companies/lightsprint` — your role, team, GTM two-track, positioning notes vs Linear",
+    "claim": "companies/lightsprint.md covers Marcus's role, the team, the two-track GTM, and positioning notes vs Linear.",
+    "check": "Live `git show df3b69d:companies/lightsprint.md`: '## Marcus's areas', '## People', 'Two-track GTM', 'Positioning risk: Linear converging on the same direction'.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.82,
+     "p": {
+      "supported": 0.06,
+      "contradicted": 0.06,
+      "unsupported": 0.88
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m4-c5",
+    "turn": 2,
+    "message": "t2-m4",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Nothing gets pushed to GitHub unless you push manually.",
+    "claim": "gbrain sync does not push the brain repo to GitHub; pushing is a manual step.",
+    "check": "~/.claude/CLAUDE.md (transcript row 18): '`gbrain sync` does not push; push is manual'; t7 evidence #5/#6 sync output shows only git_pull/import, and pushes only happened via explicit `git push` (t7 #7, #12).",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.8,
+     "p": {
+      "contradicted": 0.08,
+      "unsupported": 0.86,
+      "supported": 0.06
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t5-m3-c6",
+    "turn": 5,
+    "message": "t5-m3",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "so `recall` surfaces it to any future session",
+    "claim": "gbrain recall will return the saved preference fact in future sessions.",
+    "check": "t5 evidence #1 status inserted with world visibility; t7 evidence #9 recall returns fact id 2; gbrain docs say world facts are readable by every connected agent.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.73,
+     "p": {
+      "supported": 0.17,
+      "unsupported": 0.82,
+      "contradicted": 0.01
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m4-c12",
+    "turn": 2,
+    "message": "t2-m4",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "that DB is the search index over `~/brain` (remote: `github.com/marcusjhang/brain`)",
+    "claim": "The PGLite DB is the search index over the ~/brain git repo whose remote is github.com/marcusjhang/brain.",
+    "check": "t2 evidence #2: `git remote -v` in ~/brain -> https://github.com/marcusjhang/brain.git; CLAUDE.md (row 18) and ~/brain/README.md (t7 #0) say the PGLite index is rebuilt from this repo via gbrain sync.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.72,
+     "p": {
+      "supported": 0.02,
+      "contradicted": 0.17,
+      "unsupported": 0.81
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t3-m2-c10",
+    "turn": 3,
+    "message": "t3-m2",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "- **Sep:** Vishak Gopalan (Efficient Capital Labs), Jon Meran (Inflohealth), Prathyusha, Mohamed Kahiye, Mike Hoeschele (Virtru)",
+    "claim": "The month-by-month list of Ben Ong's team-space counterparts (Sep/Aug/Apr/Mar names and companies) matches the meeting titles and participant emails Granola returned.",
+    "check": "Spot-checked against participant lines in full t3 evidence #3: vishak@ecaplabs.com (Efficient Capital Labs), jon.meran@inflohealth.com, mike.hoeschele@virtru.com, oonishike@yamaha-motor.co.jp, matthew.busel@ofbasis.com, andrei@indus-agency.com, and the Apr/Mar titles (FH Yau SGCarMart COO, Sherry Jiang Peek.money, Marco Kwak LeadModule, San Notion VP Eng, Mihir randomlabs, Hardik Factorem, Jaimin monarch.fast, Gabriel Devrel OpenAI Codex, Stan Shopback CTO, Yao Hong ex stashaway, Jon Tilt Finance).",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.66,
+     "p": {
+      "supported": 0.01,
+      "contradicted": 0.77,
+      "unsupported": 0.22
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m8-c18",
+    "turn": 7,
+    "message": "t7-m8",
+    "type": "verification",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Verified: `recall \"what feedback did Ben give about PR size\"` returns both 1:1s",
+    "claim": "A gbrain recall query about Ben's PR-size feedback returned both 1:1 meeting pages.",
+    "check": "t7 evidence #9 recall (query 'what feedback did Ben give Marcus about PR size and one-pagers') results provenance: meetings/2026-09-14-ben-marcus and meetings/2026-09-09-weekly-1-1-with-ben (transcript).",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.57,
+     "p": {
+      "supported": 0.27,
+      "unsupported": 0.02,
+      "contradicted": 0.71
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t3-m2-c9",
+    "turn": 3,
+    "message": "t3-m2",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "## Team-space, captured by Ben Ong — 33",
+    "claim": "33 of the meetings are workspace-visible team-space notes captured by Ben Ong.",
+    "check": "Parsed t3 evidence #3: 33 entries with is_workspace_visible=true, captured_by_me=false, listed_as_participant=false, all created by Benjamin Ong.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.5,
+     "p": {
+      "unsupported": 0.33,
+      "supported": 0.01,
+      "contradicted": 0.66
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m7-c2",
+    "turn": 7,
+    "message": "t7-m7",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "since `gbrain sync` auto-extracted facts from the pages in between",
+    "claim": "The intervening fact ids were consumed by facts gbrain sync auto-extracted from the newly synced pages.",
+    "check": "Live read-only check: `git show cb339eb` in ~/brain shows facts blocks on companies/lightsprint.md, people/me.md, projects/moto-directory.md whose source column is 'sync:import'; gbrain src/core/facts/backstop.ts:66 documents 'sync:import' as the git sync post-import hook. No in-session evidence showed this before the message (t7 #9 recall listed only facts 1–2).",
+    "evidenced_in_session": false,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.5,
+     "p": {
+      "unsupported": 0.31,
+      "contradicted": 0.67,
+      "supported": 0.02
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:46+00:00",
  "claims": [
   {
    "id": "t1-m2-c1",
@@ -170,7 +581,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0 (ToolSearch +gbrain) matched 7 mcp__gbrain__* tools (transcript row 31 toolUseResult.matches); t1 evidence #1 (mcp__gbrain__recall) responded successfully."
+   "check": "t1 evidence #0 (ToolSearch +gbrain) matched 7 mcp__gbrain__* tools (transcript row 31 toolUseResult.matches); t1 evidence #1 (mcp__gbrain__recall) responded successfully.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "supported": 0.92,
+     "contradicted": 0.0,
+     "unsupported": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c2",
@@ -182,7 +603,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "transcript row 31 (t1 evidence #0 ToolSearch result) matches = [context_pack, delta, entity, forget, recall, remember, synthesize] — exactly those seven."
+   "check": "transcript row 31 (t1 evidence #0 ToolSearch result) matches = [context_pack, delta, entity, forget, recall, remember, synthesize] — exactly those seven.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.94,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.04,
+     "unsupported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c1",
@@ -194,7 +625,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "transcript row 31 ToolSearch matches list exactly those 7 tools."
+   "check": "transcript row 31 ToolSearch matches list exactly those 7 tools.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.03,
+     "unsupported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c2",
@@ -206,7 +647,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #1 (recall limit 5) returned facts array of length 1 and \"total\": 1."
+   "check": "t1 evidence #1 (recall limit 5) returned facts array of length 1 and \"total\": 1.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.0,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c3",
@@ -218,7 +669,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #1 fact text is identical."
+   "check": "t1 evidence #1 fact text is identical.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c4",
@@ -230,7 +691,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #1 entity_slug = people/me."
+   "check": "t1 evidence #1 entity_slug = people/me.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c5",
@@ -242,7 +713,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "~/.claude/CLAUDE.md injected at session start (transcript row 18): '## Ingest flows' lists Granola meetings, 'Past chat sessions: gbrain transcripts ingest --all', 'Bulk markdown: gbrain import <dir>'."
+   "check": "~/.claude/CLAUDE.md injected at session start (transcript row 18): '## Ingest flows' lists Granola meetings, 'Past chat sessions: gbrain transcripts ingest --all', 'Bulk markdown: gbrain import <dir>'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.0,
+     "unsupported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c6",
@@ -254,7 +735,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "transcript row 34 attachment (16:11:40.973Z, before t1-m3) failedMcpServers: github CONNECTION_CLOSED, serena CONNECTION_CLOSED."
+   "check": "transcript row 34 attachment (16:11:40.973Z, before t1-m3) failedMcpServers: github CONNECTION_CLOSED, serena CONNECTION_CLOSED.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.98,
+     "contradicted": 0.02,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c7",
@@ -266,7 +757,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "transcript rows 13 and 34: failedMcpServers auggie ENOENT 'Executable not found in $PATH: auggie'."
+   "check": "transcript rows 13 and 34: failedMcpServers auggie ENOENT 'Executable not found in $PATH: auggie'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.97,
+     "contradicted": 0.03,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c1",
@@ -278,7 +779,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #1 (ToolSearch +granola, transcript row 64) matched only mcp__granola__authenticate/complete_authentication; t2 evidence #4 says 'Once they complete the flow, the server's tools will become available automatically'; transcript row 94 shows the 6 data tools appearing after auth."
+   "check": "t2 evidence #1 (ToolSearch +granola, transcript row 64) matched only mcp__granola__authenticate/complete_authentication; t2 evidence #4 says 'Once they complete the flow, the server's tools will become available automatically'; transcript row 94 shows the 6 data tools appearing after auth.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c1",
@@ -290,7 +801,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #3: `gbrain --help | grep -iE granola|...` lists no granola command; `gbrain granola --help` -> 'Unknown command: granola'."
+   "check": "t2 evidence #3: `gbrain --help | grep -iE granola|...` lists no granola command; `gbrain granola --help` -> 'Unknown command: granola'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.91,
+    "p": {
+     "contradicted": 0.05,
+     "unsupported": 0.01,
+     "supported": 0.94
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c1",
@@ -302,7 +823,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Granola docs (docs.granola.ai/help-center/sharing/integrations/mcp): scopes 'personal' (own/shared notes) and 'public' (workspace-visible Team Space notes); confirmed later by t3 evidence #1 scopes [personal, public] and t3 evidence #3 listing 33 workspace-visible notes captured by Ben Ong."
+   "check": "Granola docs (docs.granola.ai/help-center/sharing/integrations/mcp): scopes 'personal' (own/shared notes) and 'public' (workspace-visible Team Space notes); confirmed later by t3 evidence #1 scopes [personal, public] and t3 evidence #3 listing 33 workspace-visible notes captured by Ben Ong.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.01,
+     "unsupported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c2",
@@ -314,7 +845,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #4 (mcp__granola__authenticate) returned the identical URL."
+   "check": "t2 evidence #4 (mcp__granola__authenticate) returned the identical URL.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c3",
@@ -326,7 +867,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #4 URL contains redirect_uri=http%3A%2F%2Flocalhost%3A63817%2Fcallback."
+   "check": "t2 evidence #4 URL contains redirect_uri=http%3A%2F%2Flocalhost%3A63817%2Fcallback.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.0,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c4",
@@ -338,7 +889,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "transcript row 94 attachment at start of turn 3 shows the granola data tools became available (auth completed); t3 evidence #1 get_account_info succeeded."
+   "check": "transcript row 94 attachment at start of turn 3 shows the granola data tools became available (auth completed); t3 evidence #1 get_account_info succeeded.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.01,
+     "contradicted": 0.02,
+     "unsupported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c5",
@@ -350,7 +911,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "~/.claude/CLAUDE.md (transcript row 18): '`gbrain sync` does not push; push is manual'; t7 evidence #5/#6 sync output shows only git_pull/import, and pushes only happened via explicit `git push` (t7 #7, #12)."
+   "check": "~/.claude/CLAUDE.md (transcript row 18): '`gbrain sync` does not push; push is manual'; t7 evidence #5/#6 sync output shows only git_pull/import, and pushes only happened via explicit `git push` (t7 #7, #12).",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.8,
+    "p": {
+     "contradicted": 0.08,
+     "unsupported": 0.86,
+     "supported": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c6",
@@ -362,7 +933,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 Bash: `cat ~/.gbrain/config.json` and `grep -A8 '\"gbrain\"' ~/.claude.json`."
+   "check": "t2 evidence #2 Bash: `cat ~/.gbrain/config.json` and `grep -A8 '\"gbrain\"' ~/.claude.json`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c7",
@@ -374,7 +955,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 full output (transcript results[3]): \"gbrain\": {\"type\": \"stdio\", \"command\": \"gbrain\", \"args\": [\"serve\",\"--surface\",\"verbs\"]} (the packet excerpt omitted the type line)."
+   "check": "t2 evidence #2 full output (transcript results[3]): \"gbrain\": {\"type\": \"stdio\", \"command\": \"gbrain\", \"args\": [\"serve\",\"--surface\",\"verbs\"]} (the packet excerpt omitted the type line).",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c8",
@@ -386,7 +977,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2: 'already open through `gbrain serve` (MCP, PID 87177)' and the stdio server type means Claude Code spawns it; t7 evidence #0 says 'gbrain serve is usually spawned by your agent harness'."
+   "check": "t2 evidence #2: 'already open through `gbrain serve` (MCP, PID 87177)' and the stdio server type means Claude Code spawns it; t7 evidence #0 says 'gbrain serve is usually spawned by your agent harness'.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.48,
+    "p": {
+     "supported": 0.03,
+     "contradicted": 0.66,
+     "unsupported": 0.31
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c9",
@@ -398,7 +999,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2: entry is type stdio with command/args and no url; t2 evidence #3 help: 'serve  MCP server (stdio)' vs 'serve --http' for the HTTP variant."
+   "check": "t2 evidence #2: entry is type stdio with command/args and no url; t2 evidence #3 help: 'serve  MCP server (stdio)' vs 'serve --http' for the HTTP variant.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.37,
+    "p": {
+     "unsupported": 0.29,
+     "contradicted": 0.13,
+     "supported": 0.58
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c10",
@@ -410,7 +1021,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 config.json: \"engine\": \"pglite\", \"database_path\": \"/Users/marcusjhang/.gbrain/brain.pglite\"."
+   "check": "t2 evidence #2 config.json: \"engine\": \"pglite\", \"database_path\": \"/Users/marcusjhang/.gbrain/brain.pglite\".",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c11",
@@ -422,7 +1043,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 config.json has no url/supabase/postgres key."
+   "check": "t2 evidence #2 config.json has no url/supabase/postgres key.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c12",
@@ -434,7 +1065,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2: `git remote -v` in ~/brain -> https://github.com/marcusjhang/brain.git; CLAUDE.md (row 18) and ~/brain/README.md (t7 #0) say the PGLite index is rebuilt from this repo via gbrain sync."
+   "check": "t2 evidence #2: `git remote -v` in ~/brain -> https://github.com/marcusjhang/brain.git; CLAUDE.md (row 18) and ~/brain/README.md (t7 #0) say the PGLite index is rebuilt from this repo via gbrain sync.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.72,
+    "p": {
+     "supported": 0.02,
+     "contradicted": 0.17,
+     "unsupported": 0.81
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c13",
@@ -446,7 +1087,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": false,
-   "check": "t7 evidence #5: 'NOTE: 21 uncommitted file(s) not synced (20 untracked/added, 1 modified) — commit them or run gbrain sync --working-tree'; gbrain source src/commands/sync.ts:279 'Working-tree files invisible to commit-driven sync (attached HEAD without --working-tree)'; the assistant itself said in t7-m4 that sync only indexes committed files."
+   "check": "t7 evidence #5: 'NOTE: 21 uncommitted file(s) not synced (20 untracked/added, 1 modified) — commit them or run gbrain sync --working-tree'; gbrain source src/commands/sync.ts:279 'Working-tree files invisible to commit-driven sync (attached HEAD without --working-tree)'; the assistant itself said in t7-m4 that sync only indexes committed files.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.79,
+    "p": {
+     "contradicted": 0.02,
+     "unsupported": 0.86,
+     "supported": 0.12
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c14",
@@ -458,7 +1109,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": false,
-   "check": "The `remember` MCP verb writes facts directly into the DB (t1 evidence #1 fact with source 'setup'; t5 evidence #1 'remembered as fact #2'); t2 evidence #3 `gbrain --help` lists `import <dir>`, `transcripts ingest`, `files sync <dir>` as other feeders; the assistant also said it could not run `gbrain sources list` to confirm registered sources."
+   "check": "The `remember` MCP verb writes facts directly into the DB (t1 evidence #1 fact with source 'setup'; t5 evidence #1 'remembered as fact #2'); t2 evidence #3 `gbrain --help` lists `import <dir>`, `transcripts ingest`, `files sync <dir>` as other feeders; the assistant also said it could not run `gbrain sources list` to confirm registered sources.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.56,
+    "p": {
+     "contradicted": 0.71,
+     "unsupported": 0.29,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c15",
@@ -470,7 +1131,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 config.json: \"memory\": {\"auto_writeback\": \"salient\", \"visibility_posture\": \"world\"}."
+   "check": "t2 evidence #2 config.json: \"memory\": {\"auto_writeback\": \"salient\", \"visibility_posture\": \"world\"}.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c16",
@@ -482,7 +1153,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "gbrain package docs/protocol/MEMORY_VERBS_v1.md:162 (~/.bun/install/global/node_modules/gbrain): 'visibility: world (DEFAULT — readable by every agent connected to this brain ...) | private (local CLI reads only)'."
+   "check": "gbrain package docs/protocol/MEMORY_VERBS_v1.md:162 (~/.bun/install/global/node_modules/gbrain): 'visibility: world (DEFAULT — readable by every agent connected to this brain ...) | private (local CLI reads only)'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.95,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.97,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c17",
@@ -494,7 +1175,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #3 help: 'serve  MCP server (stdio)' and 'serve --http [--port N]  HTTP MCP server with OAuth 2.1'."
+   "check": "t2 evidence #3 help: 'serve  MCP server (stdio)' and 'serve --http [--port N]  HTTP MCP server with OAuth 2.1'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.52,
+    "p": {
+     "unsupported": 0.28,
+     "contradicted": 0.04,
+     "supported": 0.68
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c18",
@@ -506,7 +1197,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2: 'GBrain's local database is already open through gbrain serve (MCP, PID 87177). This brain uses PGLite, so a separate CLI process cannot open it at the same time.'"
+   "check": "t2 evidence #2: 'GBrain's local database is already open through gbrain serve (MCP, PID 87177). This brain uses PGLite, so a separate CLI process cannot open it at the same time.'",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.27,
+    "p": {
+     "supported": 0.47,
+     "unsupported": 0.02,
+     "contradicted": 0.51
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m1-c1",
@@ -518,7 +1219,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "transcript row 94 attachment (16:14:55Z, injected before t3-m1) lists mcp__granola__list_meetings etc. as newly available and the authenticate tools as removed; t3 evidence #1 get_account_info succeeded."
+   "check": "transcript row 94 attachment (16:14:55Z, injected before t3-m1) lists mcp__granola__list_meetings etc. as newly available and the authenticate tools as removed; t3 evidence #1 get_account_info succeeded.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.75,
+    "p": {
+     "unsupported": 0.12,
+     "contradicted": 0.05,
+     "supported": 0.83
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c1",
@@ -530,7 +1241,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #1 email = marcus@lightsprint.ai."
+   "check": "t3 evidence #1 email = marcus@lightsprint.ai.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c2",
@@ -542,7 +1263,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #1 active_workspace.display_name = Lightsprint."
+   "check": "t3 evidence #1 active_workspace.display_name = Lightsprint.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c3",
@@ -554,7 +1285,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #1 mcp_note_access.scopes = [personal, public]."
+   "check": "t3 evidence #1 mcp_note_access.scopes = [personal, public].",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c4",
@@ -566,7 +1307,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #3: <meetings_data from=\"Mar 23, 2026\" to=\"Sep 15, 2026\" count=\"54\">."
+   "check": "t3 evidence #3: <meetings_data from=\"Mar 23, 2026\" to=\"Sep 15, 2026\" count=\"54\">.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.73,
+    "p": {
+     "contradicted": 0.16,
+     "supported": 0.82,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c5",
@@ -578,7 +1329,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Parsed full t3 evidence #3 from transcript: 17 meetings with captured_by_me=\"true\"; t5 evidence #0 captured_by_me filter count=\"17\"."
+   "check": "Parsed full t3 evidence #3 from transcript: 17 meetings with captured_by_me=\"true\"; t5 evidence #0 captured_by_me filter count=\"17\".",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.23,
+    "p": {
+     "unsupported": 0.49,
+     "supported": 0.08,
+     "contradicted": 0.43
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c6",
@@ -590,7 +1351,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "All 17 titles/dates in the table match the captured_by_me=true entries parsed from the full t3 evidence #3 (transcript), including the Granola title 'Codec session restoration and compression state persistence' dated Sep 11."
+   "check": "All 17 titles/dates in the table match the captured_by_me=true entries parsed from the full t3 evidence #3 (transcript), including the Granola title 'Codec session restoration and compression state persistence' dated Sep 11.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.41,
+    "p": {
+     "unsupported": 0.14,
+     "contradicted": 0.61,
+     "supported": 0.25
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c7",
@@ -602,7 +1373,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "t7 evidence #1 get_meetings: both summaries say the transcript is too short/fragmented to produce notes."
+   "check": "t7 evidence #1 get_meetings: both summaries say the transcript is too short/fragmented to produce notes.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.9,
+    "p": {
+     "unsupported": 0.93,
+     "supported": 0.04,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c8",
@@ -614,7 +1395,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Parsed t3 evidence #3: exactly 2 entries with captured_by_me=false and listed_as_participant=true; participants: Heng Hong Lee (creator), Marcus, Benedict Chan; and Benjamin Ong (creator), Bladen <bladen@fuzzysequence.com>, Marcus et al."
+   "check": "Parsed t3 evidence #3: exactly 2 entries with captured_by_me=false and listed_as_participant=true; participants: Heng Hong Lee (creator), Marcus, Benedict Chan; and Benjamin Ong (creator), Bladen <bladen@fuzzysequence.com>, Marcus et al.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.85,
+    "p": {
+     "unsupported": 0.1,
+     "contradicted": 0.9,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c9",
@@ -626,7 +1417,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Parsed t3 evidence #3: 33 entries with is_workspace_visible=true, captured_by_me=false, listed_as_participant=false, all created by Benjamin Ong."
+   "check": "Parsed t3 evidence #3: 33 entries with is_workspace_visible=true, captured_by_me=false, listed_as_participant=false, all created by Benjamin Ong.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.5,
+    "p": {
+     "unsupported": 0.33,
+     "supported": 0.01,
+     "contradicted": 0.66
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c10",
@@ -638,7 +1439,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Spot-checked against participant lines in full t3 evidence #3: vishak@ecaplabs.com (Efficient Capital Labs), jon.meran@inflohealth.com, mike.hoeschele@virtru.com, oonishike@yamaha-motor.co.jp, matthew.busel@ofbasis.com, andrei@indus-agency.com, and the Apr/Mar titles (FH Yau SGCarMart COO, Sherry Jiang Peek.money, Marco Kwak LeadModule, San Notion VP Eng, Mihir randomlabs, Hardik Factorem, Jaimin monarch.fast, Gabriel Devrel OpenAI Codex, Stan Shopback CTO, Yao Hong ex stashaway, Jon Tilt Finance)."
+   "check": "Spot-checked against participant lines in full t3 evidence #3: vishak@ecaplabs.com (Efficient Capital Labs), jon.meran@inflohealth.com, mike.hoeschele@virtru.com, oonishike@yamaha-motor.co.jp, matthew.busel@ofbasis.com, andrei@indus-agency.com, and the Apr/Mar titles (FH Yau SGCarMart COO, Sherry Jiang Peek.money, Marco Kwak LeadModule, San Notion VP Eng, Mihir randomlabs, Hardik Factorem, Jaimin monarch.fast, Gabriel Devrel OpenAI Codex, Stan Shopback CTO, Yao Hong ex stashaway, Jon Tilt Finance).",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.66,
+    "p": {
+     "supported": 0.01,
+     "contradicted": 0.77,
+     "unsupported": 0.22
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c11",
@@ -650,7 +1461,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Parsed t3 evidence #3: exactly 2 entries with captured_by_me=false, listed_as_participant=false, is_workspace_visible=false, creator Heng Hong Lee; 'lightsprint discussion' participants include chailing.cheong@sgcarmart.com; 'first principles' dated Aug 21."
+   "check": "Parsed t3 evidence #3: exactly 2 entries with captured_by_me=false, listed_as_participant=false, is_workspace_visible=false, creator Heng Hong Lee; 'lightsprint discussion' participants include chailing.cheong@sgcarmart.com; 'first principles' dated Aug 21.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.01,
+     "unsupported": 0.02,
+     "contradicted": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c12",
@@ -662,7 +1483,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #2 list_meeting_folders note_count values match exactly."
+   "check": "t3 evidence #2 list_meeting_folders note_count values match exactly.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c13",
@@ -674,7 +1505,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "17 + 2 = 19 per the counts verified from t3 evidence #3."
+   "check": "17 + 2 = 19 per the counts verified from t3 evidence #3.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.29,
+    "p": {
+     "contradicted": 0.53,
+     "unsupported": 0.45,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m1-c1",
@@ -686,7 +1527,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Granola docs https://docs.granola.ai/help-center/sharing/integrations/mcp: MCP note access is configured only by workspace admins (Settings → Workspace → General → Apps & connectors → MCP access for members); members must 'ask your workspace admin'; no per-member option documented."
+   "check": "Granola docs https://docs.granola.ai/help-center/sharing/integrations/mcp: MCP note access is configured only by workspace admins (Settings → Workspace → General → Apps & connectors → MCP access for members); members must 'ask your workspace admin'; no per-member option documented.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.82,
+    "p": {
+     "supported": 0.01,
+     "unsupported": 0.88,
+     "contradicted": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m2-c1",
@@ -698,7 +1549,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #0: count=\"17\", every entry captured_by_me=\"true\" (parsed from transcript)."
+   "check": "t5 evidence #0: count=\"17\", every entry captured_by_me=\"true\" (parsed from transcript).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.06,
+     "supported": 0.93
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m2-c2",
@@ -710,7 +1571,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Parsed full t5 evidence #0 from transcript: is_workspace_visible values = {'false'} across all 17."
+   "check": "Parsed full t5 evidence #0 from transcript: is_workspace_visible values = {'false'} across all 17.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "unsupported": 0.02,
+     "supported": 0.97,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m2-c3",
@@ -722,7 +1593,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "All 17 entries in t5 evidence #0 have Marcus Ang as note creator; none by Benjamin Ong or Heng Hong Lee."
+   "check": "All 17 entries in t5 evidence #0 have Marcus Ang as note creator; none by Benjamin Ong or Heng Hong Lee.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.38,
+    "p": {
+     "unsupported": 0.19,
+     "contradicted": 0.22,
+     "supported": 0.59
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c1",
@@ -734,7 +1615,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "t3 evidence #1 shows mcp_note_access.scopes [personal, public]; Granola docs (docs.granola.ai MCP page) describe admins enabling 'Personal notes, Public notes, both, or neither' for members."
+   "check": "t3 evidence #1 shows mcp_note_access.scopes [personal, public]; Granola docs (docs.granola.ai MCP page) describe admins enabling 'Personal notes, Public notes, both, or neither' for members.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.36,
+    "p": {
+     "supported": 0.36,
+     "contradicted": 0.07,
+     "unsupported": 0.57
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c2",
@@ -746,7 +1637,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Granola docs: 'The controls determine what non-admin workspace members can access through MCP' set under Settings → Workspace → Apps & connectors. Nuance: docs say enterprise admins bypass the control, so 'any' slightly overstates; the workspace-level nature is correct."
+   "check": "Granola docs: 'The controls determine what non-admin workspace members can access through MCP' set under Settings → Workspace → Apps & connectors. Nuance: docs say enterprise admins bypass the control, so 'any' slightly overstates; the workspace-level nature is correct.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.26,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.49,
+     "unsupported": 0.51
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c3",
@@ -758,7 +1659,17 @@
    "strength": "asserted",
    "label": "not_checkable",
    "evidenced_in_session": false,
-   "check": "Prediction that depends on whether Ben/Heng Hong are workspace admins (Granola docs: enterprise admins keep both scopes regardless); their roles are not determinable."
+   "check": "Prediction that depends on whether Ben/Heng Hong are workspace admins (Granola docs: enterprise admins keep both scopes regardless); their roles are not determinable.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.94,
+    "p": {
+     "supported": 0.0,
+     "unsupported": 0.96,
+     "contradicted": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c4",
@@ -770,7 +1681,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #0: count=17, all captured_by_me=true, all is_workspace_visible=false."
+   "check": "t5 evidence #0: count=17, all captured_by_me=true, all is_workspace_visible=false.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.4,
+    "p": {
+     "supported": 0.6,
+     "unsupported": 0.02,
+     "contradicted": 0.38
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c5",
@@ -782,7 +1703,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #1 mcp__gbrain__remember (kind preference, entity people/me) -> 'remembered as fact #2', entity_slug people/me."
+   "check": "t5 evidence #1 mcp__gbrain__remember (kind preference, entity people/me) -> 'remembered as fact #2', entity_slug people/me.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.85,
+    "p": {
+     "supported": 0.9,
+     "unsupported": 0.01,
+     "contradicted": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c6",
@@ -794,7 +1725,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #1 status inserted with world visibility; t7 evidence #9 recall returns fact id 2; gbrain docs say world facts are readable by every connected agent."
+   "check": "t5 evidence #1 status inserted with world visibility; t7 evidence #9 recall returns fact id 2; gbrain docs say world facts are readable by every connected agent.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.73,
+    "p": {
+     "supported": 0.17,
+     "unsupported": 0.82,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c7",
@@ -806,7 +1747,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #2 located line 36; t5 evidence #3 rewrote it and `sed -n 36p` shows 'Only ingest meetings Marcus captured himself — always call list_meetings with involvement: {captured_by_me: true}; never file teammates' team-space notes'."
+   "check": "t5 evidence #2 located line 36; t5 evidence #3 rewrote it and `sed -n 36p` shows 'Only ingest meetings Marcus captured himself — always call list_meetings with involvement: {captured_by_me: true}; never file teammates' team-space notes'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c8",
@@ -818,7 +1769,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Claude Code docs https://code.claude.com/docs/en/memory: '~/.claude/CLAUDE.md — Personal preferences for all projects', CLAUDE.md 'Loaded into: Every session'."
+   "check": "Claude Code docs https://code.claude.com/docs/en/memory: '~/.claude/CLAUDE.md — Personal preferences for all projects', CLAUDE.md 'Loaded into: Every session'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.94,
+    "p": {
+     "unsupported": 0.96,
+     "supported": 0.01,
+     "contradicted": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c9",
@@ -830,7 +1791,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "54 total (t3 #3) − 17 own (t5 #0) = 37 non-own notes still returned by the unfiltered query. Note: 4 of the 37 are attended/private-shared rather than team-space per the assistant's own t3 breakdown, but all 37 are readable via MCP."
+   "check": "54 total (t3 #3) − 17 own (t5 #0) = 37 non-own notes still returned by the unfiltered query. Note: 4 of the 37 are attended/private-shared rather than team-space per the assistant's own t3 breakdown, but all 37 are readable via MCP.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.18,
+    "p": {
+     "unsupported": 0.27,
+     "supported": 0.46,
+     "contradicted": 0.27
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c1",
@@ -842,7 +1813,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Claude Code docs https://code.claude.com/docs/en/memory: CLAUDE.md files 'Loaded into: Every session'; 'Claude reads them at the start of every session'."
+   "check": "Claude Code docs https://code.claude.com/docs/en/memory: CLAUDE.md files 'Loaded into: Every session'; 'Claude reads them at the start of every session'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.98,
+     "contradicted": 0.0,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c2",
@@ -854,7 +1835,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #3 `sed -n 36p .claude/CLAUDE.md` output contains 'always call list_meetings with involvement: {captured_by_me: true}'."
+   "check": "t5 evidence #3 `sed -n 36p .claude/CLAUDE.md` output contains 'always call list_meetings with involvement: {captured_by_me: true}'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "contradicted": 0.01,
+     "supported": 0.95,
+     "unsupported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c3",
@@ -866,7 +1857,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live read-only check: `superset automations list` -> []; `crontab -l` -> no crontab; no gbrain/granola LaunchAgents (only the Granola app itself); ~/.claude/CLAUDE.md says gbrain autopilot 'Not yet installed as of 2026-09-17'. The assistant did not check in-session."
+   "check": "Live read-only check: `superset automations list` -> []; `crontab -l` -> no crontab; no gbrain/granola LaunchAgents (only the Granola app itself); ~/.claude/CLAUDE.md says gbrain autopilot 'Not yet installed as of 2026-09-17'. The assistant did not check in-session.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.59,
+    "p": {
+     "unsupported": 0.73,
+     "contradicted": 0.13,
+     "supported": 0.14
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m2-c1",
@@ -878,7 +1879,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #1 get_meetings count=\"9\" + t7 evidence #2 count=\"8\" = 17, covering all 17 ids from t5 evidence #0."
+   "check": "t7 evidence #1 get_meetings count=\"9\" + t7 evidence #2 count=\"8\" = 17, covering all 17 ids from t5 evidence #0.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.24,
+    "p": {
+     "contradicted": 0.5,
+     "supported": 0.48,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m2-c2",
@@ -890,7 +1901,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #1: both summaries state the transcript is too short/fragmented and no notes were generated."
+   "check": "t7 evidence #1: both summaries state the transcript is too short/fragmented and no notes were generated.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.88,
+    "p": {
+     "contradicted": 0.06,
+     "unsupported": 0.02,
+     "supported": 0.92
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m2-c3",
@@ -902,7 +1923,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "17 − 2 = 15; t7 evidence #4 wrote exactly 15 meeting pages."
+   "check": "17 − 2 = 15; t7 evidence #4 wrote exactly 15 meeting pages.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.54,
+    "p": {
+     "supported": 0.69,
+     "contradicted": 0.27,
+     "unsupported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m3-c1",
@@ -914,7 +1945,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4: grep for residual escapes/entities over meetings people companies projects printed 'none'; sample page frontmatter/body rendered correctly."
+   "check": "t7 evidence #4: grep for residual escapes/entities over meetings people companies projects printed 'none'; sample page frontmatter/body rendered correctly.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.92,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.05,
+     "supported": 0.94
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m3-c2",
@@ -926,7 +1967,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2: '`gbrain sync` runs through the live serve automatically (serve-delegated sync)'; t7 evidence #5 '[sync] live gbrain serve (PID 87177) holds the PGLite lock — delegating the sync through it'."
+   "check": "t2 evidence #2: '`gbrain sync` runs through the live serve automatically (serve-delegated sync)'; t7 evidence #5 '[sync] live gbrain serve (PID 87177) holds the PGLite lock — delegating the sync through it'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m4-c1",
@@ -938,7 +1989,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #5: 'NOTE: 21 uncommitted file(s) not synced ... commit them or run gbrain sync --working-tree'; gbrain src/commands/sync.ts:279 'commit-driven sync'."
+   "check": "t7 evidence #5: 'NOTE: 21 uncommitted file(s) not synced ... commit them or run gbrain sync --working-tree'; gbrain src/commands/sync.ts:279 'commit-driven sync'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.74,
+    "p": {
+     "unsupported": 0.02,
+     "supported": 0.83,
+     "contradicted": 0.15
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m5-c1",
@@ -950,7 +2011,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6: 'Synced 4d513ad9..df3b69d0: +20 added, ~1 modified ... 27 chunks created'."
+   "check": "t7 evidence #6: 'Synced 4d513ad9..df3b69d0: +20 added, ~1 modified ... 27 chunks created'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.84,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.89,
+     "contradicted": 0.1
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m5-c2",
@@ -962,7 +2033,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6: '[sync] embeds deferred — the serve drains them in background sweeps'."
+   "check": "t7 evidence #6: '[sync] embeds deferred — the serve drains them in background sweeps'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m6-c1",
@@ -974,7 +2055,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6 commit df3b69d + sync, #7 push 4d513ad..df3b69d with '## main...origin/main', #8 entity resolved, #9 recall returned results."
+   "check": "t7 evidence #6 commit df3b69d + sync, #7 push 4d513ad..df3b69d with '## main...origin/main', #8 entity resolved, #9 recall returned results.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "supported": 0.91,
+     "unsupported": 0.01,
+     "contradicted": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m6-c2",
@@ -986,7 +2077,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #0 printed people/me.md: only the setup paragraph and the captured-by-me preference fact; no employer/role/manager information."
+   "check": "t7 evidence #0 printed people/me.md: only the setup paragraph and the captured-by-me preference fact; no employer/role/manager information.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.61,
+    "p": {
+     "supported": 0.73,
+     "unsupported": 0.02,
+     "contradicted": 0.25
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m7-c1",
@@ -998,7 +2099,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #10 'remembered as fact #7'; #11 'remembered as fact #13'."
+   "check": "t7 evidence #10 'remembered as fact #7'; #11 'remembered as fact #13'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m7-c2",
@@ -1010,7 +2121,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live read-only check: `git show cb339eb` in ~/brain shows facts blocks on companies/lightsprint.md, people/me.md, projects/moto-directory.md whose source column is 'sync:import'; gbrain src/core/facts/backstop.ts:66 documents 'sync:import' as the git sync post-import hook. No in-session evidence showed this before the message (t7 #9 recall listed only facts 1–2)."
+   "check": "Live read-only check: `git show cb339eb` in ~/brain shows facts blocks on companies/lightsprint.md, people/me.md, projects/moto-directory.md whose source column is 'sync:import'; gbrain src/core/facts/backstop.ts:66 documents 'sync:import' as the git sync post-import hook. No in-session evidence showed this before the message (t7 #9 recall listed only facts 1–2).",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.5,
+    "p": {
+     "unsupported": 0.31,
+     "contradicted": 0.67,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m7-c3",
@@ -1022,7 +2143,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #0 shows people/me.md already carrying a gbrain:facts block containing the preference remembered in t5 (#1 in the block); live `git show cb339eb` shows the fact #7 text in people/me.md and fact #13 text in people/benjamin-ong.md facts blocks; t7 #12 git status lists those files modified."
+   "check": "t7 evidence #0 shows people/me.md already carrying a gbrain:facts block containing the preference remembered in t5 (#1 in the block); live `git show cb339eb` shows the fact #7 text in people/me.md and fact #13 text in people/benjamin-ong.md facts blocks; t7 #12 git status lists those files modified.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.3,
+    "p": {
+     "unsupported": 0.38,
+     "supported": 0.53,
+     "contradicted": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c1",
@@ -1034,7 +2165,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4 (pages written), #6 (commit df3b69d + sync +20), #7 (push), #12 (commit cb339eb + push + sync)."
+   "check": "t7 evidence #4 (pages written), #6 (commit df3b69d + sync +20), #7 (push), #12 (commit cb339eb + push + sync).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.79,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.13,
+     "supported": 0.86
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c2",
@@ -1046,7 +2187,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6 'df3b69d Ingest 15 Granola meetings'; #12 push 'df3b69d..cb339eb main -> main' and '## main...origin/main'; live `git log --oneline` in ~/brain shows cb339eb, df3b69d, 4d513ad."
+   "check": "t7 evidence #6 'df3b69d Ingest 15 Granola meetings'; #12 push 'df3b69d..cb339eb main -> main' and '## main...origin/main'; live `git log --oneline` in ~/brain shows cb339eb, df3b69d, 4d513ad.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.99,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c3",
@@ -1058,7 +2209,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4 lists 15 'wrote meetings/...' lines; live `git show --stat df3b69d` shows 15 files under meetings/."
+   "check": "t7 evidence #4 lists 15 'wrote meetings/...' lines; live `git show --stat df3b69d` shows 15 files under meetings/.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.0,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c4",
@@ -1070,7 +2231,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4 filenames range 2026-09-09 to 2026-09-15 and match the 17 captured notes minus the 2 stubs."
+   "check": "t7 evidence #4 filenames range 2026-09-09 to 2026-09-15 and match the 17 captured notes minus the 2 stubs.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.28,
+    "p": {
+     "contradicted": 0.41,
+     "supported": 0.51,
+     "unsupported": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c5",
@@ -1082,7 +2253,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #3 script template writes f\"granola_id: {m['id']}\" for every meeting; t7 #4 sample shows it; live check: `git show df3b69d:meetings/<f> | grep -c '^granola_id:'` = 1 for all 15 files."
+   "check": "t7 evidence #3 script template writes f\"granola_id: {m['id']}\" for every meeting; t7 #4 sample shows it; live check: `git show df3b69d:meetings/<f> | grep -c '^granola_id:'` = 1 for all 15 files.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.45,
+    "p": {
+     "supported": 0.27,
+     "contradicted": 0.09,
+     "unsupported": 0.64
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c6",
@@ -1094,7 +2275,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4 sample: 'date: 2026-09-14T09:00:00+08:00'; script uses SGT = timezone(timedelta(hours=8))."
+   "check": "t7 evidence #4 sample: 'date: 2026-09-14T09:00:00+08:00'; script uses SGT = timezone(timedelta(hours=8)).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.84,
+    "p": {
+     "supported": 0.89,
+     "contradicted": 0.02,
+     "unsupported": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c7",
@@ -1106,7 +2297,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4 sample: '**Attendees:** [[people/me]], [[people/benjamin-ong]]'; script builds links from attendees list."
+   "check": "t7 evidence #4 sample: '**Attendees:** [[people/me]], [[people/benjamin-ong]]'; script builds links from attendees list.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.74,
+    "p": {
+     "unsupported": 0.09,
+     "contradicted": 0.08,
+     "supported": 0.83
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c8",
@@ -1118,7 +2319,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #3 script clean(): re.sub(r\"^#{1,3} \", \"## \", ...) 'demote every heading so the page title is the only H1', plus html.unescape and escape stripping."
+   "check": "t7 evidence #3 script clean(): re.sub(r\"^#{1,3} \", \"## \", ...) 'demote every heading so the page title is the only H1', plus html.unescape and escape stripping.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.02,
+     "supported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c9",
@@ -1130,7 +2341,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #1: summaries 'transcript is too short and fragmented' / 'No notes generated'."
+   "check": "t7 evidence #1: summaries 'transcript is too short and fragmented' / 'No notes generated'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.38,
+    "p": {
+     "supported": 0.58,
+     "contradicted": 0.33,
+     "unsupported": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c10",
@@ -1142,7 +2363,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live `git show df3b69d:people/benjamin-ong.md`: '## Working style' (Prefers small PRs; Wants a one-pager; 'no need to ask permission, just take action and loop him in'), '## Feedback given to Marcus (2026-09-14)', '## Commitments'. Authored by the assistant in t7 evidence #3."
+   "check": "Live `git show df3b69d:people/benjamin-ong.md`: '## Working style' (Prefers small PRs; Wants a one-pager; 'no need to ask permission, just take action and loop him in'), '## Feedback given to Marcus (2026-09-14)', '## Commitments'. Authored by the assistant in t7 evidence #3.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.41,
+    "p": {
+     "supported": 0.02,
+     "unsupported": 0.61,
+     "contradicted": 0.37
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c11",
@@ -1154,7 +2385,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live `git show df3b69d:people/heng-hong-lee.md`: 'Prefers larger PRs', 'Took over the Brain document / brain-setup task agent', 'Flew to India with Nishit ... for the NetApp POC visit'."
+   "check": "Live `git show df3b69d:people/heng-hong-lee.md`: 'Prefers larger PRs', 'Took over the Brain document / brain-setup task agent', 'Flew to India with Nishit ... for the NetApp POC visit'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.35,
+    "p": {
+     "contradicted": 0.22,
+     "unsupported": 0.57,
+     "supported": 0.21
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c12",
@@ -1166,7 +2407,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live `git show df3b69d:people/kim.md`: 'Client-side contact on [[projects/moto-directory]]'."
+   "check": "Live `git show df3b69d:people/kim.md`: 'Client-side contact on [[projects/moto-directory]]'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.1,
+    "p": {
+     "contradicted": 0.28,
+     "supported": 0.4,
+     "unsupported": 0.32
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c13",
@@ -1178,7 +2429,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live `git show df3b69d:companies/lightsprint.md`: '## Marcus's areas', '## People', 'Two-track GTM', 'Positioning risk: Linear converging on the same direction'."
+   "check": "Live `git show df3b69d:companies/lightsprint.md`: '## Marcus's areas', '## People', 'Two-track GTM', 'Positioning risk: Linear converging on the same direction'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.82,
+    "p": {
+     "supported": 0.06,
+     "contradicted": 0.06,
+     "unsupported": 0.88
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c14",
@@ -1190,7 +2451,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live `git show df3b69d:projects/moto-directory.md`: '## State (2026-09-14)' with UAT, 'Instagram + TikTok ... biggest open items', 'URL structure decision', 'full campaign live early Nov'."
+   "check": "Live `git show df3b69d:projects/moto-directory.md`: '## State (2026-09-14)' with UAT, 'Instagram + TikTok ... biggest open items', 'URL structure decision', 'full campaign live early Nov'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.38,
+    "p": {
+     "contradicted": 0.28,
+     "supported": 0.14,
+     "unsupported": 0.58
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c15",
@@ -1202,7 +2473,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6: '+20 added ... 27 chunks created'."
+   "check": "t7 evidence #6: '+20 added ... 27 chunks created'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.29,
+    "p": {
+     "supported": 0.53,
+     "unsupported": 0.02,
+     "contradicted": 0.45
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c16",
@@ -1214,7 +2495,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live `git show cb339eb` shows 14 facts with source 'sync:import' across three pages; DB id gaps (3–6, 8–12) at the time of the message imply ~9 auto-extracted facts — consistent with '~10'."
+   "check": "Live `git show cb339eb` shows 14 facts with source 'sync:import' across three pages; DB id gaps (3–6, 8–12) at the time of the message imply ~9 auto-extracted facts — consistent with '~10'.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.56,
+    "p": {
+     "supported": 0.02,
+     "unsupported": 0.7,
+     "contradicted": 0.28
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c17",
@@ -1226,7 +2517,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #10 remember 'Marcus works at Lightsprint ... as an engineer' (fact #7); #11 remember 'Benjamin Ong (Ben) is Marcus's manager' (fact #13)."
+   "check": "t7 evidence #10 remember 'Marcus works at Lightsprint ... as an engineer' (fact #7); #11 remember 'Benjamin Ong (Ben) is Marcus's manager' (fact #13).",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c18",
@@ -1238,7 +2539,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #9 recall (query 'what feedback did Ben give Marcus about PR size and one-pagers') results provenance: meetings/2026-09-14-ben-marcus and meetings/2026-09-09-weekly-1-1-with-ben (transcript)."
+   "check": "t7 evidence #9 recall (query 'what feedback did Ben give Marcus about PR size and one-pagers') results provenance: meetings/2026-09-14-ben-marcus and meetings/2026-09-09-weekly-1-1-with-ben (transcript).",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.57,
+    "p": {
+     "supported": 0.27,
+     "unsupported": 0.02,
+     "contradicted": 0.71
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c19",
@@ -1250,7 +2561,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #8: found true, slug people/benjamin-ong, edges type 'attended' from meetings/2026-09-14-ben-marcus and meetings/2026-09-09-weekly-1-1-with-ben."
+   "check": "t7 evidence #8: found true, slug people/benjamin-ong, edges type 'attended' from meetings/2026-09-14-ben-marcus and meetings/2026-09-09-weekly-1-1-with-ben.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.0,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c20",
@@ -1262,7 +2583,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6 '[sync] embeds deferred — the serve drains them in background sweeps'; t2 evidence #2 config embedding_model 'voyage:voyage-4'."
+   "check": "t7 evidence #6 '[sync] embeds deferred — the serve drains them in background sweeps'; t2 evidence #2 config embedding_model 'voyage:voyage-4'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.7,
+    "p": {
+     "supported": 0.81,
+     "unsupported": 0.16,
+     "contradicted": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c21",
@@ -1274,7 +2605,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #9 recall results carry evidence 'keyword_exact' and hit both meeting pages."
+   "check": "t7 evidence #9 recall results carry evidence 'keyword_exact' and hit both meeting pages.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.79,
+    "p": {
+     "supported": 0.86,
+     "unsupported": 0.1,
+     "contradicted": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c22",
@@ -1286,7 +2627,17 @@
    "strength": "asserted",
    "label": "not_checkable",
    "evidenced_in_session": false,
-   "check": "Prediction about future background embedding completion time; not verifiable from the session or a read-only check."
+   "check": "Prediction about future background embedding completion time; not verifiable from the session or a read-only check.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.79,
+    "p": {
+     "contradicted": 0.1,
+     "unsupported": 0.86,
+     "supported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c23",
@@ -1298,7 +2649,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #3 / t7 evidence #1: 'Marcus Ang (note creator) from Lightsprint <marcus@lightsprint.ai>'."
+   "check": "t3 evidence #3 / t7 evidence #1: 'Marcus Ang (note creator) from Lightsprint <marcus@lightsprint.ai>'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.0,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c24",
@@ -1310,7 +2671,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #0 printed people/me.md: 'title: Marcus Jhang' / '# Marcus Jhang'."
+   "check": "t7 evidence #0 printed people/me.md: 'title: Marcus Jhang' / '# Marcus Jhang'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c25",
@@ -1322,7 +2693,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "~/.claude/CLAUDE.md (transcript row 18): '`gbrain autopilot --install` — nightly dream cycle (dedup, contradictions, enrichment). Not yet installed as of 2026-09-17; install once the brain has real content.'"
+   "check": "~/.claude/CLAUDE.md (transcript row 18): '`gbrain autopilot --install` — nightly dream cycle (dedup, contradictions, enrichment). Not yet installed as of 2026-09-17; install once the brain has real content.'",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.45,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.36,
+     "unsupported": 0.64
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t8-m1-c1",
@@ -1334,7 +2715,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #7 push 4d513ad..df3b69d; #12 push df3b69d..cb339eb and '## main...origin/main'; live `git log` in ~/brain shows both on main."
+   "check": "t7 evidence #7 push 4d513ad..df3b69d; #12 push df3b69d..cb339eb and '## main...origin/main'; live `git log` in ~/brain shows both on main.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.89,
+    "p": {
+     "supported": 0.92,
+     "contradicted": 0.02,
+     "unsupported": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t8-m1-c2",
@@ -1346,7 +2737,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #6 commit message/status; live `git show --stat df3b69d`: 15 meetings/*.md + people/benjamin-ong, heng-hong-lee, kim, companies/lightsprint, projects/moto-directory (plus people/me.md facts block)."
+   "check": "t7 evidence #6 commit message/status; live `git show --stat df3b69d`: 15 meetings/*.md + people/benjamin-ong, heng-hong-lee, kim, companies/lightsprint, projects/moto-directory (plus people/me.md facts block).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.98,
+     "contradicted": 0.01,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t8-m1-c3",
@@ -1358,7 +2759,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #12: 4 modified pages committed as 'gbrain: facts blocks from Granola ingest'; live `git show cb339eb` shows only gbrain:facts block additions."
+   "check": "t7 evidence #12: 4 modified pages committed as 'gbrain: facts blocks from Granola ingest'; live `git show cb339eb` shows only gbrain:facts block additions.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.78,
+    "p": {
+     "supported": 0.86,
+     "unsupported": 0.1,
+     "contradicted": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t8-m1-c4",
@@ -1370,7 +2781,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #12 output line '   df3b69d..cb339eb  main -> main'."
+   "check": "t7 evidence #12 output line '   df3b69d..cb339eb  main -> main'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.65,
+    "p": {
+     "unsupported": 0.1,
+     "contradicted": 0.14,
+     "supported": 0.76
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t8-m1-c5",
@@ -1382,7 +2803,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #12 output '## main...origin/main' with no [ahead/behind] suffix."
+   "check": "t7 evidence #12 output '## main...origin/main' with no [ahead/behind] suffix.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.71,
+    "p": {
+     "contradicted": 0.06,
+     "supported": 0.81,
+     "unsupported": 0.13
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t8-m1-c6",
@@ -1394,7 +2825,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 `git remote -v` -> https://github.com/marcusjhang/brain.git; pushes in t7 #7/#12 succeeded."
+   "check": "t2 evidence #2 `git remote -v` -> https://github.com/marcusjhang/brain.git; pushes in t7 #7/#12 succeeded.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.81,
+    "p": {
+     "unsupported": 0.11,
+     "contradicted": 0.02,
+     "supported": 0.87
+    },
+    "truncated": false
+   }
   }
  ]
 }

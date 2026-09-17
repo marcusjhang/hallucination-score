@@ -91,7 +91,134 @@
    1
   ]
  },
- "scored_at": "2026-09-16T17:14:43+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 59,
+   "input_tokens": 930239,
+   "estimated_cost_usd": 0.03907
+  },
+  "claims_judged": 59,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 58,
+   "label_agreement": 0.931,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.931,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 54,
+     "contradicted": 4,
+     "unsupported": 0
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 59,
+   "label_agreement": 0.9322,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.9322,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 55,
+     "contradicted": 4,
+     "unsupported": 0
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t1-m6-c4",
+    "turn": 1,
+    "message": "t1-m6",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "so Postgres/Redis cannot start yet",
+    "claim": "docker compose could not start the Postgres and Redis containers because the daemon was down.",
+    "check": "evidence #16: \"unable to get image 'redis:7-alpine'\" with exit code 1",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.99,
+     "p": {
+      "supported": 0.01,
+      "contradicted": 0.99,
+      "unsupported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m15-c2",
+    "turn": 1,
+    "message": "t1-m15",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Local `db:push` reached the local Docker database",
+    "claim": "bun run db:push with DATABASE_URL set to the local Docker Postgres connected and pulled the existing schema.",
+    "check": "evidence #36 full output (recovered from transcript; packet excerpt truncates the middle): \"[✓] Pulling schema from database...\" followed by a constraint prompt about agent_session_tokens",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.79,
+     "p": {
+      "supported": 0.11,
+      "contradicted": 0.86,
+      "unsupported": 0.03
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m10-c2",
+    "turn": 1,
+    "message": "t1-m10",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Drizzle didn’t print a useful underlying error in this non-interactive run",
+    "claim": "The failed db:push output contained no underlying error message beyond the non-zero exit.",
+    "check": "evidence #26 output is only config lines, spinner frames, and the bun exit line; no error text",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.73,
+     "p": {
+      "unsupported": 0.01,
+      "contradicted": 0.82,
+      "supported": 0.17
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:45+00:00",
  "claims": [
   {
    "id": "t1-m2-c1",
@@ -103,7 +230,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #0 (rg --files) and #2 (rg -n) both list docs/onboarding/engineering.md; live: ls docs/onboarding/engineering.md exists"
+   "check": "evidence #0 (rg --files) and #2 (rg -n) both list docs/onboarding/engineering.md; live: ls docs/onboarding/engineering.md exists",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c2",
@@ -115,7 +252,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #1 (git status --branch / git branch --show-current) prints onboarding-doc-creation; live: git branch --show-current = onboarding-doc-creation"
+   "check": "evidence #1 (git status --branch / git branch --show-current) prints onboarding-doc-creation; live: git branch --show-current = onboarding-doc-creation",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c3",
@@ -127,7 +274,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #1 git status shows \" M docs/onboarding/engineering.md\"; evidence #34 diff shows the pre-existing bold edit"
+   "check": "evidence #1 git status shows \" M docs/onboarding/engineering.md\"; evidence #34 diff shows the pre-existing bold edit",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.02,
+     "supported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c1",
@@ -139,7 +296,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 (sed of the doc) contains \"what we should build next.`#water-cooler` is where\""
+   "check": "evidence #3 (sed of the doc) contains \"what we should build next.`#water-cooler` is where\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.48,
+    "p": {
+     "contradicted": 0.34,
+     "unsupported": 0.01,
+     "supported": 0.65
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c2",
@@ -151,7 +318,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #3 contains the line \"We use granola for all our meetings.\""
+   "check": "evidence #3 contains the line \"We use granola for all our meetings.\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.06,
+     "supported": 0.94
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c3",
@@ -163,7 +340,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "local source: rg -i granola shows app/src/routes/docs/mcp/+page.svelte:40 and :48 spell it \"Granola\""
+   "check": "local source: rg -i granola shows app/src/routes/docs/mcp/+page.svelte:40 and :48 spell it \"Granola\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.11,
+    "p": {
+     "supported": 0.4,
+     "contradicted": 0.4,
+     "unsupported": 0.2
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c1",
@@ -175,7 +362,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #10 gh pr list returns number 6486, title \"Add engineering onboarding guide\", state OPEN"
+   "check": "evidence #10 gh pr list returns number 6486, title \"Add engineering onboarding guide\", state OPEN",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c2",
@@ -187,7 +384,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #10: headRefName onboarding-doc-creation, baseRefName main"
+   "check": "evidence #10: headRefName onboarding-doc-creation, baseRefName main",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m4-c3",
@@ -199,7 +406,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #10 PR title \"Add engineering onboarding guide\"; evidence #1 shows the doc is the only modified file on the branch; live git log -- docs/onboarding/engineering.md shows commit 69d2c5428f \"docs: add engineering onboarding guide\""
+   "check": "evidence #10 PR title \"Add engineering onboarding guide\"; evidence #1 shows the doc is the only modified file on the branch; live git log -- docs/onboarding/engineering.md shows commit 69d2c5428f \"docs: add engineering onboarding guide\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c1",
@@ -211,7 +428,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #7 full output (recovered from transcript; packet excerpt truncates it) lists .env (24710 bytes) and node_modules/ (791 entries); live: ls -d app/node_modules and ls -la app/.env both exist"
+   "check": "evidence #7 full output (recovered from transcript; packet excerpt truncates it) lists .env (24710 bytes) and node_modules/ (791 entries); live: ls -d app/node_modules and ls -la app/.env both exist",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.01,
+     "supported": 0.98,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c2",
@@ -223,7 +450,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #9 script source: cp \"$ROOT_WORKTREE_PATH/app/.env\" .env; WORKTREE_PORT=$((RANDOM % 301 + 5200)) > .worktree-port; sed PREVIEW_OAUTH_PROXY=https://lightsprint.up.railway.app"
+   "check": "evidence #9 script source: cp \"$ROOT_WORKTREE_PATH/app/.env\" .env; WORKTREE_PORT=$((RANDOM % 301 + 5200)) > .worktree-port; sed PREVIEW_OAUTH_PROXY=https://lightsprint.up.railway.app",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m5-c3",
@@ -235,7 +472,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #7 shows app/.env and app/.worktree-port present; evidence #23 shows APP_URL=http://localhost:5497 (a port in the script range) and PREVIEW_OAUTH_PROXY=https://lightsprint.up.railway.app exactly as the script writes; live: cat app/.worktree-port = 5497. Copy-from-root is inferred from the .env holding a real Neon DATABASE_URL rather than .env.example placeholders"
+   "check": "evidence #7 shows app/.env and app/.worktree-port present; evidence #23 shows APP_URL=http://localhost:5497 (a port in the script range) and PREVIEW_OAUTH_PROXY=https://lightsprint.up.railway.app exactly as the script writes; live: cat app/.worktree-port = 5497. Copy-from-root is inferred from the .env holding a real Neon DATABASE_URL rather than .env.example placeholders",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.5,
+    "p": {
+     "supported": 0.66,
+     "contradicted": 0.13,
+     "unsupported": 0.21
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c1",
@@ -247,7 +494,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #15 bun install exit 0: \"Checked 1366 installs across 1367 packages (no changes)\""
+   "check": "evidence #15 bun install exit 0: \"Checked 1366 installs across 1367 packages (no changes)\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.0,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c2",
@@ -259,7 +516,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #14 prints \"Docker version 29.0.1, build eedd969\" and \"Docker Compose version v2.40.3-desktop.1\""
+   "check": "evidence #14 prints \"Docker version 29.0.1, build eedd969\" and \"Docker Compose version v2.40.3-desktop.1\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c3",
@@ -271,7 +538,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #16 docker compose up -d exit 1: \"Cannot connect to the Docker daemon at unix:///Users/marcusjhang/.docker/run/docker.sock. Is the docker daemon running?\""
+   "check": "evidence #16 docker compose up -d exit 1: \"Cannot connect to the Docker daemon at unix:///Users/marcusjhang/.docker/run/docker.sock. Is the docker daemon running?\"",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.24,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.5,
+     "supported": 0.49
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m6-c4",
@@ -283,7 +560,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #16: \"unable to get image 'redis:7-alpine'\" with exit code 1"
+   "check": "evidence #16: \"unable to get image 'redis:7-alpine'\" with exit code 1",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.01,
+     "contradicted": 0.99,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m7-c1",
@@ -295,7 +582,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 (open -a Docker; poll docker info) printed \"docker-ready\", exit 0"
+   "check": "evidence #17 (open -a Docker; poll docker info) printed \"docker-ready\", exit 0",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.98,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m8-c1",
@@ -307,7 +604,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #18: \"Container ai-pm-postgres Started\"; evidence #25 docker inspect: \"running healthy\""
+   "check": "evidence #18: \"Container ai-pm-postgres Started\"; evidence #25 docker inspect: \"running healthy\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.77,
+    "p": {
+     "supported": 0.84,
+     "contradicted": 0.11,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m8-c2",
@@ -319,7 +626,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #18: \"ports are not available: exposing port TCP 0.0.0.0:6380 ... bind: address already in use\""
+   "check": "evidence #18: \"ports are not available: exposing port TCP 0.0.0.0:6380 ... bind: address already in use\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.46,
+    "p": {
+     "unsupported": 0.03,
+     "supported": 0.64,
+     "contradicted": 0.33
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c1",
@@ -331,7 +648,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #23 DATABASE_URL host is ep-dry-forest-afuy8vr7.c-2.us-west-2.aws.neon.tech; evidence #6 README.md:108 shows the localhost:5434 URL; live sed -n 65,140p README.md confirms"
+   "check": "evidence #23 DATABASE_URL host is ep-dry-forest-afuy8vr7.c-2.us-west-2.aws.neon.tech; evidence #6 README.md:108 shows the localhost:5434 URL; live sed -n 65,140p README.md confirms",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.97,
+     "unsupported": 0.01,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c2",
@@ -343,7 +670,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #23: DATABASE_URL=postgresql://***:***@ep-dry-forest-afuy8vr7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require"
+   "check": "evidence #23: DATABASE_URL=postgresql://***:***@ep-dry-forest-afuy8vr7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.0,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c3",
@@ -355,7 +692,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #23: REDIS_URL=redis://***@localhost:6380"
+   "check": "evidence #23: REDIS_URL=redis://***@localhost:6380",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.0,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m9-c4",
@@ -367,7 +714,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #9 .claude/worktree-setup.sh: cp \"$ROOT_WORKTREE_PATH/app/.env\" .env"
+   "check": "evidence #9 .claude/worktree-setup.sh: cp \"$ROOT_WORKTREE_PATH/app/.env\" .env",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m10-c1",
@@ -379,7 +736,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #26 exit code 1; last lines are \"[⣽] Pulling schema from database...\" then \"error: script \"db:push\" exited with code 1\""
+   "check": "evidence #26 exit code 1; last lines are \"[⣽] Pulling schema from database...\" then \"error: script \"db:push\" exited with code 1\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.8,
+    "p": {
+     "supported": 0.87,
+     "unsupported": 0.04,
+     "contradicted": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m10-c2",
@@ -391,7 +758,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #26 output is only config lines, spinner frames, and the bun exit line; no error text"
+   "check": "evidence #26 output is only config lines, spinner frames, and the bun exit line; no error text",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.73,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.82,
+     "supported": 0.17
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m11-c1",
@@ -403,7 +780,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #27 \"Starting dev server on http://localhost:5497\"; evidence #28 \"VITE v7.3.1 ready in 4020 ms ... Local: http://localhost:5497/\""
+   "check": "evidence #27 \"Starting dev server on http://localhost:5497\"; evidence #28 \"VITE v7.3.1 ready in 4020 ms ... Local: http://localhost:5497/\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m11-c2",
@@ -415,7 +802,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #28 log lines \"Attempting to connect to Redis ... redis://localhost:6380\" then \"Initialized Redis for event storage\""
+   "check": "evidence #28 log lines \"Attempting to connect to Redis ... redis://localhost:6380\" then \"Initialized Redis for event storage\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m12-c1",
@@ -427,7 +824,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #29 and #30 curl -I both show \"HTTP/1.1 200 OK\"; evidence #32 http log lines status 200 for HEAD / and HEAD /login/email"
+   "check": "evidence #29 and #30 curl -I both show \"HTTP/1.1 200 OK\"; evidence #32 http log lines status 200 for HEAD / and HEAD /login/email",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m12-c2",
@@ -439,7 +846,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #32: \"Startup reconciliation failed\", \"Failed to initialize infrastructure\", and \"DB pool stats query failed ... password authentication failed for user 'neondb_owner'\""
+   "check": "evidence #32: \"Startup reconciliation failed\", \"Failed to initialize infrastructure\", and \"DB pool stats query failed ... password authentication failed for user 'neondb_owner'\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.88,
+    "p": {
+     "supported": 0.91,
+     "unsupported": 0.03,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m12-c3",
@@ -451,7 +868,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #28 VITE ready; #29/#30 200 responses"
+   "check": "evidence #28 VITE ready; #29/#30 200 responses",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.01,
+     "supported": 0.99,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m12-c4",
@@ -463,7 +890,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #32/#40: repeated \"Failed query\" errors (startup reconciliation, cc_sessions sweep, processGithubEvents, heartbeat) all caused by password authentication failed for neondb_owner"
+   "check": "evidence #32/#40: repeated \"Failed query\" errors (startup reconciliation, cc_sessions sweep, processGithubEvents, heartbeat) all caused by password authentication failed for neondb_owner",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.74,
+    "p": {
+     "supported": 0.83,
+     "unsupported": 0.09,
+     "contradicted": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m14-c1",
@@ -475,7 +912,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #35 apply_patch adds \"Get the current development env values from the team credential store or ask Marcus.\"; result \"Success. Updated ... engineering.md\""
+   "check": "evidence #35 apply_patch adds \"Get the current development env values from the team credential store or ask Marcus.\"; result \"Success. Updated ... engineering.md\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m14-c2",
@@ -487,7 +934,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #35 patch adds \"For a Superset worktree, `.claude/worktree-setup.sh` handles most of this. It installs dependencies, copies `app/.env` from the root worktree, assigns a separate port in `app/.worktree-port` ...\""
+   "check": "evidence #35 patch adds \"For a Superset worktree, `.claude/worktree-setup.sh` handles most of this. It installs dependencies, copies `app/.env` from the root worktree, assigns a separate port in `app/.worktree-port` ...\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.02,
+     "supported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c1",
@@ -499,7 +956,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #37 exit 0: \"✓ check cache hit — unchanged inputs passed the full suite\""
+   "check": "evidence #37 exit 0: \"✓ check cache hit — unchanged inputs passed the full suite\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c2",
@@ -511,7 +978,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #36 full output (recovered from transcript; packet excerpt truncates the middle): \"[✓] Pulling schema from database...\" followed by a constraint prompt about agent_session_tokens"
+   "check": "evidence #36 full output (recovered from transcript; packet excerpt truncates the middle): \"[✓] Pulling schema from database...\" followed by a constraint prompt about agent_session_tokens",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.79,
+    "p": {
+     "supported": 0.11,
+     "contradicted": 0.86,
+     "unsupported": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c3",
@@ -523,7 +1000,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #36: \"Do you want to truncate agent_session_tokens table?\" then \"Error: Interactive prompts require a TTY terminal\""
+   "check": "evidence #36: \"Do you want to truncate agent_session_tokens table?\" then \"Error: Interactive prompts require a TTY terminal\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.98,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m15-c4",
@@ -535,7 +1022,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #36: \"add agent_session_tokens_token_hash_unique unique constraint to the table, which contains 1 items\"; evidence #43 shows ai-pm-postgres container created 4 weeks ago with a persisted volume"
+   "check": "evidence #36: \"add agent_session_tokens_token_hash_unique unique constraint to the table, which contains 1 items\"; evidence #43 shows ai-pm-postgres container created 4 weeks ago with a persisted volume",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.48,
+    "p": {
+     "supported": 0.65,
+     "contradicted": 0.08,
+     "unsupported": 0.27
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c1",
@@ -547,7 +1044,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #10 gh pr list: url https://github.com/SprintsAI/lightsprint/pull/6486, title \"Add engineering onboarding guide\""
+   "check": "evidence #10 gh pr list: url https://github.com/SprintsAI/lightsprint/pull/6486, title \"Add engineering onboarding guide\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c2",
@@ -559,7 +1066,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #35 and #39 apply_patch both report \"Success. Updated ... docs/onboarding/engineering.md\"; evidence #42 git status shows M; live git diff --stat shows 27 insertions, 10 deletions"
+   "check": "evidence #35 and #39 apply_patch both report \"Success. Updated ... docs/onboarding/engineering.md\"; evidence #42 git status shows M; live git diff --stat shows 27 insertions, 10 deletions",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c3",
@@ -571,7 +1088,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #35 patch and #41 diff show those two sentences rewritten"
+   "check": "evidence #35 patch and #41 diff show those two sentences rewritten",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c4",
@@ -583,7 +1110,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #41 diff: \"build next. `#water-cooler`\" and \"We use Granola for all our meetings.\"; live grep of the doc lines 43 and 45 confirm"
+   "check": "evidence #41 diff: \"build next. `#water-cooler`\" and \"We use Granola for all our meetings.\"; live grep of the doc lines 43 and 45 confirm",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.01,
+     "supported": 0.99,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c5",
@@ -595,7 +1132,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #41 diff line \"Get the current development env values from the team credential store or ask Marcus.\"; live grep doc line 101"
+   "check": "evidence #41 diff line \"Get the current development env values from the team credential store or ask Marcus.\"; live grep doc line 101",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c6",
@@ -607,7 +1154,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #41 diff adds \"For a normal local clone, copy `app/.env.example` to `app/.env`...\" and \"For a Superset worktree, `.claude/worktree-setup.sh` handles most of this...\""
+   "check": "evidence #41 diff adds \"For a normal local clone, copy `app/.env.example` to `app/.env`...\" and \"For a Superset worktree, `.claude/worktree-setup.sh` handles most of this...\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.01,
+     "supported": 0.99,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c7",
@@ -619,7 +1176,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #41 diff adds env block with DATABASE_URL=postgresql://aipm:aipm_dev_password@localhost:5434/ai_pm_dev, REDIS_URL=redis://localhost:6380, APP_URL=http://localhost:5173; live grep doc lines 106-108"
+   "check": "evidence #41 diff adds env block with DATABASE_URL=postgresql://aipm:aipm_dev_password@localhost:5434/ai_pm_dev, REDIS_URL=redis://localhost:6380, APP_URL=http://localhost:5173; live grep doc lines 106-108",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c8",
@@ -631,7 +1198,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #12 docker-compose.yml: POSTGRES_USER aipm, PASSWORD aipm_dev_password, DB ai_pm_dev, ports 5434:5432 and 6380:6379; evidence #13 dev.sh DEFAULT_PORT=5173; evidence #6 README.md:108-109; live sed README.md shows APP_URL=http://localhost:5173"
+   "check": "evidence #12 docker-compose.yml: POSTGRES_USER aipm, PASSWORD aipm_dev_password, DB ai_pm_dev, ports 5434:5432 and 6380:6379; evidence #13 dev.sh DEFAULT_PORT=5173; evidence #6 README.md:108-109; live sed README.md shows APP_URL=http://localhost:5173",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "supported": 0.97,
+     "unsupported": 0.0,
+     "contradicted": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c9",
@@ -643,7 +1220,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #39 apply_patch adds \"If `bun run db:push` asks to truncate data ... check that `DATABASE_URL` points at the local Docker database before you reset anything. Only then use `bun run db:reset`.\"; live grep doc line 111"
+   "check": "evidence #39 apply_patch adds \"If `bun run db:push` asks to truncate data ... check that `DATABASE_URL` points at the local Docker database before you reset anything. Only then use `bun run db:reset`.\"; live grep doc line 111",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c10",
@@ -655,7 +1242,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #15 exit 0, \"Checked 1366 installs across 1367 packages (no changes)\""
+   "check": "evidence #15 exit 0, \"Checked 1366 installs across 1367 packages (no changes)\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c11",
@@ -667,7 +1264,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #14 Docker version 29.0.1; evidence #16 \"Cannot connect to the Docker daemon\""
+   "check": "evidence #14 Docker version 29.0.1; evidence #16 \"Cannot connect to the Docker daemon\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.0,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c12",
@@ -679,7 +1286,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #17 command \"open -a Docker || true\" then polled docker info until \"docker-ready\""
+   "check": "evidence #17 command \"open -a Docker || true\" then polled docker info until \"docker-ready\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.92,
+    "p": {
+     "unsupported": 0.05,
+     "supported": 0.95,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c13",
@@ -691,7 +1308,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #18: \"Container ai-pm-postgres Started\" and \"listen tcp 0.0.0.0:6380: bind: address already in use\"; evidence #43 compose ps shows only postgres Up (healthy)"
+   "check": "evidence #18: \"Container ai-pm-postgres Started\" and \"listen tcp 0.0.0.0:6380: bind: address already in use\"; evidence #43 compose ps shows only postgres Up (healthy)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.91,
+     "contradicted": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c14",
@@ -703,7 +1330,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #20 lsof: redis-ser PID 23553 user marcusjhang LISTEN *:6380; evidence #24 redis-cli -p 6380 ping -> PONG; evidence #22 docker ps shows no container publishing 6380"
+   "check": "evidence #20 lsof: redis-ser PID 23553 user marcusjhang LISTEN *:6380; evidence #24 redis-cli -p 6380 ping -> PONG; evidence #22 docker ps shows no container publishing 6380",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.54,
+    "p": {
+     "unsupported": 0.03,
+     "contradicted": 0.28,
+     "supported": 0.69
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c15",
@@ -715,7 +1352,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #27 and #28: \"Starting dev server on http://localhost:5497\" and VITE ready, Local: http://localhost:5497/"
+   "check": "evidence #27 and #28: \"Starting dev server on http://localhost:5497\" and VITE ready, Local: http://localhost:5497/",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c16",
@@ -727,7 +1374,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #29 and #30 both \"HTTP/1.1 200 OK\""
+   "check": "evidence #29 and #30 both \"HTTP/1.1 200 OK\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c17",
@@ -739,7 +1396,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #23 Neon host in DATABASE_URL; evidence #32/#40 \"password authentication failed for user 'neondb_owner'\""
+   "check": "evidence #23 Neon host in DATABASE_URL; evidence #32/#40 \"password authentication failed for user 'neondb_owner'\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.98,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c18",
@@ -751,7 +1418,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #40: \"Heartbeat failed\", \"Failed to sweep stale CC sessions\", \"Error in processGithubEvents (tried twice but failed)\" all with the auth error"
+   "check": "evidence #40: \"Heartbeat failed\", \"Failed to sweep stale CC sessions\", \"Error in processGithubEvents (tried twice but failed)\" all with the auth error",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.0,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c19",
@@ -763,7 +1440,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #37 exit 0: \"✓ check cache hit — unchanged inputs passed the full suite\""
+   "check": "evidence #37 exit 0: \"✓ check cache hit — unchanged inputs passed the full suite\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c20",
@@ -775,7 +1462,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #36 (full transcript output): \"[✓] Pulling schema from database...\", truncate prompt for agent_session_tokens, \"Error: Interactive prompts require a TTY terminal\""
+   "check": "evidence #36 (full transcript output): \"[✓] Pulling schema from database...\", truncate prompt for agent_session_tokens, \"Error: Interactive prompts require a TTY terminal\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.94,
+    "p": {
+     "supported": 0.97,
+     "contradicted": 0.03,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c21",
@@ -787,7 +1484,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "evidence #36: constraint prompt on a table \"which contains 1 items\"; evidence #43 container created 4 weeks ago"
+   "check": "evidence #36: constraint prompt on a table \"which contains 1 items\"; evidence #43 container created 4 weeks ago",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.57,
+    "p": {
+     "supported": 0.71,
+     "unsupported": 0.23,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m16-c22",
@@ -799,7 +1506,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "no db:reset or destructive DB command appears among evidence #0-#43 (full transcript call list checked); the only db commands are two db:push runs (#26, #36)"
+   "check": "no db:reset or destructive DB command appears among evidence #0-#43 (full transcript call list checked); the only db commands are two db:push runs (#26, #36)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "unsupported": 0.08,
+     "supported": 0.92,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   }
  ]
 }

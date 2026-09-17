@@ -71,7 +71,17 @@
    "quote": "[Chrome’s security guidance](https://developer.chrome.com/docs/ai/webmcp/secure-tools) also stresses server-side authorization",
    "claim": "Chrome's WebMCP tool-security page (docs/ai/webmcp/secure-tools) stresses server-side authorization.",
    "check": "t1 evidence #4's secure-tools excerpt contains no server/authorization guidance; live: curl -sL https://developer.chrome.com/docs/ai/webmcp/secure-tools?hl=en (2026-09-17) stripped to text has 0 occurrences of 'server', 'backend', 'authoriz', 'authenticat' or 'validate' — the page covers annotation hints, exposedTo origin scoping and prompt injection only; sibling pages docs/agents/security and docs/ai/webmcp/best-practices also have 0 'server-side'/'backend' mentions",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.52,
+    "p": {
+     "supported": 0.0,
+     "unsupported": 0.68,
+     "contradicted": 0.32
+    },
+    "truncated": false
+   }
   }
  ],
  "hedged_wrong": [],
@@ -98,7 +108,244 @@
    2
   ]
  },
- "scored_at": "2026-09-16T17:14:42+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 29,
+   "input_tokens": 417261,
+   "estimated_cost_usd": 0.01752
+  },
+  "claims_judged": 58,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 57,
+   "label_agreement": 0.7719,
+   "label_kappa": 0.052,
+   "hallucination_agreement": 0.7895,
+   "hallucination_kappa": 0.114,
+   "confusion": {
+    "supported": {
+     "supported": 44,
+     "contradicted": 3,
+     "unsupported": 9
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 1
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 58,
+   "label_agreement": 0.7586,
+   "label_kappa": 0.048,
+   "hallucination_agreement": 0.7759,
+   "hallucination_kappa": 0.105,
+   "confusion": {
+    "supported": {
+     "supported": 44,
+     "contradicted": 3,
+     "unsupported": 10
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 1
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t2-m2-c7",
+    "turn": 2,
+    "message": "t2-m2",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "whose test agent defaults to a Gemini model",
+    "claim": "The WebMCP inspector extension's test agent sends prompts to a Gemini model by default.",
+    "check": "t2 evidence #0 ('Your prompts are sent by default to the `gemini-3-flash-preview` model'); live curl of docs/ai/webmcp confirms the sentence",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.98,
+     "p": {
+      "supported": 0.0,
+      "contradicted": 0.01,
+      "unsupported": 0.99
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m2-c8",
+    "turn": 2,
+    "message": "t2-m2",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "That inspector is separate from Gemini in Chrome.",
+    "claim": "The WebMCP inspector extension is separate from the Gemini in Chrome features.",
+    "check": "t2 evidence #0 ('Note: This is separate from the Gemini in Chrome features.'); live curl confirms",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.97,
+     "p": {
+      "supported": 0.0,
+      "contradicted": 0.02,
+      "unsupported": 0.98
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m2-c6",
+    "turn": 2,
+    "message": "t2-m2",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Right now the clearest testing setup is Chrome’s experimental WebMCP support and its inspector extension",
+    "claim": "Chrome provides a WebMCP inspector extension (Model Context Tool Inspector) for testing WebMCP tools with an agent.",
+    "check": "t2 evidence #0 (docs/ai/webmcp: 'Install the Model Context Tool Inspector Extension to experiment with an agent and see how WebMCP tools work'); live curl of https://developer.chrome.com/docs/ai/webmcp confirms",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.92,
+     "p": {
+      "supported": 0.0,
+      "unsupported": 0.95,
+      "contradicted": 0.05
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c30",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "entity",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "/app/src/lib/components/guidance/GuidanceLightsHost.svelte:17",
+    "claim": "app/src/lib/components/guidance/GuidanceLightsHost.svelte exists and line 17 holds the 'never performs the user's action' comment.",
+    "check": "t1 evidence #7 nl output line 17; live: nl -ba app/src/lib/components/guidance/GuidanceLightsHost.svelte | sed -n 17p",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.71,
+     "p": {
+      "contradicted": 0.81,
+      "unsupported": 0.03,
+      "supported": 0.16
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m2-c12",
+    "turn": 2,
+    "message": "t2-m2",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Server-side Claude cannot directly see `document.modelContext` inside the user’s tab.",
+    "claim": "An Ask agent running outside the browser cannot access the page-scoped document.modelContext WebMCP API in the user's tab.",
+    "check": "t1 evidence #4 (document.modelContext is a page-side DOM API; tools are 'Ephemeral (tab-bound)' per #3); t1 #5 / live codebase-ask-turn.service.ts (Ask runs via ACP in a sandbox, not in the tab)",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.69,
+     "p": {
+      "supported": 0.2,
+      "unsupported": 0.79,
+      "contradicted": 0.01
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m2-c1",
+    "turn": 2,
+    "message": "t2-m2",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "WebMCP is not “on Claude.”",
+    "claim": "WebMCP is not a feature of the Claude model.",
+    "check": "t2 evidence #0 (WebMCP is a Chrome/W3C web API: 'web developers can build and expose structured tools to AI agents instrumenting the browser'); t1 #3/#4",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.64,
+     "p": {
+      "supported": 0.18,
+      "contradicted": 0.06,
+      "unsupported": 0.76
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c34",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Unless Ask itself becomes that browser agent—or you add a bridge—it cannot call them.",
+    "claim": "A non-browser Ask agent cannot invoke WebMCP tools without becoming browser-resident or using a bridge.",
+    "check": "Follows from t1 evidence #3 (compare-mcp: WebMCP connectivity 'Environment-specific (browser agents)', tools 'Ephemeral (tab-bound)') and #5/live (Ask runs in a sandbox via ACP, not in the user's tab)",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.62,
+     "p": {
+      "supported": 0.24,
+      "contradicted": 0.01,
+      "unsupported": 0.75
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m3-c31",
+    "turn": 1,
+    "message": "t1-m3",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "WebMCP is primarily an actuation interface.",
+    "claim": "WebMCP's primary purpose is to let agents act on (actuate) a live web UI.",
+    "check": "t1 evidence #3 (compare-mcp table: 'Use case: Navigates and actuates on a live web UI'); #4 ('execute actions on behalf of the user')",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.6,
+     "p": {
+      "unsupported": 0.04,
+      "supported": 0.22,
+      "contradicted": 0.74
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:45+00:00",
  "claims": [
   {
    "id": "t1-m2-c1",
@@ -110,7 +357,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #2 (docs/ask/+page.svelte: 'Guidance Lights: for \"where is that setting\"'), #5 (app/src/lib/guidance/types.ts header), #6 (GuidanceLightsHost.svelte); live: app/src/lib/guidance/types.ts and app/src/lib/components/guidance/GuidanceLightsHost.svelte exist"
+   "check": "t1 evidence #2 (docs/ask/+page.svelte: 'Guidance Lights: for \"where is that setting\"'), #5 (app/src/lib/guidance/types.ts header), #6 (GuidanceLightsHost.svelte); live: app/src/lib/guidance/types.ts and app/src/lib/components/guidance/GuidanceLightsHost.svelte exist",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "contradicted": 0.08,
+     "supported": 0.91,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c2",
@@ -122,7 +379,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5/#7: guidanceDestinationCatalogue() in lightsprint-api-mcp-proxy.ts ('this catalogue is the agent's entire window onto the map'; 'model only gets the meaning of each target, never a route, a selector'); types.ts line 4 'ONE safe, registered internal semantic target'"
+   "check": "t1 evidence #5/#7: guidanceDestinationCatalogue() in lightsprint-api-mcp-proxy.ts ('this catalogue is the agent's entire window onto the map'; 'model only gets the meaning of each target, never a route, a selector'); types.ts line 4 'ONE safe, registered internal semantic target'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m2-c3",
@@ -134,7 +401,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #1 tail (docs/ask/+page.svelte:164 'navigates you to the control and highlights it. It never clicks anything for you'); #6 GuidanceLightsHost.svelte header 'The host never performs the user's action'"
+   "check": "t1 evidence #1 tail (docs/ask/+page.svelte:164 'navigates you to the control and highlights it. It never clicks anything for you'); #6 GuidanceLightsHost.svelte header 'The host never performs the user's action'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c1",
@@ -146,7 +423,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (secure-tools: 'build and expose structured tools to AI agents running within the browser, including agents powered by extensions'); #3 declarative-api result"
+   "check": "t1 evidence #4 (secure-tools: 'build and expose structured tools to AI agents running within the browser, including agents powered by extensions'); #3 declarative-api result",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c2",
@@ -158,7 +445,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (docs/ai/agents: 'Each tool has a name, description, and JSON schema'); #4 ('The browser collects and presents these tools to the user's WebMCP-aware agent'; registerTool takes name/description/inputSchema)"
+   "check": "t1 evidence #3 (docs/ai/agents: 'Each tool has a name, description, and JSON schema'); #4 ('The browser collects and presents these tools to the user's WebMCP-aware agent'; registerTool takes name/description/inputSchema)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c3",
@@ -170,7 +467,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (docs/ai/agents step 3: 'supplies structured arguments, and your code does the rest'; registerTool execute callback runs in page JS); #4 (agents-security: 'Agents in the browser can operate within a user's authenticated session')"
+   "check": "t1 evidence #3 (docs/ai/agents step 3: 'supplies structured arguments, and your code does the rest'; registerTool execute callback runs in page JS); #4 (agents-security: 'Agents in the browser can operate within a user's authenticated session')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.38,
+    "p": {
+     "unsupported": 0.29,
+     "supported": 0.58,
+     "contradicted": 0.13
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c4",
@@ -182,7 +489,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (origin-trial blog: 'Instead of an agent guessing the purpose of an interface element, such as a button or input field, you can declare their purposes'); #3 ('The agent sees a contract, supplies structured arguments')"
+   "check": "t1 evidence #4 (origin-trial blog: 'Instead of an agent guessing the purpose of an interface element, such as a button or input field, you can declare their purposes'); #3 ('The agent sees a contract, supplies structured arguments')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.11,
+    "p": {
+     "unsupported": 0.32,
+     "contradicted": 0.28,
+     "supported": 0.4
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c5",
@@ -194,7 +511,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3/#4 (docs/ai/agents: 'It's faster, more reliable than actuation.')"
+   "check": "t1 evidence #3/#4 (docs/ai/agents: 'It's faster, more reliable than actuation.')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.37,
+    "p": {
+     "supported": 0.58,
+     "contradicted": 0.02,
+     "unsupported": 0.4
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c6",
@@ -206,7 +533,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 contains 11 occurrences of `document.modelContext.registerTool` in Chrome docs excerpts (imperative-api, secure-tools); live: curl https://developer.chrome.com/docs/ai/webmcp/imperative-api shows document.modelContext.registerTool / getTools (W3C community docs use navigator.modelContext, but the claim matches Chrome's docs)"
+   "check": "t1 evidence #4 contains 11 occurrences of `document.modelContext.registerTool` in Chrome docs excerpts (imperative-api, secure-tools); live: curl https://developer.chrome.com/docs/ai/webmcp/imperative-api shows document.modelContext.registerTool / getTools (W3C community docs use navigator.modelContext, but the claim matches Chrome's docs)",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c7",
@@ -218,7 +555,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (Declarative API: 'transform standard HTML forms into WebMCP tools by adding annotations')"
+   "check": "t1 evidence #3 (Declarative API: 'transform standard HTML forms into WebMCP tools by adding annotations')",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c8",
@@ -230,7 +577,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 result 'WebMCP and AI agents | AI in Chrome (https://developer.chrome.com/docs/ai/agents?hl=en)'; also in #4"
+   "check": "t1 evidence #3 result 'WebMCP and AI agents | AI in Chrome (https://developer.chrome.com/docs/ai/agents?hl=en)'; also in #4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.92,
+    "p": {
+     "supported": 0.95,
+     "unsupported": 0.01,
+     "contradicted": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c9",
@@ -242,7 +599,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 result URL docs/ai/webmcp/imperative-api?authuser=14&hl=en; live curl returns page titled 'Imperative API | AI in Chrome'"
+   "check": "t1 evidence #4 result URL docs/ai/webmcp/imperative-api?authuser=14&hl=en; live curl returns page titled 'Imperative API | AI in Chrome'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.48,
+    "p": {
+     "supported": 0.65,
+     "unsupported": 0.34,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c10",
@@ -254,7 +621,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5/#7: propose_guidance / show_guidance definitions take targetId with enum guidanceDestinationCatalogue().ids; live: lightsprint-api-mcp-proxy.ts lines 514, 555"
+   "check": "t1 evidence #5/#7: propose_guidance / show_guidance definitions take targetId with enum guidanceDestinationCatalogue().ids; live: lightsprint-api-mcp-proxy.ts lines 514, 555",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "supported": 0.97,
+     "contradicted": 0.02,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c11",
@@ -266,7 +643,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #1 (docs/ask/+page.svelte:164), #6/#7 (GuidanceLightsHost.svelte lines 17-19)"
+   "check": "t1 evidence #1 (docs/ask/+page.svelte:164), #6/#7 (GuidanceLightsHost.svelte lines 17-19)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c12",
@@ -278,7 +665,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (tools defined in app/src/lib/server/agent/lightsprint-api-mcp-proxy.ts); live: app/src/lib/server/agent/codebase-ask-turn.service.ts imports buildLightsprintApiProvider from that module"
+   "check": "t1 evidence #5 (tools defined in app/src/lib/server/agent/lightsprint-api-mcp-proxy.ts); live: app/src/lib/server/agent/codebase-ask-turn.service.ts imports buildLightsprintApiProvider from that module",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.97,
+     "unsupported": 0.01,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c13",
@@ -290,7 +687,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #6/#7 (GuidanceLightsHost.svelte lines 5-9: 'Every tab mounts its own host and renders the same mission'); live: app/src/lib/stores/guidance.svelte.ts persists mission to localStorage under 'ls.guidance.v1' and adopts cross-tab changes via the 'storage' event (lines 11-13, 172-203)"
+   "check": "t1 evidence #6/#7 (GuidanceLightsHost.svelte lines 5-9: 'Every tab mounts its own host and renders the same mission'); live: app/src/lib/stores/guidance.svelte.ts persists mission to localStorage under 'ls.guidance.v1' and adopts cross-tab changes via the 'storage' event (lines 11-13, 172-203)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c14",
@@ -302,7 +709,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #2 (docs: 'Guidance Lights: for \"where is that setting\"'), #5 (types.ts 'routes a user to ONE safe, registered internal semantic target')"
+   "check": "t1 evidence #2 (docs: 'Guidance Lights: for \"where is that setting\"'), #5 (types.ts 'routes a user to ONE safe, registered internal semantic target')",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c15",
@@ -314,7 +731,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0 rg pattern included 'WebMCP|webmcp' and the (truncated) output shows no such hit; live: grep -rni 'webmcp|modelContext' app/src scripts -> 0 matches"
+   "check": "t1 evidence #0 rg pattern included 'WebMCP|webmcp' and the (truncated) output shows no such hit; live: grep -rni 'webmcp|modelContext' app/src scripts -> 0 matches",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.22,
+    "p": {
+     "supported": 0.48,
+     "contradicted": 0.11,
+     "unsupported": 0.41
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c16",
@@ -326,7 +753,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (docs/ai/agents: 'The browser collects and presents these tools to the user's WebMCP-aware agent')"
+   "check": "t1 evidence #4 (docs/ai/agents: 'The browser collects and presents these tools to the user's WebMCP-aware agent')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c17",
@@ -338,7 +775,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (declarative: 'the browser brings the form into focus and populates its field'; compare-mcp: 'Navigates and actuates on a live web UI'); #4 (origin-trial blog: 'an agent can trigger fixes')"
+   "check": "t1 evidence #3 (declarative: 'the browser brings the form into focus and populates its field'; compare-mcp: 'Navigates and actuates on a live web UI'); #4 (origin-trial blog: 'an agent can trigger fixes')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.01,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c18",
@@ -350,7 +797,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (compare-mcp: 'WebMCP tools are ephemeral. They exist only when your page is open. Once the user navigates away ... the agent cannot access your site')"
+   "check": "t1 evidence #3 (compare-mcp: 'WebMCP tools are ephemeral. They exist only when your page is open. Once the user navigates away ... the agent cannot access your site')",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.29,
+    "p": {
+     "supported": 0.44,
+     "contradicted": 0.04,
+     "unsupported": 0.52
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c19",
@@ -362,7 +819,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (compare-mcp 'Lifecycle: Ephemeral (tab-bound)'); #4 (secure-tools: 'By default, other websites or cross-origin iframes can't observe or interact with your tools' / exposedTo)"
+   "check": "t1 evidence #3 (compare-mcp 'Lifecycle: Ephemeral (tab-bound)'); #4 (secure-tools: 'By default, other websites or cross-origin iframes can't observe or interact with your tools' / exposedTo)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.59,
+    "p": {
+     "unsupported": 0.22,
+     "supported": 0.72,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c20",
@@ -374,7 +841,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (origin-trial blog: 'Build structured tools for agents to complete tasks efficiently and accurately'; secure-tools: 'execute actions on behalf of the user')"
+   "check": "t1 evidence #4 (origin-trial blog: 'Build structured tools for agents to complete tasks efficiently and accurately'; secure-tools: 'execute actions on behalf of the user')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.79,
+    "p": {
+     "supported": 0.86,
+     "contradicted": 0.04,
+     "unsupported": 0.1
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c21",
@@ -386,7 +863,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (origin-trial blog: 'In Chrome 149, you can sign up for the WebMCP origin trial ... early access to experimental platform features'; Chrome Status 'Intent to Experiment')"
+   "check": "t1 evidence #4 (origin-trial blog: 'In Chrome 149, you can sign up for the WebMCP origin trial ... early access to experimental platform features'; Chrome Status 'Intent to Experiment')",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c22",
@@ -398,7 +885,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5/#7 (types.ts lines 11-12: 'The contract is the **semantic target**, never the DOM. A registration names a stable target id'); #7 proxy line 471-472"
+   "check": "t1 evidence #5/#7 (types.ts lines 11-12: 'The contract is the **semantic target**, never the DOM. A registration names a stable target id'); #7 proxy line 471-472",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c23",
@@ -410,7 +907,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (types.ts 1-240 sed) / live: app/src/lib/guidance/types.ts lines 25-36 'Internal routes Guidance Lights is allowed to navigate to. This is an allowlist' -> GUIDANCE_ROUTES"
+   "check": "t1 evidence #5 (types.ts 1-240 sed) / live: app/src/lib/guidance/types.ts lines 25-36 'Internal routes Guidance Lights is allowed to navigate to. This is an allowlist' -> GUIDANCE_ROUTES",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c24",
@@ -422,7 +929,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5/#7 (types.ts line 14 'role/workspace-state gates'; proxy line 474-475 're-evaluated against their role and workspace state'); live: types.ts lines 150-190 GuidanceGate type"
+   "check": "t1 evidence #5/#7 (types.ts line 14 'role/workspace-state gates'; proxy line 474-475 're-evaluated against their role and workspace state'); live: types.ts lines 150-190 GuidanceGate type",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c25",
@@ -434,7 +951,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5/#7 (types.ts line 9 'declared here, statically, and validated in CI'); #6 (registrations.ts header: 'scripts/validate-guidance-map.ts cross-checks ... CI validator'); live: app/scripts/validate-guidance-map.ts header 'Wired into `bun run check` so a broken application map fails CI', invoked from app/scripts/verify.js"
+   "check": "t1 evidence #5/#7 (types.ts line 9 'declared here, statically, and validated in CI'); #6 (registrations.ts header: 'scripts/validate-guidance-map.ts cross-checks ... CI validator'); live: app/scripts/validate-guidance-map.ts header 'Wired into `bun run check` so a broken application map fails CI', invoked from app/scripts/verify.js",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.98,
+     "contradicted": 0.0,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c26",
@@ -446,7 +973,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (sed -n '1,240p' app/src/lib/guidance/types.ts succeeded) and #7 (nl -ba of the file); live: nl -ba app/src/lib/guidance/types.ts prints the header"
+   "check": "t1 evidence #5 (sed -n '1,240p' app/src/lib/guidance/types.ts succeeded) and #7 (nl -ba of the file); live: nl -ba app/src/lib/guidance/types.ts prints the header",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "unsupported": 0.05,
+     "contradicted": 0.02,
+     "supported": 0.93
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c27",
@@ -458,7 +995,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (showGuidanceDefinition name 'show_guidance'), #7 (propose_guidance at line 490); live: lightsprint-api-mcp-proxy.ts lines 501/514 and 542/555 both call guidanceDestinationCatalogue()"
+   "check": "t1 evidence #5 (showGuidanceDefinition name 'show_guidance'), #7 (propose_guidance at line 490); live: lightsprint-api-mcp-proxy.ts lines 501/514 and 542/555 both call guidanceDestinationCatalogue()",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c28",
@@ -470,7 +1017,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #7 (nl -ba ... | sed -n '464,565p' shows line 464 'The Guidance Lights destinations a `propose_guidance` call may name.'); live sed -n 464p matches"
+   "check": "t1 evidence #7 (nl -ba ... | sed -n '464,565p' shows line 464 'The Guidance Lights destinations a `propose_guidance` call may name.'); live sed -n 464p matches",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c29",
@@ -482,7 +1039,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #7 (GuidanceLightsHost.svelte lines 17-19: 'The host never performs the user's action. It navigates, it reveals, and it watches for the user's own click on the revealed target'); the quoted phrase is a condensed paraphrase of that comment, meaning intact; live nl -ba confirms"
+   "check": "t1 evidence #7 (GuidanceLightsHost.svelte lines 17-19: 'The host never performs the user's action. It navigates, it reveals, and it watches for the user's own click on the revealed target'); the quoted phrase is a condensed paraphrase of that comment, meaning intact; live nl -ba confirms",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c30",
@@ -494,7 +1061,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #7 nl output line 17; live: nl -ba app/src/lib/components/guidance/GuidanceLightsHost.svelte | sed -n 17p"
+   "check": "t1 evidence #7 nl output line 17; live: nl -ba app/src/lib/components/guidance/GuidanceLightsHost.svelte | sed -n 17p",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.71,
+    "p": {
+     "contradicted": 0.81,
+     "unsupported": 0.03,
+     "supported": 0.16
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c31",
@@ -506,7 +1083,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3 (compare-mcp table: 'Use case: Navigates and actuates on a live web UI'); #4 ('execute actions on behalf of the user')"
+   "check": "t1 evidence #3 (compare-mcp table: 'Use case: Navigates and actuates on a live web UI'); #4 ('execute actions on behalf of the user')",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.6,
+    "p": {
+     "unsupported": 0.04,
+     "supported": 0.22,
+     "contradicted": 0.74
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c32",
@@ -518,7 +1105,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (proxy lives in app/src/lib/server/agent/); live: app/src/lib/server/agent/codebase-ask-turn.service.ts imports buildLightsprintApiProvider and runs the turn via ACP inside a managed sandbox (taskSandboxManager.runWithWorkspaceTurn) — non-browser; 'server-side' is loose (sandbox VM launched by the server) but not wrong"
+   "check": "t1 evidence #5 (proxy lives in app/src/lib/server/agent/); live: app/src/lib/server/agent/codebase-ask-turn.service.ts imports buildLightsprintApiProvider and runs the turn via ACP inside a managed sandbox (taskSandboxManager.runWithWorkspaceTurn) — non-browser; 'server-side' is loose (sandbox VM launched by the server) but not wrong",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.64,
+    "p": {
+     "unsupported": 0.2,
+     "contradicted": 0.05,
+     "supported": 0.75
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c33",
@@ -530,7 +1127,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (secure-tools: 'AI agents running within the browser, including agents powered by extensions'; 'Chrome Extensions can query and execute WebMCP tools using content scripts')"
+   "check": "t1 evidence #4 (secure-tools: 'AI agents running within the browser, including agents powered by extensions'; 'Chrome Extensions can query and execute WebMCP tools using content scripts')",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c34",
@@ -542,7 +1149,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Follows from t1 evidence #3 (compare-mcp: WebMCP connectivity 'Environment-specific (browser agents)', tools 'Ephemeral (tab-bound)') and #5/live (Ask runs in a sandbox via ACP, not in the user's tab)"
+   "check": "Follows from t1 evidence #3 (compare-mcp: WebMCP connectivity 'Environment-specific (browser agents)', tools 'Ephemeral (tab-bound)') and #5/live (Ask runs in a sandbox via ACP, not in the user's tab)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.62,
+    "p": {
+     "supported": 0.24,
+     "contradicted": 0.01,
+     "unsupported": 0.75
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c35",
@@ -554,7 +1171,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #7 (docs/ask/+page.svelte:165-166 'destructive controls such as delete, disconnect, billing, and merge are permanently excluded'; proxy lines 503-504); live: app/src/lib/guidance/excluded.ts lists repositories.delete, *.disconnect, settings.billing, task.pr.merge"
+   "check": "t1 evidence #7 (docs/ask/+page.svelte:165-166 'destructive controls such as delete, disconnect, billing, and merge are permanently excluded'; proxy lines 503-504); live: app/src/lib/guidance/excluded.ts lists repositories.delete, *.disconnect, settings.billing, task.pr.merge",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.0,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c36",
@@ -566,7 +1193,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (secure-tools: 'set `consequentialHint: true` so the agent or browser can request user confirmation before execution'; 'Use the `readOnlyHint` ... better decisions about when to ask for user confirmations'); live curl confirms"
+   "check": "t1 evidence #4 (secure-tools: 'set `consequentialHint: true` so the agent or browser can request user confirmation before execution'; 'Use the `readOnlyHint` ... better decisions about when to ask for user confirmations'); live curl confirms",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.42,
+    "p": {
+     "supported": 0.07,
+     "unsupported": 0.31,
+     "contradicted": 0.62
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c37",
@@ -578,7 +1215,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": false,
-   "check": "t1 evidence #4's secure-tools excerpt contains no server/authorization guidance; live: curl -sL https://developer.chrome.com/docs/ai/webmcp/secure-tools?hl=en (2026-09-17) stripped to text has 0 occurrences of 'server', 'backend', 'authoriz', 'authenticat' or 'validate' — the page covers annotation hints, exposedTo origin scoping and prompt injection only; sibling pages docs/agents/security and docs/ai/webmcp/best-practices also have 0 'server-side'/'backend' mentions"
+   "check": "t1 evidence #4's secure-tools excerpt contains no server/authorization guidance; live: curl -sL https://developer.chrome.com/docs/ai/webmcp/secure-tools?hl=en (2026-09-17) stripped to text has 0 occurrences of 'server', 'backend', 'authoriz', 'authenticat' or 'validate' — the page covers annotation hints, exposedTo origin scoping and prompt injection only; sibling pages docs/agents/security and docs/ai/webmcp/best-practices also have 0 'server-side'/'backend' mentions",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.52,
+    "p": {
+     "supported": 0.0,
+     "unsupported": 0.68,
+     "contradicted": 0.32
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c38",
@@ -590,7 +1237,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (secure-tools: 'susceptible to indirect prompt injection ... this document on tool security'); live curl: 3 'prompt injection' mentions plus untrustedContentHint guidance"
+   "check": "t1 evidence #4 (secure-tools: 'susceptible to indirect prompt injection ... this document on tool security'); live curl: 3 'prompt injection' mentions plus untrustedContentHint guidance",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c39",
@@ -602,7 +1259,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (blog 'Join the WebMCP origin trial', Chrome 149, published June 9 2026; Chrome Status 'Intent to Experiment'); #3 ('draft proposal currently being incubated by the W3C Web Machine Learning Community Group')"
+   "check": "t1 evidence #4 (blog 'Join the WebMCP origin trial', Chrome 149, published June 9 2026; Chrome Status 'Intent to Experiment'); #3 ('draft proposal currently being incubated by the W3C Web Machine Learning Community Group')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.69,
+    "p": {
+     "supported": 0.8,
+     "unsupported": 0.02,
+     "contradicted": 0.18
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c40",
@@ -614,7 +1281,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 first result: 'Join the WebMCP origin trial | Blog | Chrome for Developers (https://developer.chrome.com/blog/ai-webmcp-origin-trial)'"
+   "check": "t1 evidence #4 first result: 'Join the WebMCP origin trial | Blog | Chrome for Developers (https://developer.chrome.com/blog/ai-webmcp-origin-trial)'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c1",
@@ -626,7 +1303,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #3/#4 (WebMCP is a browser API that lets sites register tools for agents to call; the agent/LLM is separate)"
+   "check": "t1 evidence #3/#4 (WebMCP is a browser API that lets sites register tools for agents to call; the agent/LLM is separate)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.02,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c1",
@@ -638,7 +1325,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 (WebMCP is a Chrome/W3C web API: 'web developers can build and expose structured tools to AI agents instrumenting the browser'); t1 #3/#4"
+   "check": "t2 evidence #0 (WebMCP is a Chrome/W3C web API: 'web developers can build and expose structured tools to AI agents instrumenting the browser'); t1 #3/#4",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.64,
+    "p": {
+     "supported": 0.18,
+     "contradicted": 0.06,
+     "unsupported": 0.76
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c2",
@@ -650,7 +1347,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 (agents-security: 'expose structured tools to AI agents instrumenting the browser, including agents powered by extensions'); t1 #4"
+   "check": "t2 evidence #0 (agents-security: 'expose structured tools to AI agents instrumenting the browser, including agents powered by extensions'); t1 #4",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.0,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c3",
@@ -662,7 +1369,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 / t1 #4 (secure-tools: 'Chrome Extensions can query and execute WebMCP tools using content scripts'; agents 'in a browser context (such as within a Chrome extension)')"
+   "check": "t2 evidence #0 / t1 #4 (secure-tools: 'Chrome Extensions can query and execute WebMCP tools using content scripts'; agents 'in a browser context (such as within a Chrome extension)')",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.56,
+    "p": {
+     "supported": 0.71,
+     "unsupported": 0.28,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c4",
@@ -674,7 +1391,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 / t2 #0 (extensions can query and execute WebMCP tools via content scripts); hedged ('could'), not counted as an attempt"
+   "check": "t1 evidence #4 / t2 #0 (extensions can query and execute WebMCP tools via content scripts); hedged ('could'), not counted as an attempt",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.28,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.47,
+     "supported": 0.52
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c5",
@@ -686,7 +1413,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 queried 'site:docs.anthropic.com WebMCP Claude browser support' and 'site:anthropic.com WebMCP Claude Chrome'; the full output (transcript line 93) contains only the Anthropic skills guide PDF and the Claude Opus 4.5 System Card ('Claude for Chrome Prompt Injection Robustness') — no WebMCP support statement"
+   "check": "t2 evidence #0 queried 'site:docs.anthropic.com WebMCP Claude browser support' and 'site:anthropic.com WebMCP Claude Chrome'; the full output (transcript line 93) contains only the Anthropic skills guide PDF and the Claude Opus 4.5 System Card ('Claude for Chrome Prompt Injection Robustness') — no WebMCP support statement",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.24,
+    "p": {
+     "supported": 0.49,
+     "contradicted": 0.04,
+     "unsupported": 0.47
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c6",
@@ -698,7 +1435,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 (docs/ai/webmcp: 'Install the Model Context Tool Inspector Extension to experiment with an agent and see how WebMCP tools work'); live curl of https://developer.chrome.com/docs/ai/webmcp confirms"
+   "check": "t2 evidence #0 (docs/ai/webmcp: 'Install the Model Context Tool Inspector Extension to experiment with an agent and see how WebMCP tools work'); live curl of https://developer.chrome.com/docs/ai/webmcp confirms",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.92,
+    "p": {
+     "supported": 0.0,
+     "unsupported": 0.95,
+     "contradicted": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c7",
@@ -710,7 +1457,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 ('Your prompts are sent by default to the `gemini-3-flash-preview` model'); live curl of docs/ai/webmcp confirms the sentence"
+   "check": "t2 evidence #0 ('Your prompts are sent by default to the `gemini-3-flash-preview` model'); live curl of docs/ai/webmcp confirms the sentence",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.01,
+     "unsupported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c8",
@@ -722,7 +1479,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 ('Note: This is separate from the Gemini in Chrome features.'); live curl confirms"
+   "check": "t2 evidence #0 ('Note: This is separate from the Gemini in Chrome features.'); live curl confirms",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.02,
+     "unsupported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c9",
@@ -734,7 +1501,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 ('WebMCP is a proposed web standard'); t1 #4 (origin trial, Chrome 149); live curl of docs/ai/webmcp: 'WebMCP is a proposed web standard'"
+   "check": "t2 evidence #0 ('WebMCP is a proposed web standard'); t1 #4 (origin trial, Chrome 149); live curl of docs/ai/webmcp: 'WebMCP is a proposed web standard'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.0,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c10",
@@ -746,7 +1523,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #0 result 'WebMCP | AI in Chrome (https://developer.chrome.com/docs/ai/webmcp?authuser=14&hl=en)'; live curl returns page titled 'WebMCP | AI in Chrome'"
+   "check": "t2 evidence #0 result 'WebMCP | AI in Chrome (https://developer.chrome.com/docs/ai/webmcp?authuser=14&hl=en)'; live curl returns page titled 'WebMCP | AI in Chrome'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.98,
+     "contradicted": 0.0,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c11",
@@ -758,7 +1545,17 @@
    "strength": "hedged",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live: app/src/lib/server/agent/models/feature-models.ts maps 'chat.smart' -> 'claude-opus-4-8' and 'chat.onboarding' -> 'claude-haiku-4-5'; codebase-ask-turn.service.ts line 455 uses modelFor(isOnboarding ? 'chat.onboarding' : 'chat.smart') and runs the turn via ACP in a managed sandbox. The model choice was never read in-session (only the server-side proxy location was, t1 #5); hedged, not counted as an attempt"
+   "check": "Live: app/src/lib/server/agent/models/feature-models.ts maps 'chat.smart' -> 'claude-opus-4-8' and 'chat.onboarding' -> 'claude-haiku-4-5'; codebase-ask-turn.service.ts line 455 uses modelFor(isOnboarding ? 'chat.onboarding' : 'chat.smart') and runs the turn via ACP in a managed sandbox. The model choice was never read in-session (only the server-side proxy location was, t1 #5); hedged, not counted as an attempt",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.82,
+    "p": {
+     "supported": 0.01,
+     "unsupported": 0.88,
+     "contradicted": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c12",
@@ -770,7 +1567,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #4 (document.modelContext is a page-side DOM API; tools are 'Ephemeral (tab-bound)' per #3); t1 #5 / live codebase-ask-turn.service.ts (Ask runs via ACP in a sandbox, not in the tab)"
+   "check": "t1 evidence #4 (document.modelContext is a page-side DOM API; tools are 'Ephemeral (tab-bound)' per #3); t1 #5 / live codebase-ask-turn.service.ts (Ask runs via ACP in a sandbox, not in the tab)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.69,
+    "p": {
+     "supported": 0.2,
+     "unsupported": 0.79,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c13",
@@ -782,7 +1589,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #5 (showGuidanceDefinition: 'The lights come on as soon as you call it: the destination is highlighted in the app'); live: lightsprint-api-mcp-proxy.ts showGuidance() (line 1624) returns {status:'guidance_shown', targetId, reason} and the client detects that tool result to start the mission (app/src/lib/components/ask/show-guidance.ts, AskShowGuidanceAutostart.svelte)"
+   "check": "t1 evidence #5 (showGuidanceDefinition: 'The lights come on as soon as you call it: the destination is highlighted in the app'); live: lightsprint-api-mcp-proxy.ts showGuidance() (line 1624) returns {status:'guidance_shown', targetId, reason} and the client detects that tool result to start the mission (app/src/lib/components/ask/show-guidance.ts, AskShowGuidanceAutostart.svelte)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.49,
+    "p": {
+     "unsupported": 0.66,
+     "supported": 0.22,
+     "contradicted": 0.12
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c14",
@@ -794,7 +1611,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live: app/src/lib/server/agent/models/feature-models.ts 'chat.smart': 'claude-opus-4-8', 'chat.onboarding': 'claude-haiku-4-5', selected in codebase-ask-turn.service.ts line 455; no in-session evidence showed the Ask model (asserted here although hedged as 'probably' two paragraphs earlier)"
+   "check": "Live: app/src/lib/server/agent/models/feature-models.ts 'chat.smart': 'claude-opus-4-8', 'chat.onboarding': 'claude-haiku-4-5', selected in codebase-ask-turn.service.ts line 455; no in-session evidence showed the Ask model (asserted here although hedged as 'probably' two paragraphs earlier)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.84,
+    "p": {
+     "supported": 0.05,
+     "unsupported": 0.89,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   }
  ]
 }

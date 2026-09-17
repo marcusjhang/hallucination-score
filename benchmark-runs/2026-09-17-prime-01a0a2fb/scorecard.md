@@ -37,12 +37,29 @@
 1. `t5-m2-c3` **entity** · contradicted — “`dsh` does not expose those CLI options yet”
    - claim: The dsh CLI exposes no resume or fork options.
    - check: t2 evidence #9 (`dsh --help`) lists the example "dsh --profile tui --resume <session>", i.e. dsh does expose a --resume option for the tui profile. Only the headless profile's help (t5 #9) lacks it; no fork option was found anywhere
+   - second judge: Jev supported (0.45) — disagrees
 
 ## Hedge calibration
 
 No hedged claims.
 
+## Second judge — jev-1.13.0 (TypeSafe, different model family)
+
+| Comparison set | Claims | Label agreement | κ | Hallucination agreement | κ |
+|---|---|---|---|---|---|
+| Packet-checkable (reference in the session evidence) | 42 | 78.6% | -0.03 | 78.6% | -0.04 |
+| All checkable claims both judges labelled | 47 | 70.2% | -0.03 | 70.2% | -0.04 |
+
+Grader × second judge, packet-checkable: grader supported → supported 33, contradicted 2, unsupported 6; grader contradicted → supported 1. 0 checkable claims were out of the second judge's reach (no evidence in the packet).
+
+Spot-check first (the two judges disagree, second judge confident):
+
+- `t7-m1-c1` **verification** grader supported, Jev contradicted (0.98) — “That confirms the Superset and DeepSeek Harness setup is working.” — possible miss by the grader
+- `t7-m1-c3` **external** grader supported, Jev unsupported (0.90) — “the associated account has no available API credit” — possible miss by the grader
+- `t1-m1-c3` **entity** grader supported, Jev unsupported (0.88) — “There is no existing harness configuration to assess.” — possible miss by the grader
+- `t7-m1-c8` **code_behaviour** grader supported, Jev unsupported (0.88) — “This is a DeepSeek billing issue, not a Superset integration issue.” — possible miss by the grader
+
 ## Coverage
 
 Messages with at least one claim: 11 of 13. Claims: 48 total, 47 checkable, 1 excluded as not checkable.
-Graders: claude-opus-5 (chunk 1).
+Graders: claude-opus-5 (chunk 1). Second judge: jev-1.13.0 on 47 claims, 49 requests, ~$0.0219.

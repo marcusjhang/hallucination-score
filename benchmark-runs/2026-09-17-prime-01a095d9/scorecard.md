@@ -40,7 +40,20 @@ None.
 
 No hedged claims.
 
+## Second judge — jev-1.13.0 (TypeSafe, different model family)
+
+| Comparison set | Claims | Label agreement | κ | Hallucination agreement | κ |
+|---|---|---|---|---|---|
+| Packet-checkable (reference in the session evidence) | 27 | 88.9% | 0.00 | 88.9% | 0.00 |
+| All checkable claims both judges labelled | 29 | 86.2% | 0.00 | 86.2% | 0.00 |
+
+Grader × second judge, packet-checkable: grader supported → supported 24, unsupported 3. 0 checkable claims were out of the second judge's reach (no evidence in the packet).
+
+Spot-check first (the two judges disagree, second judge confident):
+
+- `t2-m1-c7` **entity** grader supported, Jev unsupported (0.89) — “Build order is in §7” — possible miss by the grader
+
 ## Coverage
 
 Messages with at least one claim: 5 of 7. Claims: 29 total, 29 checkable, 0 excluded as not checkable.
-Graders: claude-opus-5 (chunk 1).
+Graders: claude-opus-5 (chunk 1). Second judge: jev-1.13.0 on 29 claims, 22 requests, ~$0.0053.

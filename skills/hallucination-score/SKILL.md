@@ -25,6 +25,7 @@ Read `reference/methodology.md` once if you need to explain *why* the numbers ar
 | `/hallucination-score last 5` | the last 5 human turns |
 | `/hallucination-score turns 4-9` | an inclusive turn range |
 | `/hallucination-score judge=sonnet` | grade with a different model (`sonnet`, `opus`, `haiku`, `fable`) — the benchmark-faithful configuration, see limitations |
+| `/hallucination-score jev` | also run the Jev second judge (Phase 2b): a different-family model re-labels every claim from the packet evidence and the card reports judge-vs-judge agreement. Needs `TYPESAFE_API_KEY`; sends the packets' tool evidence to api.typesafe.ai |
 | `/hallucination-score session=<id>` | another session — any project, any harness; a unique id prefix is enough |
 | `/hallucination-score list` | the 15 most recent sessions across harnesses (turns, messages, tool calls) and stop |
 | `/hallucination-score history` | print the last 10 scored sessions and stop |
@@ -63,21 +64,39 @@ Rules for this phase:
 - Do not summarise the packets to the graders or tell them what you think the answer is. They get the path and the rubric, nothing else.
 - Budget: one grader costs roughly 40k–230k tokens and 3–15 minutes on Opus, scaling with the packet's messages and tool calls (a 20-message / 45-call packet is ~140k). Say so before grading a long session, and offer `last N` if the user only cares about recent turns.
 
+## Phase 2b — Second judge (only with `jev`)
+
+```bash
+python3 $SKILL_DIR/scripts/jev_second_judge.py \
+  ~/.claude/hallucination-scores/<session>/verdicts-*.json \
+  --packets-dir ~/.claude/hallucination-scores/<session>/packets
+```
+
+Deterministic script, no subagent. For every claim the graders extracted it retrieves the tool calls that bear on it (lexical overlap plus a Jev ranking question), reloads them untruncated from the transcript, and sends the claim, its quote and that evidence — never the grader's label or check — to TypeSafe's Jev, a System One model from a different family that returns `supported / contradicted / unsupported` with calibrated probabilities. Writes `jev-NNN.json` next to each `verdicts-NNN.json`; roughly one request per claim, a few seconds per turn with `--workers 6`, ~$0.03 per session.
+
+Rules:
+
+- **Opt-in only.** It sends session content (commands, outputs, file excerpts) to a third party. Run it only when the user asked for `jev`; if `TYPESAFE_API_KEY` is unset, say so and skip it — never ask the user to paste a key into the conversation. `--dry-run` prints the request plan and cost without sending anything.
+- **It never changes a label.** The headline numbers stay the graders'. Jev's job is the agreement figure and the spot-check list.
+- Jev cannot see the repository, so claims the graders settled with a live check are outside its reach; the card reports agreement on the *packet-checkable* set separately for that reason.
+- **Read the spot-check list as places to look, not verdicts.** On the benchmark runs Jev labelled about a fifth of the graders' `supported` claims as hallucinated and most of those were Jev's own errors (κ 0.18 overall). Say so in the report; do not present a "possible miss" as a grader miss until someone has read the evidence.
+
 ## Phase 3 — Score
 
 ```bash
 python3 $SKILL_DIR/scripts/score.py \
   ~/.claude/hallucination-scores/<session>/verdicts-*.json \
-  --packets-dir ~/.claude/hallucination-scores/<session>/packets
+  --packets-dir ~/.claude/hallucination-scores/<session>/packets \
+  [--jev ~/.claude/hallucination-scores/<session>/jev-*.json]
 ```
 
-Prints the markdown scorecard and persists it. `--json` for the raw card; `--no-persist` for a dry run.
+Prints the markdown scorecard and persists it. `--json` for the raw card; `--no-persist` for a dry run. With `--jev` the card gains a "Second judge" section: Cohen's κ between the graders and Jev, the confusion matrix, and the confident disagreements in both directions (grader `supported` / Jev `contradicted` is a possible miss by a lenient same-family grader; the reverse is a possible false alarm).
 
 ## Report
 
 1. Paste the scorecard **verbatim**. Every number comes from `score.py`; do not restate, round, or recompute any of them, and do not omit the hallucinated-claims list even when it is long.
 2. Under it, at most five lines of reading: the band, which claim types drove it, whether drift got worse late in the session, and what to redo (a `verification` hallucination means the named tests must actually be run; an `entity` one means the path or symbol in the answer is fiction; a `completion` one means the task is not finished).
-3. State the limitation that applies: same-model judge unless `judge=` was used (self-preference bias, so the rate is a floor — for Codex, Prime and OpenCode sessions the judge is a *different* model family, which is the benchmark-faithful setup), and that only assistant text was scored, not commit messages or PR bodies.
+3. State the limitation that applies: same-model judge unless `judge=` was used (self-preference bias, so the rate is a floor — for Codex, Prime and OpenCode sessions the judge is a *different* model family, which is the benchmark-faithful setup), and that only assistant text was scored, not commit messages or PR bodies. When the second judge ran, report its κ on the packet-checkable set and point at the spot-check list, with the caveat above: on the benchmark runs the disagreement was mostly the second judge's, so a low κ does not by itself put the graders' labels in doubt.
 4. Point to `~/.claude/hallucination-scores/<session>.json` and mention `/hallucination-score history` for the trend. Do not install the statusline snippet unless asked (below).
 
 Do not soften a bad band. If the session's claims were mostly asserted before looking (low grounding rate), say that even when the hallucination rate is fine — it means the model was lucky, not careful.

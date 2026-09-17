@@ -125,7 +125,90 @@
    7
   ]
  },
- "scored_at": "2026-09-16T17:19:13+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 22,
+   "input_tokens": 127058,
+   "estimated_cost_usd": 0.00534
+  },
+  "claims_judged": 29,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 27,
+   "label_agreement": 0.8889,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.8889,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 24,
+     "contradicted": 0,
+     "unsupported": 3
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 29,
+   "label_agreement": 0.8621,
+   "label_kappa": 0.0,
+   "hallucination_agreement": 0.8621,
+   "hallucination_kappa": 0.0,
+   "confusion": {
+    "supported": {
+     "supported": 25,
+     "contradicted": 0,
+     "unsupported": 4
+    },
+    "contradicted": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t2-m1-c7",
+    "turn": 2,
+    "message": "t2-m1",
+    "type": "entity",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Build order is in §7",
+    "claim": "Section 7 of NEWSLETTER-OPS-PLAN.md is the build order.",
+    "check": "turn 2 evidence #4 doc text (recovered from the session transcript) contains '## 7. Build order'; live file line 129 '## 7. Build order'",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.89,
+     "p": {
+      "supported": 0.0,
+      "contradicted": 0.07,
+      "unsupported": 0.93
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:46+00:00",
  "claims": [
   {
    "id": "t2-m1-c1",
@@ -137,7 +220,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #4 (ipython) executes open('NEWSLETTER-OPS-PLAN.md','w').write(doc) after os.chdir to cwd, prints 7739; evidence #8 `wc -l` shows the file; live `ls -la` in cwd shows NEWSLETTER-OPS-PLAN.md"
+   "check": "turn 2 evidence #4 (ipython) executes open('NEWSLETTER-OPS-PLAN.md','w').write(doc) after os.chdir to cwd, prints 7739; evidence #8 `wc -l` shows the file; live `ls -la` in cwd shows NEWSLETTER-OPS-PLAN.md",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c2",
@@ -149,7 +242,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "no git add/commit in turn 2 evidence #0-#4; evidence #8 `git status --porcelain` shows `?? NEWSLETTER-OPS-PLAN.md` (untracked); live `git log --oneline` shows only ccb8e90 Initial commit"
+   "check": "no git add/commit in turn 2 evidence #0-#4; evidence #8 `git status --porcelain` shows `?? NEWSLETTER-OPS-PLAN.md` (untracked); live `git log --oneline` shows only ccb8e90 Initial commit",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.79,
+    "p": {
+     "unsupported": 0.05,
+     "contradicted": 0.1,
+     "supported": 0.85
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c3",
@@ -161,7 +264,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #3 spawns rlm(name='facts-check') with launchd/GitHub cron/claude -p/Cloudflare questions; its reply (evidence #5, 13:51:49) arrived after this message (13:50:43)"
+   "check": "turn 2 evidence #3 spawns rlm(name='facts-check') with launchd/GitHub cron/claude -p/Cloudflare questions; its reply (evidence #5, 13:51:49) arrived after this message (13:50:43)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "contradicted": 0.04,
+     "supported": 0.95,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c4",
@@ -173,7 +286,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "not checked in session before the message; live read-only `claude auth status` returns loggedIn=true, authMethod=claude.ai, subscriptionType=max"
+   "check": "not checked in session before the message; live read-only `claude auth status` returns loggedIn=true, authMethod=claude.ai, subscriptionType=max",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.78,
+    "p": {
+     "unsupported": 0.85,
+     "contradicted": 0.01,
+     "supported": 0.14
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c5",
@@ -185,7 +308,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "asserted before the facts-check reply; turn 2 evidence #5 (facts-check) reports local `claude -p` reuses keychain OAuth with the same session/weekly limits as interactive use and no documented separate Agent SDK pool; live WebFetch of support.claude.com/en/articles/11145838: 'usage limits that are shared across Claude and Claude Code', no Agent SDK credit pool referenced"
+   "check": "asserted before the facts-check reply; turn 2 evidence #5 (facts-check) reports local `claude -p` reuses keychain OAuth with the same session/weekly limits as interactive use and no documented separate Agent SDK pool; live WebFetch of support.claude.com/en/articles/11145838: 'usage limits that are shared across Claude and Claude Code', no Agent SDK credit pool referenced",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.24,
+    "p": {
+     "unsupported": 0.5,
+     "supported": 0.41,
+     "contradicted": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c6",
@@ -197,7 +330,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "asserted before the facts-check reply; turn 2 evidence #5 quotes the man page; live `man launchd.plist` lines 363-366: 'Unlike cron which skips job invocations when the computer is asleep, launchd will start the job the next time the computer wakes up'"
+   "check": "asserted before the facts-check reply; turn 2 evidence #5 quotes the man page; live `man launchd.plist` lines 363-366: 'Unlike cron which skips job invocations when the computer is asleep, launchd will start the job the next time the computer wakes up'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c7",
@@ -209,7 +352,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #4 doc text (recovered from the session transcript) contains '## 7. Build order'; live file line 129 '## 7. Build order'"
+   "check": "turn 2 evidence #4 doc text (recovered from the session transcript) contains '## 7. Build order'; live file line 129 '## 7. Build order'",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.89,
+    "p": {
+     "supported": 0.0,
+     "contradicted": 0.07,
+     "unsupported": 0.93
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c1",
@@ -221,7 +374,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5 (facts-check report), #6 (rewrote §3 as 'verified'), #7 (replaced cron note in §5 and §8 with verified details; file written before the trailing AttributeError at line 26); live file §3 'Scheduling on macOS (verified)', §5 'Cron notes (verified)', §8 'Verified details and remaining unknowns'"
+   "check": "turn 2 evidence #5 (facts-check report), #6 (rewrote §3 as 'verified'), #7 (replaced cron note in §5 and §8 with verified details; file written before the trailing AttributeError at line 26); live file §3 'Scheduling on macOS (verified)', §5 'Cron notes (verified)', §8 'Verified details and remaining unknowns'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.72,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.17,
+     "supported": 0.81
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c2",
@@ -233,7 +396,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #8: `wc -l` 156 NEWSLETTER-OPS-PLAN.md and `git status --porcelain` -> `?? NEWSLETTER-OPS-PLAN.md`; live `git status --porcelain` still shows `?? NEWSLETTER-OPS-PLAN.md`"
+   "check": "turn 2 evidence #8: `wc -l` 156 NEWSLETTER-OPS-PLAN.md and `git status --porcelain` -> `?? NEWSLETTER-OPS-PLAN.md`; live `git status --porcelain` still shows `?? NEWSLETTER-OPS-PLAN.md`",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c3",
@@ -245,7 +418,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "no git commit in any turn-2 evidence; evidence #8 shows the only change is the untracked file; live `git log --oneline` shows only ccb8e90 Initial commit"
+   "check": "no git commit in any turn-2 evidence; evidence #8 shows the only change is the untracked file; live `git log --oneline` shows only ccb8e90 Initial commit",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.8,
+    "p": {
+     "unsupported": 0.05,
+     "contradicted": 0.08,
+     "supported": 0.87
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c4",
@@ -257,7 +440,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5 quotes the wording verbatim; live `man launchd.plist` lines 363-366: '...launchd will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.'"
+   "check": "turn 2 evidence #5 quotes the wording verbatim; live `man launchd.plist` lines 363-366: '...launchd will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c5",
@@ -269,7 +462,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: 'the man page only promises catch-up for sleep. It does not document catch-up after boot'; live `man launchd.plist | grep -i -E 'shut ?down|boot'` finds no shutdown/boot catch-up wording in the StartCalendarInterval section (only 'upon wake from sleep')"
+   "check": "turn 2 evidence #5: 'the man page only promises catch-up for sleep. It does not document catch-up after boot'; live `man launchd.plist | grep -i -E 'shut ?down|boot'` finds no shutdown/boot catch-up wording in the StartCalendarInterval section (only 'upon wake from sleep')",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c6",
@@ -281,7 +484,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #6 rewrote §3 with the plist key table; live file lines 51-63: table of Label, ProgramArguments, StartCalendarInterval, RunAtLoad, EnvironmentVariables, WorkingDirectory, StandardOutPath/StandardErrorPath under '## 3. Scheduling on macOS (verified)'"
+   "check": "turn 2 evidence #6 rewrote §3 with the plist key table; live file lines 51-63: table of Label, ProgramArguments, StartCalendarInterval, RunAtLoad, EnvironmentVariables, WorkingDirectory, StandardOutPath/StandardErrorPath under '## 3. Scheduling on macOS (verified)'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "supported": 0.93,
+     "unsupported": 0.04,
+     "contradicted": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c7",
@@ -293,7 +506,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: 'claude -p on your laptop reuses the normal OAuth login in the keychain, so a Pro/Max subscription DOES cover headless runs'; live WebFetch code.claude.com/docs/en/headless: bare mode 'doesn't use your subscription login' and 'never reads OAuth credentials or the system keychain' (i.e. default -p does); support article 11145838: limits shared across Claude and Claude Code"
+   "check": "turn 2 evidence #5: 'claude -p on your laptop reuses the normal OAuth login in the keychain, so a Pro/Max subscription DOES cover headless runs'; live WebFetch code.claude.com/docs/en/headless: bare mode 'doesn't use your subscription login' and 'never reads OAuth credentials or the system keychain' (i.e. default -p does); support article 11145838: limits shared across Claude and Claude Code",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c8",
@@ -305,7 +528,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: 'same session/weekly limits as interactive use' and 'Pro/Max use rolling 5-hour session limits plus weekly limits'; live WebFetch support.claude.com/en/articles/11145838: 'usage limits that are shared across Claude and Claude Code' (page confirms sharing; 5-hour granularity rests on evidence #5)"
+   "check": "turn 2 evidence #5: 'same session/weekly limits as interactive use' and 'Pro/Max use rolling 5-hour session limits plus weekly limits'; live WebFetch support.claude.com/en/articles/11145838: 'usage limits that are shared across Claude and Claude Code' (page confirms sharing; 5-hour granularity rests on evidence #5)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c9",
@@ -317,7 +550,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: shares interactive session/weekly limits and no documented separate Agent SDK credit pool; live WebFetch support.claude.com/en/articles/11145838: Claude Code draws from the Pro/Max allocation or Console API credits, 'No Agent SDK credit pool is referenced'"
+   "check": "turn 2 evidence #5: shares interactive session/weekly limits and no documented separate Agent SDK credit pool; live WebFetch support.claude.com/en/articles/11145838: Claude Code draws from the Pro/Max allocation or Console API credits, 'No Agent SDK credit pool is referenced'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.76,
+    "p": {
+     "contradicted": 0.02,
+     "unsupported": 0.14,
+     "supported": 0.84
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c10",
@@ -329,7 +572,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: '--bare explicitly never reads OAuth or keychain and requires ANTHROPIC_API_KEY'; live `claude --help` (v2.1.273): '--bare ... Anthropic auth is strictly ANTHROPIC_API_KEY or apiKeyHelper via --settings (OAuth and keychain are never read)'; live headless docs say the same"
+   "check": "turn 2 evidence #5: '--bare explicitly never reads OAuth or keychain and requires ANTHROPIC_API_KEY'; live `claude --help` (v2.1.273): '--bare ... Anthropic auth is strictly ANTHROPIC_API_KEY or apiKeyHelper via --settings (OAuth and keychain are never read)'; live headless docs say the same",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c11",
@@ -341,7 +594,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5 quotes the docs; live WebFetch docs.github.com events-that-trigger-workflows#schedule: 'High load times include the start of every hour. If the load is sufficiently high enough, some queued jobs may be dropped.'"
+   "check": "turn 2 evidence #5 quotes the docs; live WebFetch docs.github.com events-that-trigger-workflows#schedule: 'High load times include the start of every hour. If the load is sufficiently high enough, some queued jobs may be dropped.'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c12",
@@ -353,7 +616,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: 'Start new projects with Workers' and 'set assets.directory in wrangler.jsonc, then npx wrangler deploy'; live WebFetch developers.cloudflare.com/pages/: 'Workers supports most Pages use cases ... Start new projects with Workers.'"
+   "check": "turn 2 evidence #5: 'Start new projects with Workers' and 'set assets.directory in wrangler.jsonc, then npx wrangler deploy'; live WebFetch developers.cloudflare.com/pages/: 'Workers supports most Pages use cases ... Start new projects with Workers.'",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "contradicted": 0.03,
+     "supported": 0.96,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c13",
@@ -365,7 +638,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #5: 'Custom > Edit Cloudflare Workers'; live WebFetch developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/: 'open the Custom dropdown and select Edit Cloudflare Workers'"
+   "check": "turn 2 evidence #5: 'Custom > Edit Cloudflare Workers'; live WebFetch developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/: 'open the Custom dropdown and select Edit Cloudflare Workers'",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c14",
@@ -377,7 +660,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #2: `ls -la` shows only `.git`; `find -maxdepth 2` lists only the directory and its .git"
+   "check": "turn 2 evidence #2: `ls -la` shows only `.git`; `find -maxdepth 2` lists only the directory and its .git",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.73,
+    "p": {
+     "contradicted": 0.17,
+     "unsupported": 0.01,
+     "supported": 0.82
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c15",
@@ -389,7 +682,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 2 evidence #0: `find . -maxdepth 3 -name '*.zip'` in cwd returned nothing; evidence #1: `find ~ -maxdepth 4 -iname '*newsletter*' -not -path '*/Library/*'` returned only /Users/marcusjhang/.superset/projects/ai-newsletter (search depth was bounded, but the reported outcome matches the tool output)"
+   "check": "turn 2 evidence #0: `find . -maxdepth 3 -name '*.zip'` in cwd returned nothing; evidence #1: `find ~ -maxdepth 4 -iname '*newsletter*' -not -path '*/Library/*'` returned only /Users/marcusjhang/.superset/projects/ai-newsletter (search depth was bounded, but the reported outcome matches the tool output)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.29,
+    "p": {
+     "contradicted": 0.06,
+     "unsupported": 0.53,
+     "supported": 0.41
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t4-m1-c1",
@@ -401,7 +704,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 3 evidence #0 appends '## 9. Repository layout: one repo' with a tree, 'What must stay out of git', path-filter and loop-guard notes (wc -l 156 -> 201); live file lines 160-201 contain that section"
+   "check": "turn 3 evidence #0 appends '## 9. Repository layout: one repo' with a tree, 'What must stay out of git', path-filter and loop-guard notes (wc -l 156 -> 201); live file lines 160-201 contain that section",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.55,
+    "p": {
+     "supported": 0.7,
+     "contradicted": 0.08,
+     "unsupported": 0.22
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t4-m1-c2",
@@ -413,7 +726,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "no git add/commit in turn 2 or turn 3 evidence; live `git log --oneline` shows only ccb8e90 Initial commit and `git status --porcelain` shows `?? NEWSLETTER-OPS-PLAN.md`"
+   "check": "no git add/commit in turn 2 or turn 3 evidence; live `git log --oneline` shows only ccb8e90 Initial commit and `git status --porcelain` shows `?? NEWSLETTER-OPS-PLAN.md`",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.91,
+    "p": {
+     "unsupported": 0.05,
+     "contradicted": 0.02,
+     "supported": 0.93
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c1",
@@ -425,7 +748,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 6 evidence #0 `gh auth status`: 'Logged in to github.com account marcusjhang (keyring) - Active account: true'; live `gh auth status` shows the same"
+   "check": "turn 6 evidence #0 `gh auth status`: 'Logged in to github.com account marcusjhang (keyring) - Active account: true'; live `gh auth status` shows the same",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.91,
+    "p": {
+     "contradicted": 0.04,
+     "unsupported": 0.02,
+     "supported": 0.94
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c2",
@@ -437,7 +770,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 6 evidence #0 `gh repo view marcusjhang/ai-newsletter`: 'GraphQL: Could not resolve to a Repository with the name marcusjhang/ai-newsletter'; live `gh repo view` shows createdAt 2026-09-12T15:29:32Z, i.e. created in turn 7 evidence #0 after this message"
+   "check": "turn 6 evidence #0 `gh repo view marcusjhang/ai-newsletter`: 'GraphQL: Could not resolve to a Repository with the name marcusjhang/ai-newsletter'; live `gh repo view` shows createdAt 2026-09-12T15:29:32Z, i.e. created in turn 7 evidence #0 after this message",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.47,
+    "p": {
+     "contradicted": 0.34,
+     "unsupported": 0.01,
+     "supported": 0.65
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m2-c1",
@@ -449,7 +792,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 7 evidence #0 `gh repo create marcusjhang/ai-newsletter --private ...` printed https://github.com/marcusjhang/ai-newsletter with exit code 0; live `gh repo view` returns nameWithOwner marcusjhang/ai-newsletter, createdAt 2026-09-12T15:29:32Z"
+   "check": "turn 7 evidence #0 `gh repo create marcusjhang/ai-newsletter --private ...` printed https://github.com/marcusjhang/ai-newsletter with exit code 0; live `gh repo view` returns nameWithOwner marcusjhang/ai-newsletter, createdAt 2026-09-12T15:29:32Z",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m2-c2",
@@ -461,7 +814,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 7 evidence #0 `gh repo view --json`: isPrivate true, visibility PRIVATE; live `gh repo view --json isPrivate,visibility`: true / PRIVATE"
+   "check": "turn 7 evidence #0 `gh repo view --json`: isPrivate true, visibility PRIVATE; live `gh repo view --json isPrivate,visibility`: true / PRIVATE",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m2-c3",
@@ -473,7 +836,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "turn 7 evidence #0 ran `git remote add origin git@github.com:marcusjhang/ai-newsletter.git` and `git remote -v` shows origin fetch/push; live `git remote -v` in cwd shows the same origin"
+   "check": "turn 7 evidence #0 ran `git remote add origin git@github.com:marcusjhang/ai-newsletter.git` and `git remote -v` shows origin fetch/push; live `git remote -v` in cwd shows the same origin",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   }
  ]
 }

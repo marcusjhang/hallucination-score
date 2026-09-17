@@ -106,7 +106,17 @@
    "quote": "`dsh` does not expose those CLI options yet",
    "claim": "The dsh CLI exposes no resume or fork options.",
    "check": "t2 evidence #9 (`dsh --help`) lists the example \"dsh --profile tui --resume <session>\", i.e. dsh does expose a --resume option for the tui profile. Only the headless profile's help (t5 #9) lacks it; no fork option was found anywhere",
-   "evidenced_in_session": true
+   "evidenced_in_session": true,
+   "jev": {
+    "label": "supported",
+    "confidence": 0.45,
+    "p": {
+     "supported": 0.63,
+     "contradicted": 0.32,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   }
  ],
  "hedged_wrong": [],
@@ -138,7 +148,156 @@
    7
   ]
  },
- "scored_at": "2026-09-16T17:19:13+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 49,
+   "input_tokens": 520482,
+   "estimated_cost_usd": 0.02186
+  },
+  "claims_judged": 47,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 42,
+   "label_agreement": 0.7857,
+   "label_kappa": -0.027,
+   "hallucination_agreement": 0.7857,
+   "hallucination_kappa": -0.044,
+   "confusion": {
+    "supported": {
+     "supported": 33,
+     "contradicted": 2,
+     "unsupported": 6
+    },
+    "contradicted": {
+     "supported": 1,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 47,
+   "label_agreement": 0.7021,
+   "label_kappa": -0.027,
+   "hallucination_agreement": 0.7021,
+   "hallucination_kappa": -0.041,
+   "confusion": {
+    "supported": {
+     "supported": 33,
+     "contradicted": 4,
+     "unsupported": 9
+    },
+    "contradicted": {
+     "supported": 1,
+     "contradicted": 0,
+     "unsupported": 0
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 0
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t7-m1-c1",
+    "turn": 7,
+    "message": "t7-m1",
+    "type": "verification",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "That confirms the Superset and DeepSeek Harness setup is working.",
+    "claim": "The user's pasted output shows Superset launching the registered dsh entry and dsh reaching the DeepSeek API, i.e. the integration works.",
+    "check": "t7 prompt: quoted-argv launch `'dsh' '--profile' 'headless' 'hello'` from Superset workspace dir brindle-rattlesnake matches the registered entry (t5 #32); the error is now QUOTA: Insufficient Balance (a DeepSeek API 402) rather than MISSING_CREDENTIAL (t6), so the launch and credential lookup succeeded. Caveat: no task completed end-to-end",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.98,
+     "p": {
+      "supported": 0.0,
+      "unsupported": 0.02,
+      "contradicted": 0.98
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m1-c3",
+    "turn": 7,
+    "message": "t7-m1",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "the associated account has no available API credit",
+    "claim": "The \"Insufficient Balance\" error means the DeepSeek account has run out of balance.",
+    "check": "Live WebFetch of DeepSeek error codes: 402 Insufficient Balance — \"You have run out of balance\"; t7 prompt error \"QUOTA: Insufficient Balance\"",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.9,
+     "p": {
+      "unsupported": 0.93,
+      "contradicted": 0.02,
+      "supported": 0.05
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t1-m1-c3",
+    "turn": 1,
+    "message": "t1-m1",
+    "type": "entity",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "There is no existing harness configuration to assess.",
+    "claim": "No harness configuration file exists in the repository.",
+    "check": "t1 evidence #0/#2: no tracked or untracked files besides .git",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.88,
+     "p": {
+      "unsupported": 0.92,
+      "supported": 0.01,
+      "contradicted": 0.07
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m1-c8",
+    "turn": 7,
+    "message": "t7-m1",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "This is a DeepSeek billing issue, not a Superset integration issue.",
+    "claim": "The QUOTA: Insufficient Balance failure originates from DeepSeek account billing, not from the Superset agent registration.",
+    "check": "Error is DeepSeek API 402 Insufficient Balance (live docs); the Superset launch reached dsh and dsh reached the API (t7 prompt); registration verified at t5 #33",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.88,
+     "p": {
+      "unsupported": 0.93,
+      "contradicted": 0.03,
+      "supported": 0.04
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": []
+ },
+ "scored_at": "2026-09-17T07:22:46+00:00",
  "claims": [
   {
    "id": "t1-m1-c1",
@@ -150,7 +309,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0 (find . -maxdepth 2 -type f) lists only .git/config, HEAD, description, index, COMMIT_EDITMSG"
+   "check": "t1 evidence #0 (find . -maxdepth 2 -type f) lists only .git/config, HEAD, description, index, COMMIT_EDITMSG",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.17,
+    "p": {
+     "unsupported": 0.44,
+     "supported": 0.31,
+     "contradicted": 0.25
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m1-c2",
@@ -162,7 +331,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #1 (git log --oneline --all) shows only \"9b61d4e Initial commit\"; evidence #2 (git ls-tree -r HEAD) lists no files"
+   "check": "t1 evidence #1 (git log --oneline --all) shows only \"9b61d4e Initial commit\"; evidence #2 (git ls-tree -r HEAD) lists no files",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.2,
+    "p": {
+     "contradicted": 0.22,
+     "supported": 0.47,
+     "unsupported": 0.31
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m1-c3",
@@ -174,7 +353,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0/#2: no tracked or untracked files besides .git"
+   "check": "t1 evidence #0/#2: no tracked or untracked files besides .git",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.88,
+    "p": {
+     "unsupported": 0.92,
+     "supported": 0.01,
+     "contradicted": 0.07
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c1",
@@ -186,7 +375,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #3 (node --version) prints v24.16.0"
+   "check": "t2 evidence #3 (node --version) prints v24.16.0",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c2",
@@ -198,7 +397,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 fetched raw package.json (excerpt truncated in packet); live WebFetch of https://raw.githubusercontent.com/deepseek-ai/deepseek-harness/master/package.json shows \"engines\": {\"node\": \"^22.19.0 || >=24.0.0\"}. Note: npm view (evidence #3) returned no engines field for the published 0.1.5-rc.1 package, so the requirement comes from the repo package.json"
+   "check": "t2 evidence #2 fetched raw package.json (excerpt truncated in packet); live WebFetch of https://raw.githubusercontent.com/deepseek-ai/deepseek-harness/master/package.json shows \"engines\": {\"node\": \"^22.19.0 || >=24.0.0\"}. Note: npm view (evidence #3) returned no engines field for the published 0.1.5-rc.1 package, so the requirement comes from the repo package.json",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c3",
@@ -210,7 +419,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #6 started bash(\"npx -y @deepseek-ai/dsh --help\") pid 77086; evidence #7 shows running True"
+   "check": "t2 evidence #6 started bash(\"npx -y @deepseek-ai/dsh --help\") pid 77086; evidence #7 shows running True",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.0,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c1",
@@ -222,7 +441,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Node v24.16.0 satisfies the engines range (t2 evidence #2/#3); the npx run subsequently exited 0 (evidence #8/#9). Asserted at after_evidence=8, i.e. before the exit-code notification (#8) was read, but it rested on the Node compatibility check already in hand"
+   "check": "Node v24.16.0 satisfies the engines range (t2 evidence #2/#3); the npx run subsequently exited 0 (evidence #8/#9). Asserted at after_evidence=8, i.e. before the exit-code notification (#8) was read, but it rested on the Node compatibility check already in hand",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.49,
+    "p": {
+     "supported": 0.65,
+     "unsupported": 0.33,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c2",
@@ -234,7 +463,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t1 evidence #0-#2 (find, git log, git ls-tree)"
+   "check": "t1 evidence #0-#2 (find, git log, git ls-tree)",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.34,
+    "p": {
+     "supported": 0.37,
+     "unsupported": 0.07,
+     "contradicted": 0.56
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c3",
@@ -246,7 +485,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "v24.16.0 satisfies \">=24.0.0\" per repo package.json engines (t2 evidence #2; live WebFetch of raw package.json)"
+   "check": "v24.16.0 satisfies \">=24.0.0\" per repo package.json engines (t2 evidence #2; live WebFetch of raw package.json)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "supported": 0.98,
+     "contradicted": 0.0,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c4",
@@ -258,7 +507,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 README \"Run from npm\": npx @deepseek-ai/dsh web"
+   "check": "t2 evidence #2 README \"Run from npm\": npx @deepseek-ai/dsh web",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c5",
@@ -270,7 +529,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 README: \"starts the Web UI at http://127.0.0.1:3080 by default\""
+   "check": "t2 evidence #2 README: \"starts the Web UI at http://127.0.0.1:3080 by default\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.97,
+     "unsupported": 0.03,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c6",
@@ -282,7 +551,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 docs/user/guide/index.md: \"Open **Settings → Models**, enter a DeepSeek API key ... and save it\""
+   "check": "t2 evidence #5 docs/user/guide/index.md: \"Open **Settings → Models**, enter a DeepSeek API key ... and save it\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c7",
@@ -294,7 +573,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 docs guide \"Choose a workspace\": click Choose workspace, add the project directory where you started dsh; composer unavailable until selected"
+   "check": "t2 evidence #5 docs guide \"Choose a workspace\": click Choose workspace, add the project directory where you started dsh; composer unavailable until selected",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c8",
@@ -306,7 +595,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 README \"## Developer preview ... DeepSeek Harness is in _developer preview_\""
+   "check": "t2 evidence #2 README \"## Developer preview ... DeepSeek Harness is in _developer preview_\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m3-c9",
@@ -318,7 +617,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 docs guide: \"The agent can read and edit workspace files, run commands, delegate work\""
+   "check": "t2 evidence #5 docs guide: \"The agent can read and edit workspace files, run commands, delegate work\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 0.99,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c1",
@@ -330,7 +639,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #6-#9: `npx -y @deepseek-ai/dsh --help` completed with exit code 0 and printed usage. Caveat: only `--help` was executed, not the `web` command displayed in the message's code block"
+   "check": "t2 evidence #6-#9: `npx -y @deepseek-ai/dsh --help` completed with exit code 0 and printed usage. Caveat: only `--help` was executed, not the `web` command displayed in the message's code block",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.94,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.02,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c2",
@@ -342,7 +661,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #8 (injected shell notification): \"Command completed (pid 77086, exit code 0)\""
+   "check": "t2 evidence #8 (injected shell notification): \"Command completed (pid 77086, exit code 0)\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c3",
@@ -354,7 +683,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #9 output: single line \"npm warn deprecated node-domexception@1.0.0\" followed by the usage text"
+   "check": "t2 evidence #9 output: single line \"npm warn deprecated node-domexception@1.0.0\" followed by the usage text",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.71,
+    "p": {
+     "supported": 0.8,
+     "contradicted": 0.06,
+     "unsupported": 0.14
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c1",
@@ -366,7 +705,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live read of /Users/marcusjhang/.agents/skills/superset-browser/SKILL.md: \"Drives the in-app browser pane of a Superset workspace\"; also later t5 evidence #8 (superset-computer skill: \"Use superset:browser for Superset's in-app browser pane\"). The only evidence before this message (t3 #0 superset-setup skill) does not mention a browser pane (grep)"
+   "check": "Live read of /Users/marcusjhang/.agents/skills/superset-browser/SKILL.md: \"Drives the in-app browser pane of a Superset workspace\"; also later t5 evidence #8 (superset-computer skill: \"Use superset:browser for Superset's in-app browser pane\"). The only evidence before this message (t3 #0 superset-setup skill) does not mention a browser pane (grep)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 0.0,
+     "unsupported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m2-c2",
@@ -378,7 +727,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 docs/user/guide/index.md \"Configure a model\": Settings → Models, enter a DeepSeek API key"
+   "check": "t2 evidence #5 docs/user/guide/index.md \"Configure a model\": Settings → Models, enter a DeepSeek API key",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.73,
+    "p": {
+     "supported": 0.82,
+     "unsupported": 0.07,
+     "contradicted": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m1-c1",
@@ -390,7 +749,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "t5 evidence #3 (superset --help: \"ws create ... --agent claude\") and #6 (superset agents list --local shows configured agent entries); both were read after this message (after_evidence=3 covers only #0-#2, which were the failed screenshot reads)"
+   "check": "t5 evidence #3 (superset --help: \"ws create ... --agent claude\") and #6 (superset agents list --local shows configured agent entries); both were read after this message (after_evidence=3 covers only #0-#2, which were the failed screenshot reads)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 0.99,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m2-c1",
@@ -402,7 +771,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #13 (host_agent_configs table), #20 (settings/agent-configs.ts router over hostAgentConfigs with preset seeding), later confirmed by #32: settings.agentConfigs.add returned 200 with presetId \"custom\""
+   "check": "t5 evidence #13 (host_agent_configs table), #20 (settings/agent-configs.ts router over hostAgentConfigs with preset seeding), later confirmed by #32: settings.agentConfigs.add returned 200 with presetId \"custom\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m2-c2",
@@ -414,7 +793,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #9: `dsh --profile headless --help` — \"Answer one task ... print the final assistant message, and exit\", task as positional args; t5 #6/#7 show Superset agents use promptTransport argv with --prompt"
+   "check": "t5 evidence #9: `dsh --profile headless --help` — \"Answer one task ... print the final assistant message, and exit\", task as positional args; t5 #6/#7 show Superset agents use promptTransport argv with --prompt",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "supported": 0.97,
+     "contradicted": 0.02,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m2-c3",
@@ -426,7 +815,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": true,
-   "check": "t2 evidence #9 (`dsh --help`) lists the example \"dsh --profile tui --resume <session>\", i.e. dsh does expose a --resume option for the tui profile. Only the headless profile's help (t5 #9) lacks it; no fork option was found anywhere"
+   "check": "t2 evidence #9 (`dsh --help`) lists the example \"dsh --profile tui --resume <session>\", i.e. dsh does expose a --resume option for the tui profile. Only the headless profile's help (t5 #9) lacks it; no fork option was found anywhere",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.45,
+    "p": {
+     "supported": 0.63,
+     "contradicted": 0.32,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m3-c1",
@@ -438,7 +837,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #27 started `npm install --global @deepseek-ai/dsh@0.1.5-rc.1` (pid 12899); #28 running True"
+   "check": "t5 evidence #27 started `npm install --global @deepseek-ai/dsh@0.1.5-rc.1` (pid 12899); #28 running True",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.48,
+    "p": {
+     "contradicted": 0.34,
+     "supported": 0.65,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m4-c1",
@@ -450,7 +859,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #32: POST /trpc/settings.agentConfigs.add returned 200 with id 0cb9349a-aa68-4680-9fd8-fa80be9c8bab, label \"DeepSeek Harness\"; #33 `superset agents list --local --json` lists it. Turns 6-7 show the user launching `dsh --profile headless hello` from Superset workspaces"
+   "check": "t5 evidence #32: POST /trpc/settings.agentConfigs.add returned 200 with id 0cb9349a-aa68-4680-9fd8-fa80be9c8bab, label \"DeepSeek Harness\"; #33 `superset agents list --local --json` lists it. Turns 6-7 show the user launching `dsh --profile headless hello` from Superset workspaces",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m4-c2",
@@ -462,7 +881,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #30: `dsh --version` prints 0.1.5-rc.1"
+   "check": "t5 evidence #30: `dsh --version` prints 0.1.5-rc.1",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m4-c3",
@@ -474,7 +903,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #32/#33: args [\"--profile\",\"headless\"]"
+   "check": "t5 evidence #32/#33: args [\"--profile\",\"headless\"]",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "unsupported": 0.01,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m4-c4",
@@ -486,7 +925,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #32/#33: promptTransport \"argv\""
+   "check": "t5 evidence #32/#33: promptTransport \"argv\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.0,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m4-c5",
@@ -498,7 +947,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #33: `superset agents list --local --json` filtered on label \"DeepSeek Harness\" returns the entry"
+   "check": "t5 evidence #33: `superset agents list --local --json` filtered on label \"DeepSeek Harness\" returns the entry",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.98,
+     "contradicted": 0.01,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t5-m4-c6",
@@ -510,7 +969,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t5 evidence #34: DEEPSEEK_API_KEY not set, no credentials in ~/.dsh (#35); t2 #5 docs: key entered under Settings → Models; confirmed by the t6 prompt error MISSING_CREDENTIAL"
+   "check": "t5 evidence #34: DEEPSEEK_API_KEY not set, no credentials in ~/.dsh (#35); t2 #5 docs: key entered under Settings → Models; confirmed by the t6 prompt error MISSING_CREDENTIAL",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.34,
+    "p": {
+     "contradicted": 0.31,
+     "unsupported": 0.13,
+     "supported": 0.56
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c1",
@@ -522,7 +991,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #9 `dsh --help`: \"web ... boot the web profile\"; t2 #2 README"
+   "check": "t2 evidence #9 `dsh --help`: \"web ... boot the web profile\"; t2 #2 README",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.89,
+    "p": {
+     "supported": 0.93,
+     "contradicted": 0.0,
+     "unsupported": 0.07
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c2",
@@ -534,7 +1013,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #2 README: Web UI at http://127.0.0.1:3080 by default"
+   "check": "t2 evidence #2 README: Web UI at http://127.0.0.1:3080 by default",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.73,
+    "p": {
+     "contradicted": 0.13,
+     "unsupported": 0.05,
+     "supported": 0.82
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c3",
@@ -546,7 +1035,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 docs/user/guide/index.md"
+   "check": "t2 evidence #5 docs/user/guide/index.md",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.66,
+    "p": {
+     "unsupported": 0.18,
+     "contradicted": 0.05,
+     "supported": 0.77
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c4",
@@ -558,7 +1057,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live WebFetch of docs/user/guide/providers.md (fetched in-session at t2 #5, truncated in packet): \"The DeepSeek card exposes one API-key field; enter the key and save it.\""
+   "check": "Live WebFetch of docs/user/guide/providers.md (fetched in-session at t2 #5, truncated in packet): \"The DeepSeek card exposes one API-key field; enter the key and save it.\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.15,
+    "p": {
+     "supported": 0.43,
+     "contradicted": 0.23,
+     "unsupported": 0.34
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c5",
@@ -570,7 +1079,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live WebFetch of https://api-docs.deepseek.com/quick_start/error_codes links https://platform.deepseek.com/api_keys for creating API keys; in-session docs (t2 #5) linked only https://platform.deepseek.com/"
+   "check": "Live WebFetch of https://api-docs.deepseek.com/quick_start/error_codes links https://platform.deepseek.com/api_keys for creating API keys; in-session docs (t2 #5) linked only https://platform.deepseek.com/",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.48,
+    "p": {
+     "supported": 0.04,
+     "contradicted": 0.31,
+     "unsupported": 0.65
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c6",
@@ -582,7 +1101,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 guide \"enter a DeepSeek API key ... and save it\"; live providers.md \"enter the key and save it\""
+   "check": "t2 evidence #5 guide \"enter a DeepSeek API key ... and save it\"; live providers.md \"enter the key and save it\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.9,
+    "p": {
+     "supported": 0.93,
+     "contradicted": 0.02,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c7",
@@ -594,7 +1123,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 prompt error text from dsh itself: \"store DEEPSEEK_API_KEY through the credentials service (the web Models page writes it)\"; live providers.md: keys stored in $DSH_HOME/.credentials.yaml; t7 prompt shows the subsequent headless run got past the credential check (QUOTA error instead of MISSING_CREDENTIAL)"
+   "check": "t6 prompt error text from dsh itself: \"store DEEPSEEK_API_KEY through the credentials service (the web Models page writes it)\"; live providers.md: keys stored in $DSH_HOME/.credentials.yaml; t7 prompt shows the subsequent headless run got past the credential check (QUOTA error instead of MISSING_CREDENTIAL)",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.28,
+    "p": {
+     "unsupported": 0.44,
+     "contradicted": 0.52,
+     "supported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c8",
@@ -606,7 +1145,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 prompt error text: \"or export DEEPSEEK_API_KEY in the launching environment\""
+   "check": "t6 prompt error text: \"or export DEEPSEEK_API_KEY in the launching environment\"",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.13,
+    "p": {
+     "unsupported": 0.42,
+     "contradicted": 0.33,
+     "supported": 0.25
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c9",
@@ -618,7 +1167,17 @@
    "strength": "hedged",
    "label": "not_checkable",
    "evidenced_in_session": false,
-   "check": "hedged (\"may not\"); no evidence in the packet about Superset's launch environment and the cwd no longer exists for a live check"
+   "check": "hedged (\"may not\"); no evidence in the packet about Superset's launch environment and the cwd no longer exists for a live check",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.58,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.72,
+     "supported": 0.27
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c1",
@@ -630,7 +1189,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 prompt: quoted-argv launch `'dsh' '--profile' 'headless' 'hello'` from Superset workspace dir brindle-rattlesnake matches the registered entry (t5 #32); the error is now QUOTA: Insufficient Balance (a DeepSeek API 402) rather than MISSING_CREDENTIAL (t6), so the launch and credential lookup succeeded. Caveat: no task completed end-to-end"
+   "check": "t7 prompt: quoted-argv launch `'dsh' '--profile' 'headless' 'hello'` from Superset workspace dir brindle-rattlesnake matches the registered entry (t5 #32); the error is now QUOTA: Insufficient Balance (a DeepSeek API 402) rather than MISSING_CREDENTIAL (t6), so the launch and credential lookup succeeded. Caveat: no task completed end-to-end",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.0,
+     "unsupported": 0.02,
+     "contradicted": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c2",
@@ -642,7 +1211,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live WebFetch https://api-docs.deepseek.com/quick_start/error_codes: 402 \"Insufficient Balance\" is distinct from 401 \"Authentication Fails\" (wrong API key); t7 prompt shows the 402-class QUOTA error"
+   "check": "Live WebFetch https://api-docs.deepseek.com/quick_start/error_codes: 402 \"Insufficient Balance\" is distinct from 401 \"Authentication Fails\" (wrong API key); t7 prompt shows the 402-class QUOTA error",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.49,
+    "p": {
+     "contradicted": 0.67,
+     "supported": 0.0,
+     "unsupported": 0.33
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c3",
@@ -654,7 +1233,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live WebFetch of DeepSeek error codes: 402 Insufficient Balance — \"You have run out of balance\"; t7 prompt error \"QUOTA: Insufficient Balance\""
+   "check": "Live WebFetch of DeepSeek error codes: 402 Insufficient Balance — \"You have run out of balance\"; t7 prompt error \"QUOTA: Insufficient Balance\"",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.9,
+    "p": {
+     "unsupported": 0.93,
+     "contradicted": 0.02,
+     "supported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c4",
@@ -666,7 +1255,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live WebFetch of https://api-docs.deepseek.com/quick_start/error_codes links the Top up page as https://platform.deepseek.com/top_up"
+   "check": "Live WebFetch of https://api-docs.deepseek.com/quick_start/error_codes links the Top up page as https://platform.deepseek.com/top_up",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.99,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c5",
@@ -678,7 +1277,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "WebSearch returns https://platform.deepseek.com/usage (title \"DeepSeek Platform\") and third-party dsh usage plugins cite it as the official Usage page; direct WebFetch returned 403 (login-gated)"
+   "check": "WebSearch returns https://platform.deepseek.com/usage (title \"DeepSeek Platform\") and third-party dsh usage plugins cite it as the official Usage page; direct WebFetch returned 403 (login-gated)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.98,
+    "p": {
+     "unsupported": 0.99,
+     "supported": 0.01,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c6",
@@ -690,7 +1299,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t2 evidence #5 guide: \"The model configuration guide covers other providers and custom OpenAI-compatible endpoints\"; live providers.md: \"Add provider\" (anthropic, openai, moonshotai, zai) and custom providers"
+   "check": "t2 evidence #5 guide: \"The model configuration guide covers other providers and custom OpenAI-compatible endpoints\"; live providers.md: \"Add provider\" (anthropic, openai, moonshotai, zai) and custom providers",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.91,
+    "p": {
+     "supported": 0.94,
+     "contradicted": 0.01,
+     "unsupported": 0.05
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c7",
@@ -702,7 +1321,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Live WebFetch of docs/user/guide/providers.md (fetched in-session at t2 #5): \"Selecting a model also makes it the default for new sessions.\""
+   "check": "Live WebFetch of docs/user/guide/providers.md (fetched in-session at t2 #5): \"Selecting a model also makes it the default for new sessions.\"",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.7,
+    "p": {
+     "contradicted": 0.04,
+     "supported": 0.8,
+     "unsupported": 0.16
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m1-c8",
@@ -714,7 +1343,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Error is DeepSeek API 402 Insufficient Balance (live docs); the Superset launch reached dsh and dsh reached the API (t7 prompt); registration verified at t5 #33"
+   "check": "Error is DeepSeek API 402 Insufficient Balance (live docs); the Superset launch reached dsh and dsh reached the API (t7 prompt); registration verified at t5 #33",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.88,
+    "p": {
+     "unsupported": 0.93,
+     "contradicted": 0.03,
+     "supported": 0.04
+    },
+    "truncated": false
+   }
   }
  ]
 }

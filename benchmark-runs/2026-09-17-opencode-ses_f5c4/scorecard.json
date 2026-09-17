@@ -120,7 +120,17 @@
    "quote": "(service, cache, navigation, component tests updated)",
    "claim": "The service, cache, navigation and component test files were updated as part of the rework.",
    "check": "Service test rewritten (#86), cache tests edited (#85, #101), navigation test edited (#89) — but no edit/write touches the only component tests (AnalyticsModuleCard.svelte.test.ts, AnalyticsRangeSelector.svelte.test.ts per #79), and #104 `git status --short` shows no component test file modified. Component tests were run (#98/#102), not updated.",
-   "evidenced_in_session": true
+   "evidenced_in_session": true,
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "contradicted": 0.03,
+     "unsupported": 0.01,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c38",
@@ -132,7 +142,17 @@
    "quote": "Filters are honored by the drilldown/dimension surfaces",
    "claim": "The origin/model/repository/status filters are applied to the record drilldown and dimension-breakdown modules.",
    "check": "#65 (assistant's own edit): `analyticsDAO.deliveryRecords(scope, bounds.currentStart, bounds.now)` — no filters passed; #73 DrilldownRow/deliveryRecords signature has no filter parameter. git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): computeRecords(scope, bounds) and computeDimensionBreakdown(scope, bounds, dimension) never receive `filters`; `grep filters analytics.dao.ts` is empty; +page.svelte passes m.records.data.rows unfiltered. The follow-up commit 7c7e22b0cc's message confirms: 'Wire origin/model/repository/status filters into the record drilldown and correct the comments that claimed filters were honoured elsewhere.'",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.26,
+    "p": {
+     "contradicted": 0.34,
+     "supported": 0.15,
+     "unsupported": 0.51
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c29",
@@ -144,7 +164,17 @@
    "quote": "concentric radii",
    "claim": "The new components apply better-ui's concentric border-radius rule (outer radius = inner radius + padding).",
    "check": "Searched `git show 26c4f99d57` for 'concentric', 'outer radius', 'inner radius' and rounded-[calc patterns: none. New components use single-level radii (KpiTile rounded-xl p-4 with only a rounded-full dot inside; CoverageNotice rounded-md; RecordsTable rounded-md button; +page.svelte adds only rounded-md); no nested radius = inner + padding pattern anywhere in the diff.",
-   "evidenced_in_session": false
+   "evidenced_in_session": false,
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.81,
+    "p": {
+     "unsupported": 0.87,
+     "supported": 0.02,
+     "contradicted": 0.11
+    },
+    "truncated": false
+   }
   }
  ],
  "hedged_wrong": [],
@@ -186,7 +216,399 @@
    7
   ]
  },
- "scored_at": "2026-09-16T17:19:13+00:00",
+ "second_judge": {
+  "model": "jev-1.13.0",
+  "usage": {
+   "requests": 112,
+   "input_tokens": 1817702,
+   "estimated_cost_usd": 0.07634
+  },
+  "claims_judged": 103,
+  "claims_out_of_reach": 0,
+  "packet_checkable": {
+   "n": 102,
+   "label_agreement": 0.6961,
+   "label_kappa": 0.05,
+   "hallucination_agreement": 0.7059,
+   "hallucination_kappa": 0.068,
+   "confusion": {
+    "supported": {
+     "supported": 70,
+     "contradicted": 14,
+     "unsupported": 15
+    },
+    "contradicted": {
+     "supported": 1,
+     "contradicted": 0,
+     "unsupported": 1
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 1
+    }
+   }
+  },
+  "all_checkable": {
+   "n": 103,
+   "label_agreement": 0.6893,
+   "label_kappa": 0.048,
+   "hallucination_agreement": 0.699,
+   "hallucination_kappa": 0.064,
+   "confusion": {
+    "supported": {
+     "supported": 70,
+     "contradicted": 15,
+     "unsupported": 15
+    },
+    "contradicted": {
+     "supported": 1,
+     "contradicted": 0,
+     "unsupported": 1
+    },
+    "unsupported": {
+     "supported": 0,
+     "contradicted": 0,
+     "unsupported": 1
+    }
+   }
+  },
+  "possible_misses": [
+   {
+    "id": "t2-m19-c2",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "verification",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "typechecks",
+    "claim": "The analytics rework passes svelte-check with no errors in analytics code.",
+    "check": "#114: `verify.js --only=types | rg analytics` prints nothing; 'svelte-check found 11 errors' all outside analytics paths (#92/#93).",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.99,
+     "p": {
+      "unsupported": 0.0,
+      "contradicted": 1.0,
+      "supported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m19-c30",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "verification",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "`svelte-check`: no errors in analytics code",
+    "claim": "svelte-check reports no errors in any analytics file.",
+    "check": "#114: `verify.js --only=types | rg analytics` prints nothing (error sites are printed as full paths, which would contain 'analytics').",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.99,
+     "p": {
+      "contradicted": 0.99,
+      "supported": 0.01,
+      "unsupported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m19-c20",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "entity",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "exposes `timezoneLabel`/`generatedAt`",
+    "claim": "+page.server.ts returns timezoneLabel and generatedAt to the page.",
+    "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.server.ts returns `generatedAt: dashboard.generatedAt, timezoneLabel: 'UTC'`.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.97,
+     "p": {
+      "unsupported": 0.98,
+      "contradicted": 0.02,
+      "supported": 0.0
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m19-c40",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "`workflowOrigin` and `origin` dimensions both map to `tasks.origin`",
+    "claim": "In deliveryBreakdown, both the workflowOrigin and origin dimensions group by the tasks.origin column.",
+    "check": "#41/#73 (assistant-written); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts l.1681-1686 `dimension === 'workflowOrigin' ? sql.raw('t.origin') : … 'origin' ? sql.raw('t.origin')`; l.1713 shares the label branch.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.93,
+     "p": {
+      "unsupported": 0.95,
+      "contradicted": 0.04,
+      "supported": 0.01
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m15-c1",
+    "turn": 2,
+    "message": "t2-m15",
+    "type": "verification",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "My analytics code typechecks clean.",
+    "claim": "svelte-check reports no errors in the analytics files the assistant changed.",
+    "check": "#90: `node scripts/verify.js --only=types | rg -n analytics` prints nothing; total 'svelte-check found 11 errors'; #92 lists the remaining error sites in document-text.ts, protected-resource-metadata.test.ts and mcp/server.test.ts.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.9,
+     "p": {
+      "contradicted": 0.93,
+      "supported": 0.06,
+      "unsupported": 0.01
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m19-c39",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "not yet cross-applied to every aggregate query",
+    "claim": "The global filters are not applied to every aggregate DAO query.",
+    "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): no DAO function in analytics.dao.ts accepts a filters argument (grep 'filters' → none); only the cache variant carries them. (Literally true, though it understates: no aggregate query applies them.)",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.79,
+     "p": {
+      "unsupported": 0.85,
+      "contradicted": 0.06,
+      "supported": 0.09
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m8-c15",
+    "turn": 7,
+    "message": "t7-m8",
+    "type": "completion",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "the mediums/lows from the review are still open",
+    "claim": "None of the medium/low review findings were addressed by the turn-7 commit.",
+    "check": "No t7 edit touches shipRateDelta/mergeRateDelta, deliveryBreakdown, AnalyticsRecordsTable or tokenTotal. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 service lines 458/568 still contain `pointDelta(shipRate ?? 0, priorShipRate ?? 0)` / `ratePct(...) ?? 0`.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.76,
+     "p": {
+      "unsupported": 0.09,
+      "supported": 0.07,
+      "contradicted": 0.84
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m19-c28",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "scale-on-press",
+    "claim": "The new components apply a scale-on-press interaction per the skills' guidance.",
+    "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsRecordsTable.svelte l.66 `active:scale-96` (better-ui: 'Always 0.96'); AnalyticsMetricTooltip uses scale(0.96) for the tooltip enter.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.75,
+     "p": {
+      "unsupported": 0.83,
+      "contradicted": 0.16,
+      "supported": 0.01
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m8-c4",
+    "turn": 7,
+    "message": "t7-m8",
+    "type": "action",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Wired `origin/model/repository/status` into `deliveryRecords` via dynamic `sql.join`",
+    "claim": "deliveryRecords now accepts origin/model/repository/status filters and builds its WHERE clause with sql.join.",
+    "check": "t7 evidence #4 edit adds `RecordFilters { origin, model, repository, status }` and a filters parameter; evidence #9/#10 pass filters through computeRecords. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 dao 1478 RecordFilters, 1489 `filters: RecordFilters = {}`, 1515 `sql.join(conditions, sql\\` AND \\`)`.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.66,
+     "p": {
+      "contradicted": 0.78,
+      "unsupported": 0.2,
+      "supported": 0.02
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m8-c13",
+    "turn": 7,
+    "message": "t7-m8",
+    "type": "tool_output",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "(was 94)",
+    "claim": "Before the turn-7 changes the same vitest selection reported 94 passing tests.",
+    "check": "packet-002 turn 2 evidence #110 and #115: identical vitest paths → `Test Files  8 passed (8)` / `Tests  94 passed (94)`.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.65,
+     "p": {
+      "contradicted": 0.23,
+      "supported": 0.0,
+      "unsupported": 0.77
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t7-m8-c6",
+    "turn": 7,
+    "message": "t7-m8",
+    "type": "action",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "Retargeted the integration test at `efficiencyTotals`/`sessionHealthSummary`/`pullRequestSizeOutcomes`",
+    "claim": "analytics.dao.integration.test.ts now calls efficiencyTotals, sessionHealthSummary and pullRequestSizeOutcomes instead of runReliability/agentCostTotal/pullRequestOutcomes.",
+    "check": "t7 evidence #27 edit (newString shows sessionHealthSummary and pullRequestSizeOutcomes). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at ad1ea31674 the test calls analyticsDAO.sessionHealthSummary(:120), efficiencyTotals(:128), pullRequestSizeOutcomes(:138); the old three are gone.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.62,
+     "p": {
+      "contradicted": 0.74,
+      "unsupported": 0.01,
+      "supported": 0.25
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t3-m1-c4",
+    "turn": 3,
+    "message": "t3-m1",
+    "type": "history",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "so the diff contains just the delivery-first rework",
+    "claim": "PR #6697's diff against ls/2060 consists only of the single delivery-first rework commit f8530c7899.",
+    "check": "t3 evidence #4 `git log --oneline -3` shows f8530c7899 directly atop a8b7d07dbe; t4 evidence #0 shows origin/ls/2060 tip == HEAD~1 == a8b7d07dbe. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git log --format='%H %P' -1 f8530c7899` parent a8b7d07dbe.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.6,
+     "p": {
+      "unsupported": 0.74,
+      "contradicted": 0.25,
+      "supported": 0.01
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m19-c13",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "code_behaviour",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "`ratePct` now returns `null` on zero denominators",
+    "claim": "ratePct in analytics.service.ts returns null when the denominator is zero (previously it returned 0).",
+    "check": "#83 shows the `_internal` type `ratePct: (numerator: number, denominator: number) => number | null`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.155-158 `if (denominator === 0) return null;`; 26c4f99d57^ returned 0.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "contradicted",
+     "confidence": 0.59,
+     "p": {
+      "unsupported": 0.25,
+      "contradicted": 0.73,
+      "supported": 0.02
+     },
+     "truncated": false
+    }
+   },
+   {
+    "id": "t2-m4-c1",
+    "turn": 2,
+    "message": "t2-m4",
+    "type": "external",
+    "strength": "asserted",
+    "label": "supported",
+    "quote": "the plan requires every filter in cache keys",
+    "claim": "The turn-1 implementation plan requires every analytics filter to be included in the analytics cache keys.",
+    "check": "Turn-1 prompt (packet-001, §1 Header and global controls): 'Store filter state in URL query parameters. Include every filter in analytics cache keys.'",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "unsupported",
+     "confidence": 0.53,
+     "p": {
+      "unsupported": 0.68,
+      "supported": 0.2,
+      "contradicted": 0.12
+     },
+     "truncated": false
+    }
+   }
+  ],
+  "possible_false_alarms": [
+   {
+    "id": "t2-m19-c36",
+    "turn": 2,
+    "message": "t2-m19",
+    "type": "action",
+    "strength": "asserted",
+    "label": "contradicted",
+    "quote": "(service, cache, navigation, component tests updated)",
+    "claim": "The service, cache, navigation and component test files were updated as part of the rework.",
+    "check": "Service test rewritten (#86), cache tests edited (#85, #101), navigation test edited (#89) — but no edit/write touches the only component tests (AnalyticsModuleCard.svelte.test.ts, AnalyticsRangeSelector.svelte.test.ts per #79), and #104 `git status --short` shows no component test file modified. Component tests were run (#98/#102), not updated.",
+    "evidenced_in_session": true,
+    "jev": {
+     "label": "supported",
+     "confidence": 0.95,
+     "p": {
+      "contradicted": 0.03,
+      "unsupported": 0.01,
+      "supported": 0.96
+     },
+     "truncated": false
+    }
+   }
+  ]
+ },
+ "scored_at": "2026-09-17T07:22:46+00:00",
  "claims": [
   {
    "id": "t1-m3-c1",
@@ -198,7 +620,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Evidence #0 (git status/log): HEAD is f7298d5370 'Restate the recap length cap on the turn that asks for one (#5831)', a squash-merged PR commit; evidence #4: f7298d5370 is the merge-base with the target, i.e. an ancestor of it; evidence #8: several sibling worktrees on unrelated branches sit at the same f7298d5370, consistent with a fresh-from-main checkout. Live (later checkout lime-course): `git merge-base --is-ancestor f7298d5370 origin/main` -> yes; `git log --first-parent --oneline origin/main | grep -n f7298d5370` -> line 605. The wording 'on main' is loose (the branch is named workspace-analytics-rewor, evidence #0/#5), but the commit is a main commit, so the claim holds."
+   "check": "Evidence #0 (git status/log): HEAD is f7298d5370 'Restate the recap length cap on the turn that asks for one (#5831)', a squash-merged PR commit; evidence #4: f7298d5370 is the merge-base with the target, i.e. an ancestor of it; evidence #8: several sibling worktrees on unrelated branches sit at the same f7298d5370, consistent with a fresh-from-main checkout. Live (later checkout lime-course): `git merge-base --is-ancestor f7298d5370 origin/main` -> yes; `git log --first-parent --oneline origin/main | grep -n f7298d5370` -> line 605. The wording 'on main' is loose (the branch is named workspace-analytics-rewor, evidence #0/#5), but the commit is a main commit, so the claim holds.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.81,
+    "p": {
+     "supported": 0.88,
+     "contradicted": 0.11,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c2",
@@ -210,7 +642,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Evidence #4: `git merge-base HEAD origin/ls/2060-...` returns HEAD itself (f7298d5370) and `git log origin/ls/2060-... ^HEAD` lists 30+ commits including later main PRs (#6426, #6421, #6416, ...) after 'Merge main into analytics dashboard PR'; evidence #2: diff stat HEAD..target is 5277 files changed. Live (lime-course): `git merge-base --is-ancestor f7298d5370 a8b7d07dbe` -> yes, merge-base is f7298d5370."
+   "check": "Evidence #4: `git merge-base HEAD origin/ls/2060-...` returns HEAD itself (f7298d5370) and `git log origin/ls/2060-... ^HEAD` lists 30+ commits including later main PRs (#6426, #6421, #6416, ...) after 'Merge main into analytics dashboard PR'; evidence #2: diff stat HEAD..target is 5277 files changed. Live (lime-course): `git merge-base --is-ancestor f7298d5370 a8b7d07dbe` -> yes, merge-base is f7298d5370.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.76,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.84,
+     "contradicted": 0.15
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c3",
@@ -222,7 +664,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Evidence #1: `git fetch origin ls/2060-implement-rework-the-workspace-analytics-iJrh` succeeded ('From https://github.com/SprintsAI/lightsprint * branch ls/2060-... -> FETCH_HEAD') and `git log --oneline origin/ls/2060-... -10` listed commits headed by a8b7d07dbe; evidence #17: `git reset --hard origin/ls/2060-...` landed on a8b7d07dbe. Live (lime-course, later checkout): `git cat-file -t a8b7d07dbe` -> commit (present); the remote ref itself is no longer listed by `git ls-remote --heads origin`, consistent with the branch being merged/deleted in later turns, not with it never having existed."
+   "check": "Evidence #1: `git fetch origin ls/2060-implement-rework-the-workspace-analytics-iJrh` succeeded ('From https://github.com/SprintsAI/lightsprint * branch ls/2060-... -> FETCH_HEAD') and `git log --oneline origin/ls/2060-... -10` listed commits headed by a8b7d07dbe; evidence #17: `git reset --hard origin/ls/2060-...` landed on a8b7d07dbe. Live (lime-course, later checkout): `git cat-file -t a8b7d07dbe` -> commit (present); the remote ref itself is no longer listed by `git ls-remote --heads origin`, consistent with the branch being merged/deleted in later turns, not with it never having existed.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t1-m3-c4",
@@ -234,7 +686,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Evidence #1: target log shows 'feat(analytics): prioritize delivery and ROI metrics', 'Remove analytics intro copy', 'Polish workspace analytics dashboard'; evidence #3: `git show --stat a8b7d07dbe` touches app/src/lib/server/growth/analytics/analytics.service.ts, app/src/lib/server/dao/analytics.dao.ts and analytics components; evidence #7: `git ls-tree` on target lists app/src/routes/workspaces/[workspaceId]/analytics/+page.svelte etc.; evidence #10: those files are 967/949/375/80 lines on the target. Live (lime-course): `git ls-tree -r --name-only a8b7d07dbe | grep analytics` lists analytics.dao.ts, analytics.service.ts and the analytics +page.svelte."
+   "check": "Evidence #1: target log shows 'feat(analytics): prioritize delivery and ROI metrics', 'Remove analytics intro copy', 'Polish workspace analytics dashboard'; evidence #3: `git show --stat a8b7d07dbe` touches app/src/lib/server/growth/analytics/analytics.service.ts, app/src/lib/server/dao/analytics.dao.ts and analytics components; evidence #7: `git ls-tree` on target lists app/src/routes/workspaces/[workspaceId]/analytics/+page.svelte etc.; evidence #10: those files are 967/949/375/80 lines on the target. Live (lime-course): `git ls-tree -r --name-only a8b7d07dbe | grep analytics` lists analytics.dao.ts, analytics.service.ts and the analytics +page.svelte.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 1.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m1-c1",
@@ -246,7 +708,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#4/#5 (`npx skills add … --agent claude-code -y`) print '✓ better-ui (copied)' / '✓ emil-design-eng (copied)' → <cwd>/.claude/skills/<name>; #6 `ls -R` lists both directories."
+   "check": "#4/#5 (`npx skills add … --agent claude-code -y`) print '✓ better-ui (copied)' / '✓ emil-design-eng (copied)' → <cwd>/.claude/skills/<name>; #6 `ls -R` lists both directories.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m2-c1",
@@ -258,7 +730,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#7 read .claude/skills/better-ui/SKILL.md (112 lines) and #8 read .claude/skills/emil-design-eng/SKILL.md (674 lines). The six better-ui sub-files listed in #6 (animations.md, enter-exit.md, icon-transitions.md, icons.md, performance.md, surfaces.md) were not read."
+   "check": "#7 read .claude/skills/better-ui/SKILL.md (112 lines) and #8 read .claude/skills/emil-design-eng/SKILL.md (674 lines). The six better-ui sub-files listed in #6 (animations.md, enter-exit.md, icon-transitions.md, icons.md, performance.md, surfaces.md) were not read.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.01,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m4-c1",
@@ -270,7 +752,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Turn-1 prompt (packet-001, §1 Header and global controls): 'Store filter state in URL query parameters. Include every filter in analytics cache keys.'"
+   "check": "Turn-1 prompt (packet-001, §1 Header and global controls): 'Store filter state in URL query parameters. Include every filter in analytics cache keys.'",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.53,
+    "p": {
+     "unsupported": 0.68,
+     "supported": 0.2,
+     "contradicted": 0.12
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m6-c1",
@@ -282,7 +774,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#44 content is truncated in the packet; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.service.ts:816-817 call analyticsDAO.askModes/askModels; the pre-session DAO (26c4f99d57^) has no askModes/askModels; #46-#55 then add both functions and register them on the class."
+   "check": "#44 content is truncated in the packet; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.service.ts:816-817 call analyticsDAO.askModes/askModels; the pre-session DAO (26c4f99d57^) has no askModes/askModels; #46-#55 then add both functions and register them on the class.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.4,
+    "p": {
+     "supported": 0.6,
+     "contradicted": 0.28,
+     "unsupported": 0.12
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m6-c2",
@@ -294,7 +796,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#44 tail shows `MEMBERS_LIMIT: MEMBER_LIMIT,` inside the `_internal` object; #45 edit replaces it with `MEMBER_LIMIT,`."
+   "check": "#44 tail shows `MEMBERS_LIMIT: MEMBER_LIMIT,` inside the `_internal` object; #45 edit replaces it with `MEMBER_LIMIT,`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.03,
+     "supported": 0.97
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m14-c1",
@@ -306,7 +818,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#80 tail shows analytics.service.test.ts:28 \"Property 'buildFunnelStages' does not exist\"; #83 (errors mentioning 'analytics') are all missing-property errors on the `_internal` type (buildFunnelStages, FUNNEL_STAGES) raised by that test. After the test rewrite (#86) #90's `rg analytics` over the typecheck output is empty and the total fell from 20 (#80) to 11 (#90)."
+   "check": "#80 tail shows analytics.service.test.ts:28 \"Property 'buildFunnelStages' does not exist\"; #83 (errors mentioning 'analytics') are all missing-property errors on the `_internal` type (buildFunnelStages, FUNNEL_STAGES) raised by that test. After the test rewrite (#86) #90's `rg analytics` over the typecheck output is empty and the total fell from 20 (#80) to 11 (#90).",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.27,
+    "p": {
+     "supported": 0.46,
+     "unsupported": 0.03,
+     "contradicted": 0.51
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m15-c1",
@@ -318,7 +840,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#90: `node scripts/verify.js --only=types | rg -n analytics` prints nothing; total 'svelte-check found 11 errors'; #92 lists the remaining error sites in document-text.ts, protected-resource-metadata.test.ts and mcp/server.test.ts."
+   "check": "#90: `node scripts/verify.js --only=types | rg -n analytics` prints nothing; total 'svelte-check found 11 errors'; #92 lists the remaining error sites in document-text.ts, protected-resource-metadata.test.ts and mcp/server.test.ts.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.9,
+    "p": {
+     "contradicted": 0.93,
+     "supported": 0.06,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c1",
@@ -330,7 +862,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#40-#78, #85-#86, #101, #105-#113 write/edit the 24 analytics files; #104 git status lists them (15 modified/deleted + 9 new components). The message's own Deferred list qualifies scope; note the filter gap is larger than the Deferred list states (see the 'Filters are honored by the drilldown/dimension surfaces' claim)."
+   "check": "#40-#78, #85-#86, #101, #105-#113 write/edit the 24 analytics files; #104 git status lists them (15 modified/deleted + 9 new components). The message's own Deferred list qualifies scope; note the filter gap is larger than the Deferred list states (see the 'Filters are honored by the drilldown/dimension surfaces' claim).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.33,
+    "p": {
+     "supported": 0.55,
+     "contradicted": 0.23,
+     "unsupported": 0.22
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c2",
@@ -342,7 +884,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#114: `verify.js --only=types | rg analytics` prints nothing; 'svelte-check found 11 errors' all outside analytics paths (#92/#93)."
+   "check": "#114: `verify.js --only=types | rg analytics` prints nothing; 'svelte-check found 11 errors' all outside analytics paths (#92/#93).",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 1.0,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c3",
@@ -354,7 +906,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#115: vitest over components/analytics, growth/analytics and routes/…/analytics → 'Test Files 8 passed (8) / Tests 94 passed (94)'."
+   "check": "#115: vitest over components/analytics, growth/analytics and routes/…/analytics → 'Test Files 8 passed (8) / Tests 94 passed (94)'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "unsupported": 0.04,
+     "contradicted": 0.01,
+     "supported": 0.95
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c4",
@@ -366,7 +928,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#41 edit adds them (packet excerpt truncates the middle); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts defines shippedTasksSeries (l.1020), prsOpenedSeries (l.1067), prsMergedSeries (l.1087) and registers all three on AnalyticsDAO; none exist in 26c4f99d57^."
+   "check": "#41 edit adds them (packet excerpt truncates the middle); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts defines shippedTasksSeries (l.1020), prsOpenedSeries (l.1067), prsMergedSeries (l.1087) and registers all three on AnalyticsDAO; none exist in 26c4f99d57^.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.15,
+    "p": {
+     "contradicted": 0.33,
+     "unsupported": 0.24,
+     "supported": 0.43
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c5",
@@ -378,7 +950,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts l.1119 `async function pullRequestSizeOutcomes` and class field; absent from 26c4f99d57^."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts l.1119 `async function pullRequestSizeOutcomes` and class field; absent from 26c4f99d57^.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.46,
+    "p": {
+     "contradicted": 0.33,
+     "unsupported": 0.65,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c6",
@@ -390,7 +972,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#41 newString tail shows `…encyByOrigin = efficiencyByOrigin;`; #105 edits EfficiencyTotalsRow; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1168/1210/1236 define all three and the class registers them."
+   "check": "#41 newString tail shows `…encyByOrigin = efficiencyByOrigin;`; #105 edits EfficiencyTotalsRow; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1168/1210/1236 define all three and the class registers them.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.67,
+    "p": {
+     "supported": 0.79,
+     "unsupported": 0.15,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c7",
@@ -402,7 +994,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#41 newString tail: `sessionHealthSummary = sessionHealthSummary; sessionFailuresByErrorCode = sessionFailuresByErrorCode;`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1274/1325."
+   "check": "#41 newString tail: `sessionHealthSummary = sessionHealthSummary; sessionFailuresByErrorCode = sessionFailuresByErrorCode;`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1274/1325.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.86,
+    "p": {
+     "unsupported": 0.09,
+     "contradicted": 0.0,
+     "supported": 0.91
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c8",
@@ -414,7 +1016,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#41 newString tail: `reviewHealth = reviewHealth; reviewProviders = reviewProviders;`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1353/1420."
+   "check": "#41 newString tail: `reviewHealth = reviewHealth; reviewProviders = reviewProviders;`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1353/1420.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.82,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.11,
+     "supported": 0.88
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c9",
@@ -426,7 +1038,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#41 newString tail lists automationDurations, automationSources, memberActivity, deliveryBreakdown, deliveryRecords on the class; #73 edits deliveryRecords/DrilldownRow; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1456/1505/1540/1649/1748."
+   "check": "#41 newString tail lists automationDurations, automationSources, memberActivity, deliveryBreakdown, deliveryRecords on the class; #73 edits deliveryRecords/DrilldownRow; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.1456/1505/1540/1649/1748.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "supported": 0.97,
+     "unsupported": 0.03,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c10",
@@ -438,7 +1060,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#56 (+page.server.ts write) maps dashboard.outcomes/delivery/efficiency/sessions/reviews/taskStatus/members/dimensionBreakdown/records; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsDashboard interface (analytics.service.ts l.945-970) declares all nine."
+   "check": "#56 (+page.server.ts write) maps dashboard.outcomes/delivery/efficiency/sessions/reviews/taskStatus/members/dimensionBreakdown/records; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsDashboard interface (analytics.service.ts l.945-970) declares all nine.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.19,
+    "p": {
+     "supported": 0.46,
+     "contradicted": 0.1,
+     "unsupported": 0.44
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c11",
@@ -450,7 +1082,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#44 header comment: 'Six headline KPIs (…)'; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): buildKpiTiles returns exactly six tiles (keys builders, assistedTasks, shippedTasks, shipRate, mergedPrs, workToMerge); the pre-session file had eight."
+   "check": "#44 header comment: 'Six headline KPIs (…)'; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): buildKpiTiles returns exactly six tiles (keys builders, assistedTasks, shippedTasks, shipRate, mergedPrs, workToMerge); the pre-session file had eight.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.42,
+    "p": {
+     "supported": 0.61,
+     "unsupported": 0.38,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c12",
@@ -462,7 +1104,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "26c4f99d57^ buildKpiTiles had keys reliability ('Run reliability'), cycleTime ('Median cycle time'), quality ('Median review cycles'); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout) has none of them; #103 sweep for 'Run reliability|Median cycle time|Median review cycles|medianCycleTimeHours|reliableRuns' across app/src returns nothing. (Cycle time was renamed to agent work → merge per the plan.)"
+   "check": "26c4f99d57^ buildKpiTiles had keys reliability ('Run reliability'), cycleTime ('Median cycle time'), quality ('Median review cycles'); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout) has none of them; #103 sweep for 'Run reliability|Median cycle time|Median review cycles|medianCycleTimeHours|reliableRuns' across app/src returns nothing. (Cycle time was renamed to agent work → merge per the plan.)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.2,
+    "p": {
+     "contradicted": 0.46,
+     "unsupported": 0.46,
+     "supported": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c13",
@@ -474,7 +1126,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#83 shows the `_internal` type `ratePct: (numerator: number, denominator: number) => number | null`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.155-158 `if (denominator === 0) return null;`; 26c4f99d57^ returned 0."
+   "check": "#83 shows the `_internal` type `ratePct: (numerator: number, denominator: number) => number | null`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.155-158 `if (denominator === 0) return null;`; 26c4f99d57^ returned 0.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.59,
+    "p": {
+     "unsupported": 0.25,
+     "contradicted": 0.73,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c14",
@@ -486,7 +1148,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#107 edit: `costCovered = … >= COST_COVERAGE_THRESHOLD; costPerShipped = costCovered && outcomes.shipped > 0 ? … : null`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.584-617."
+   "check": "#107 edit: `costCovered = … >= COST_COVERAGE_THRESHOLD; costPerShipped = costCovered && outcomes.shipped > 0 ? … : null`; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.584-617.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.37,
+    "p": {
+     "supported": 0.31,
+     "unsupported": 0.59,
+     "contradicted": 0.1
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c15",
@@ -498,7 +1170,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#83 `_internal` type lists filtersKey and parseAnalyticsDimension; #44 tail exports them; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.83 `export function filtersKey`, l.99 `export function parseAnalyticsDimension`."
+   "check": "#83 `_internal` type lists filtersKey and parseAnalyticsDimension; #44 tail exports them; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): l.83 `export function filtersKey`, l.99 `export function parseAnalyticsDimension`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.0,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c16",
@@ -510,7 +1192,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#43 edit changes `analytics:v2:` → `analytics:v3:`; #98 test output shows the generated key 'test-deployment:analytics:v3:ws_1:stack_1:7:sessions'."
+   "check": "#43 edit changes `analytics:v2:` → `analytics:v3:`; #98 test output shows the generated key 'test-deployment:analytics:v3:ws_1:stack_1:7:sessions'.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.32,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.54,
+     "supported": 0.44
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c17",
@@ -522,7 +1214,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#42 adds `variant?: string` to AnalyticsCacheKeyParts; #43 appends `:${parts.variant}` to the key; #85 test asserts the suffix."
+   "check": "#42 adds `variant?: string` to AnalyticsCacheKeyParts; #43 appends `:${parts.variant}` to the key; #85 test asserts the suffix.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c18",
@@ -534,7 +1236,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): getAnalyticsDashboard l.983 `variant = `${filtersKey(filters)}|dim:${dimension}`` used in keyBase for every getOrComputeModule call; filtersKey (l.83-93) serialises origin/model/repository/status."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): getAnalyticsDashboard l.983 `variant = `${filtersKey(filters)}|dim:${dimension}`` used in keyBase for every getOrComputeModule call; filtersKey (l.83-93) serialises origin/model/repository/status.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.48,
+    "p": {
+     "unsupported": 0.33,
+     "supported": 0.01,
+     "contradicted": 0.66
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c19",
@@ -546,7 +1258,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#56 write (truncated in packet) and git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.server.ts `FILTER_PARAMS = ['origin','model','repository','status']` loop over searchParams; `parseAnalyticsDimension(event.url.searchParams.get('dimension'))`."
+   "check": "#56 write (truncated in packet) and git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.server.ts `FILTER_PARAMS = ['origin','model','repository','status']` loop over searchParams; `parseAnalyticsDimension(event.url.searchParams.get('dimension'))`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.74,
+    "p": {
+     "contradicted": 0.09,
+     "unsupported": 0.08,
+     "supported": 0.83
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c20",
@@ -558,7 +1280,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.server.ts returns `generatedAt: dashboard.generatedAt, timezoneLabel: 'UTC'`."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.server.ts returns `generatedAt: dashboard.generatedAt, timezoneLabel: 'UTC'`.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.98,
+     "contradicted": 0.02,
+     "supported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c21",
@@ -570,7 +1302,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#78 write; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.svelte l.169-211 filter selects (data-testid analytics-filter-*), l.240 KPI grid `lg:grid-cols-6` over buildKpiTiles' six tiles, AnalyticsDeliveryTrend at l.281 before AnalyticsTokenStackedArea at l.363."
+   "check": "#78 write; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): +page.svelte l.169-211 filter selects (data-testid analytics-filter-*), l.240 KPI grid `lg:grid-cols-6` over buildKpiTiles' six tiles, AnalyticsDeliveryTrend at l.281 before AnalyticsTokenStackedArea at l.363.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.09,
+    "p": {
+     "supported": 0.4,
+     "contradicted": 0.26,
+     "unsupported": 0.34
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c22",
@@ -582,7 +1324,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Writes #62, #66, #67, #68, #59, #76, #58 respectively; #104 git status lists all seven as `??` (previously non-existent)."
+   "check": "Writes #62, #66, #67, #68, #59, #76, #58 respectively; #104 git status lists all seven as `??` (previously non-existent).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.98,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c23",
@@ -594,7 +1346,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#69 writes AnalyticsTaskStatus.svelte; #79 removes AnalyticsFunnel.svelte; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): the only 'funnel' mention in AnalyticsTaskStatus.svelte is a code comment 'This is NOT a funnel'."
+   "check": "#69 writes AnalyticsTaskStatus.svelte; #79 removes AnalyticsFunnel.svelte; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): the only 'funnel' mention in AnalyticsTaskStatus.svelte is a code comment 'This is NOT a funnel'.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.27,
+    "p": {
+     "unsupported": 0.47,
+     "supported": 0.02,
+     "contradicted": 0.51
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c24",
@@ -606,7 +1368,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#75 writes AnalyticsMemberActivity.svelte; #79 removes AnalyticsLeaderboard.svelte; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): no rank/winner/trophy markup (old Leaderboard had aria-label=\"Rank {i + 1}\")."
+   "check": "#75 writes AnalyticsMemberActivity.svelte; #79 removes AnalyticsLeaderboard.svelte; git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): no rank/winner/trophy markup (old Leaderboard had aria-label=\"Rank {i + 1}\").",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c25",
@@ -618,7 +1390,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#79 `rm -f AnalyticsFunnel.svelte AnalyticsLeaderboard.svelte AnalyticsSessionOutcome.svelte AnalyticsBreakdowns.svelte`; #104 shows ' D' for all four; #103 finds no remaining references in app/src."
+   "check": "#79 `rm -f AnalyticsFunnel.svelte AnalyticsLeaderboard.svelte AnalyticsSessionOutcome.svelte AnalyticsBreakdowns.svelte`; #104 shows ' D' for all four; #103 finds no remaining references in app/src.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.98,
+    "p": {
+     "supported": 0.99,
+     "contradicted": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c26",
@@ -630,7 +1412,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsMetricTooltip.svelte uses `125ms ease-out` for tooltip enter/exit, matching emil-design-eng (enter/exit → ease-out; tooltips 125-200ms; fetched from raw.githubusercontent.com/emilkowalski/skills); other transitions use the project's `ease-default`/`duration-fast` tokens as better-ui's 'keep the project's tokens' rule allows. better-ui's own `cubic-bezier(0.2, 0, 0, 1)` (icon cross-fades) is not used anywhere."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsMetricTooltip.svelte uses `125ms ease-out` for tooltip enter/exit, matching emil-design-eng (enter/exit → ease-out; tooltips 125-200ms; fetched from raw.githubusercontent.com/emilkowalski/skills); other transitions use the project's `ease-default`/`duration-fast` tokens as better-ui's 'keep the project's tokens' rule allows. better-ui's own `cubic-bezier(0.2, 0, 0, 1)` (icon cross-fades) is not used anywhere.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.43,
+    "p": {
+     "unsupported": 0.08,
+     "contradicted": 0.62,
+     "supported": 0.3
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c27",
@@ -642,7 +1434,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsMetricTooltip.svelte `@media (prefers-reduced-motion: reduce)`; AnalyticsDimensionBreakdown.svelte l.44 and AnalyticsTaskStatus.svelte l.40 `motion-reduce:transition-none`."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsMetricTooltip.svelte `@media (prefers-reduced-motion: reduce)`; AnalyticsDimensionBreakdown.svelte l.44 and AnalyticsTaskStatus.svelte l.40 `motion-reduce:transition-none`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.67,
+    "p": {
+     "supported": 0.78,
+     "unsupported": 0.14,
+     "contradicted": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c28",
@@ -654,7 +1456,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsRecordsTable.svelte l.66 `active:scale-96` (better-ui: 'Always 0.96'); AnalyticsMetricTooltip uses scale(0.96) for the tooltip enter."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsRecordsTable.svelte l.66 `active:scale-96` (better-ui: 'Always 0.96'); AnalyticsMetricTooltip uses scale(0.96) for the tooltip enter.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.75,
+    "p": {
+     "unsupported": 0.83,
+     "contradicted": 0.16,
+     "supported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c29",
@@ -666,7 +1478,17 @@
    "strength": "asserted",
    "label": "unsupported",
    "evidenced_in_session": false,
-   "check": "Searched `git show 26c4f99d57` for 'concentric', 'outer radius', 'inner radius' and rounded-[calc patterns: none. New components use single-level radii (KpiTile rounded-xl p-4 with only a rounded-full dot inside; CoverageNotice rounded-md; RecordsTable rounded-md button; +page.svelte adds only rounded-md); no nested radius = inner + padding pattern anywhere in the diff."
+   "check": "Searched `git show 26c4f99d57` for 'concentric', 'outer radius', 'inner radius' and rounded-[calc patterns: none. New components use single-level radii (KpiTile rounded-xl p-4 with only a rounded-full dot inside; CoverageNotice rounded-md; RecordsTable rounded-md button; +page.svelte adds only rounded-md); no nested radius = inner + padding pattern anywhere in the diff.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.81,
+    "p": {
+     "unsupported": 0.87,
+     "supported": 0.02,
+     "contradicted": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c30",
@@ -678,7 +1500,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#114: `verify.js --only=types | rg analytics` prints nothing (error sites are printed as full paths, which would contain 'analytics')."
+   "check": "#114: `verify.js --only=types | rg analytics` prints nothing (error sites are printed as full paths, which would contain 'analytics').",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.99,
+     "supported": 0.01,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c31",
@@ -690,7 +1522,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#114 (and #90/#109): 'svelte-check found 11 errors and 253 warnings in 69 files'."
+   "check": "#114 (and #90/#109): 'svelte-check found 11 errors and 253 warnings in 69 files'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.85,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.09,
+     "supported": 0.9
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c32",
@@ -702,7 +1544,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#92 lists the remaining error sites (document-text.ts:104 'Cannot find module unpdf', protected-resource-metadata.test.ts:10 and mcp/server.test.ts:74/349 'delete env.APP_URL'); #93 `git diff --name-only | rg document-text|protected-resource|mcp/server` is empty (files unmodified); #104 shows every modified file is under an analytics path and #114's `rg analytics` over the output is empty, so no remaining error is in a touched file. Caveat: #92's regex only captured .ts sites, so not every one of the 11 was individually enumerated in-session."
+   "check": "#92 lists the remaining error sites (document-text.ts:104 'Cannot find module unpdf', protected-resource-metadata.test.ts:10 and mcp/server.test.ts:74/349 'delete env.APP_URL'); #93 `git diff --name-only | rg document-text|protected-resource|mcp/server` is empty (files unmodified); #104 shows every modified file is under an analytics path and #114's `rg analytics` over the output is empty, so no remaining error is in a touched file. Caveat: #92's regex only captured .ts sites, so not every one of the 11 was individually enumerated in-session.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.4,
+    "p": {
+     "unsupported": 0.15,
+     "supported": 0.25,
+     "contradicted": 0.6
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c33",
@@ -714,7 +1566,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#80 tail and #93: \"Cannot find module 'unpdf'\" at document-text.ts:104; \"The operand of a 'delete' operator must be optional\" on `delete env.APP_URL` in protected-resource-metadata.test.ts and mcp/server.test.ts."
+   "check": "#80 tail and #93: \"Cannot find module 'unpdf'\" at document-text.ts:104; \"The operand of a 'delete' operator must be optional\" on `delete env.APP_URL` in protected-resource-metadata.test.ts and mcp/server.test.ts.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.94,
+    "p": {
+     "supported": 0.97,
+     "unsupported": 0.0,
+     "contradicted": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c34",
@@ -726,7 +1588,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#114 (and #97): `node scripts/verify.js --only=lint` → '✓ ✓ lint 2s'. (#96: the lint lane is the repo's custom lint-*.js scripts, not eslint.)"
+   "check": "#114 (and #97): `node scripts/verify.js --only=lint` → '✓ ✓ lint 2s'. (#96: the lint lane is the repo's custom lint-*.js scripts, not eslint.)",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.02,
+     "supported": 0.97,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c35",
@@ -738,7 +1610,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#115: 'Test Files 8 passed (8) / Tests 94 passed (94)'."
+   "check": "#115: 'Test Files 8 passed (8) / Tests 94 passed (94)'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "supported": 0.98,
+     "unsupported": 0.0,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c36",
@@ -750,7 +1632,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": true,
-   "check": "Service test rewritten (#86), cache tests edited (#85, #101), navigation test edited (#89) — but no edit/write touches the only component tests (AnalyticsModuleCard.svelte.test.ts, AnalyticsRangeSelector.svelte.test.ts per #79), and #104 `git status --short` shows no component test file modified. Component tests were run (#98/#102), not updated."
+   "check": "Service test rewritten (#86), cache tests edited (#85, #101), navigation test edited (#89) — but no edit/write touches the only component tests (AnalyticsModuleCard.svelte.test.ts, AnalyticsRangeSelector.svelte.test.ts per #79), and #104 `git status --short` shows no component test file modified. Component tests were run (#98/#102), not updated.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.95,
+    "p": {
+     "contradicted": 0.03,
+     "unsupported": 0.01,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c37",
@@ -762,7 +1654,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": false,
-   "check": "Live (later checkout, git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout)): analytics.dao.integration.test.ts is gated by `process.env.RUN_INTEGRATION_TESTS === 'true' && isTestDbAvailable` and header 'Run with: RUN_INTEGRATION_TESTS=true …'; vitest.config.ts excludes *.integration.test.ts otherwise. In-session the assistant only saw the `test:integration` script in package.json (turn-1 #24/#25), not the DB gate."
+   "check": "Live (later checkout, git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout)): analytics.dao.integration.test.ts is gated by `process.env.RUN_INTEGRATION_TESTS === 'true' && isTestDbAvailable` and header 'Run with: RUN_INTEGRATION_TESTS=true …'; vitest.config.ts excludes *.integration.test.ts otherwise. In-session the assistant only saw the `test:integration` script in package.json (turn-1 #24/#25), not the DB gate.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.39,
+    "p": {
+     "contradicted": 0.37,
+     "unsupported": 0.59,
+     "supported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c38",
@@ -774,7 +1676,17 @@
    "strength": "asserted",
    "label": "contradicted",
    "evidenced_in_session": false,
-   "check": "#65 (assistant's own edit): `analyticsDAO.deliveryRecords(scope, bounds.currentStart, bounds.now)` — no filters passed; #73 DrilldownRow/deliveryRecords signature has no filter parameter. git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): computeRecords(scope, bounds) and computeDimensionBreakdown(scope, bounds, dimension) never receive `filters`; `grep filters analytics.dao.ts` is empty; +page.svelte passes m.records.data.rows unfiltered. The follow-up commit 7c7e22b0cc's message confirms: 'Wire origin/model/repository/status filters into the record drilldown and correct the comments that claimed filters were honoured elsewhere.'"
+   "check": "#65 (assistant's own edit): `analyticsDAO.deliveryRecords(scope, bounds.currentStart, bounds.now)` — no filters passed; #73 DrilldownRow/deliveryRecords signature has no filter parameter. git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): computeRecords(scope, bounds) and computeDimensionBreakdown(scope, bounds, dimension) never receive `filters`; `grep filters analytics.dao.ts` is empty; +page.svelte passes m.records.data.rows unfiltered. The follow-up commit 7c7e22b0cc's message confirms: 'Wire origin/model/repository/status filters into the record drilldown and correct the comments that claimed filters were honoured elsewhere.'",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.26,
+    "p": {
+     "contradicted": 0.34,
+     "supported": 0.15,
+     "unsupported": 0.51
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c39",
@@ -786,7 +1698,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): no DAO function in analytics.dao.ts accepts a filters argument (grep 'filters' → none); only the cache variant carries them. (Literally true, though it understates: no aggregate query applies them.)"
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): no DAO function in analytics.dao.ts accepts a filters argument (grep 'filters' → none); only the cache variant carries them. (Literally true, though it understates: no aggregate query applies them.)",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.79,
+    "p": {
+     "unsupported": 0.85,
+     "contradicted": 0.06,
+     "supported": 0.09
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c40",
@@ -798,7 +1720,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#41/#73 (assistant-written); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts l.1681-1686 `dimension === 'workflowOrigin' ? sql.raw('t.origin') : … 'origin' ? sql.raw('t.origin')`; l.1713 shares the label branch."
+   "check": "#41/#73 (assistant-written); git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): analytics.dao.ts l.1681-1686 `dimension === 'workflowOrigin' ? sql.raw('t.origin') : … 'origin' ? sql.raw('t.origin')`; l.1713 shares the label branch.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.93,
+    "p": {
+     "unsupported": 0.95,
+     "contradicted": 0.04,
+     "supported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c41",
@@ -810,7 +1742,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#9 rg over app/src/lib/server/db/schema/tasks.ts shows only `origin: text('origin', { enum: TASK_ORIGINS })` (l.59); `git show 26c4f99d57:app/src/lib/server/db/schema/tasks.ts | grep -i origin` confirms no workflowOrigin column."
+   "check": "#9 rg over app/src/lib/server/db/schema/tasks.ts shows only `origin: text('origin', { enum: TASK_ORIGINS })` (l.59); `git show 26c4f99d57:app/src/lib/server/db/schema/tasks.ts | grep -i origin` confirms no workflowOrigin column.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.61,
+    "p": {
+     "contradicted": 0.18,
+     "unsupported": 0.08,
+     "supported": 0.74
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c42",
@@ -822,7 +1764,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#73 defines `export interface DrilldownRow` and deliveryRecords; #64 `RecordsModule { rows: DrilldownRow[] }`; #76 writes AnalyticsRecordsTable.svelte; #78 page renders it from m.records.data.rows."
+   "check": "#73 defines `export interface DrilldownRow` and deliveryRecords; #64 `RecordsModule { rows: DrilldownRow[] }`; #76 writes AnalyticsRecordsTable.svelte; #78 page renders it from m.records.data.rows.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.27,
+    "p": {
+     "supported": 0.51,
+     "contradicted": 0.48,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c43",
@@ -834,7 +1786,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsRecordsTable.svelte only links to the task (`href={taskUrl(row)}`) and offers 'Copy filtered URL'; its docblock l.10 says 'advanced interactions (session/log …) ' are deferred."
+   "check": "git show 26c4f99d57 (this session's own turn-3 commit of the unmodified turn-2 tree; read from the later lime-course checkout): AnalyticsRecordsTable.svelte only links to the task (`href={taskUrl(row)}`) and offers 'Copy filtered URL'; its docblock l.10 says 'advanced interactions (session/log …) ' are deferred.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.01,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c44",
@@ -846,7 +1808,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "Turn-1 prompt §12 Record drilldown: 'If full drilldown is too large for this iteration, establish the component and server payload contract, then defer advanced interactions.'"
+   "check": "Turn-1 prompt §12 Record drilldown: 'If full drilldown is too large for this iteration, establish the component and server payload contract, then defer advanced interactions.'",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.32,
+    "p": {
+     "unsupported": 0.54,
+     "supported": 0.38,
+     "contradicted": 0.08
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c45",
@@ -858,7 +1830,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#6 `ls -R .claude/skills/better-ui .claude/skills/emil-design-eng` lists both; #104 shows `?? .claude/skills/better-ui/` and `?? .claude/skills/emil-design-eng/`."
+   "check": "#6 `ls -R .claude/skills/better-ui .claude/skills/emil-design-eng` lists both; #104 shows `?? .claude/skills/better-ui/` and `?? .claude/skills/emil-design-eng/`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c46",
@@ -870,7 +1852,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#104's packet excerpt omits 883 chars in the untracked list, but the assistant saw the full output, and the identical `git status --short` in turn 3 (packet-003 #0, before any further change) lists `?? skills-lock.json` at the repo root."
+   "check": "#104's packet excerpt omits 883 chars in the untracked list, but the assistant saw the full output, and the identical `git status --short` in turn 3 (packet-003 #0, before any further change) lists `?? skills-lock.json` at the repo root.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "supported": 0.95,
+     "contradicted": 0.02,
+     "unsupported": 0.03
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c47",
@@ -882,7 +1874,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "#104 `git status --short`: `?? .claude/skills/better-ui/`, `?? .claude/skills/emil-design-eng/` (and `?? skills-lock.json` per turn-3 #0)."
+   "check": "#104 `git status --short`: `?? .claude/skills/better-ui/`, `?? .claude/skills/emil-design-eng/` (and `?? skills-lock.json` per turn-3 #0).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.94,
+    "p": {
+     "unsupported": 0.02,
+     "contradicted": 0.02,
+     "supported": 0.96
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t2-m19-c48",
@@ -894,7 +1896,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "No `git commit`, `git add` or `git push` appears in any turn-2 evidence (#0-#116); the only git commands are #93 (`git stash list; git diff`) and #104 (`git status; git diff --stat`). The commit happens in turn 3 (packet-003 #4)."
+   "check": "No `git commit`, `git add` or `git push` appears in any turn-2 evidence (#0-#116); the only git commands are #93 (`git stash list; git diff`) and #104 (`git status; git diff --stat`). The commit happens in turn 3 (packet-003 #4).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.53,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.31,
+     "supported": 0.68
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m1-c1",
@@ -906,7 +1918,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #6 (gh pr create ...) returned https://github.com/SprintsAI/lightsprint/pull/6697. GitHub API not reachable from grader (gh account cannot see SprintsAI/lightsprint), so packet evidence only."
+   "check": "t3 evidence #6 (gh pr create ...) returned https://github.com/SprintsAI/lightsprint/pull/6697. GitHub API not reachable from grader (gh account cannot see SprintsAI/lightsprint), so packet evidence only.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m1-c2",
@@ -918,7 +1940,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #6 command: `gh pr create --base ls/2060-implement-rework-the-workspace-analytics-iJrh --head workspace-analytics-rewor`."
+   "check": "t3 evidence #6 command: `gh pr create --base ls/2060-implement-rework-the-workspace-analytics-iJrh --head workspace-analytics-rewor`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.93,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.05,
+     "supported": 0.95
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m1-c3",
@@ -930,7 +1962,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #1 (gh pr list --head ls/2060...) lists 5743 OPEN; evidence #2 (gh pr view 5743) headRefName = ls/2060-implement-rework-the-workspace-analytics-iJrh."
+   "check": "t3 evidence #1 (gh pr list --head ls/2060...) lists 5743 OPEN; evidence #2 (gh pr view 5743) headRefName = ls/2060-implement-rework-the-workspace-analytics-iJrh.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "contradicted": 0.02,
+     "unsupported": 0.0,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m1-c4",
@@ -942,7 +1984,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #4 `git log --oneline -3` shows f8530c7899 directly atop a8b7d07dbe; t4 evidence #0 shows origin/ls/2060 tip == HEAD~1 == a8b7d07dbe. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git log --format='%H %P' -1 f8530c7899` parent a8b7d07dbe."
+   "check": "t3 evidence #4 `git log --oneline -3` shows f8530c7899 directly atop a8b7d07dbe; t4 evidence #0 shows origin/ls/2060 tip == HEAD~1 == a8b7d07dbe. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git log --format='%H %P' -1 f8530c7899` parent a8b7d07dbe.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.6,
+    "p": {
+     "unsupported": 0.74,
+     "contradicted": 0.25,
+     "supported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t3-m1-c5",
@@ -954,7 +2006,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #3 `git status --short` after `git add` still shows `?? .claude/skills/better-ui/`, `?? .claude/skills/emil-design-eng/`, `?? skills-lock.json`; evidence #4 commit followed; t7 evidence #34 still shows them untracked."
+   "check": "t3 evidence #3 `git status --short` after `git add` still shows `?? .claude/skills/better-ui/`, `?? .claude/skills/emil-design-eng/`, `?? skills-lock.json`; evidence #4 commit followed; t7 evidence #34 still shows them untracked.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "supported": 0.91,
+     "unsupported": 0.08,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t4-m1-c1",
@@ -966,7 +2028,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t4 evidence #2 `git push origin HEAD:ls/2060-...` → `a8b7d07dbe..f8530c7899 HEAD -> ls/2060-implement-rework-the-workspace-analytics-iJrh`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): branch was later rebased (f8530c7899 no longer an ancestor) but a commit with the identical message (26c4f99d57) is in its history."
+   "check": "t4 evidence #2 `git push origin HEAD:ls/2060-...` → `a8b7d07dbe..f8530c7899 HEAD -> ls/2060-implement-rework-the-workspace-analytics-iJrh`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): branch was later rebased (f8530c7899 no longer an ancestor) but a commit with the identical message (26c4f99d57) is in its history.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "contradicted": 0.02,
+     "unsupported": 0.0,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t4-m1-c2",
@@ -978,7 +2050,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t3 evidence #2 headRefName of PR 5743 = ls/2060-...; t4 evidence #2 push landed on that branch. Standard GitHub behaviour: PR tracks its head branch."
+   "check": "t3 evidence #2 headRefName of PR 5743 = ls/2060-...; t4 evidence #2 push landed on that branch. Standard GitHub behaviour: PR tracks its head branch.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.26,
+    "p": {
+     "supported": 0.48,
+     "unsupported": 0.51,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t4-m1-c3",
@@ -990,7 +2072,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t4 evidence #1: `gh pr close 6697` → `✓ Closed pull request SprintsAI/lightsprint#6697`."
+   "check": "t4 evidence #1: `gh pr close 6697` → `✓ Closed pull request SprintsAI/lightsprint#6697`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t4-m1-c4",
@@ -1002,7 +2094,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t4 evidence #1: `git push origin --delete workspace-analytics-rewor` → ` - [deleted] workspace-analytics-rewor`."
+   "check": "t4 evidence #1: `git push origin --delete workspace-analytics-rewor` → ` - [deleted] workspace-analytics-rewor`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c1",
@@ -1014,7 +2116,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #1 `git diff --stat $BASE...origin/ls/2060` tail: `33 files changed, 6245 insertions(+), 850 deletions(-)`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git diff --stat c9ac3fc744 f8530c7899 | tail -1` gives the same numbers."
+   "check": "t6 evidence #1 `git diff --stat $BASE...origin/ls/2060` tail: `33 files changed, 6245 insertions(+), 850 deletions(-)`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git diff --stat c9ac3fc744 f8530c7899 | tail -1` gives the same numbers.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m1-c2",
@@ -1026,7 +2138,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show f8530c7899:app/src/lib/server/dao/analytics.dao.ts | grep -c db.execute` = 21 raw-SQL executes (CTEs with percentile_cont etc.); in-session t6 evidence #12 shows raw `WITH assisted AS` CTEs. The assistant authored this DAO in turns 1-2 (packet-002)."
+   "check": "live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show f8530c7899:app/src/lib/server/dao/analytics.dao.ts | grep -c db.execute` = 21 raw-SQL executes (CTEs with percentile_cont etc.); in-session t6 evidence #12 shows raw `WITH assisted AS` CTEs. The assistant authored this DAO in turns 1-2 (packet-002).",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "contradicted": 0.0,
+     "unsupported": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m2-c1",
@@ -1038,7 +2160,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #6, #7, #8, #9, #10 are five `task` results with state=\"completed\" (evidence #2-#5 were aborted duplicates)."
+   "check": "t6 evidence #6, #7, #8, #9, #10 are five `task` results with state=\"completed\" (evidence #2-#5 were aborted duplicates).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.65,
+    "p": {
+     "supported": 0.76,
+     "contradicted": 0.23,
+     "unsupported": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m2-c2",
@@ -1050,7 +2182,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #11 (rg 'WITH assisted AS'), #12 (read analytics.dao.ts 1564-1603), #13 (rg shipRateDelta/mergeRateDelta), #14 (rg honoured in +page.server.ts) all precede this message (after_evidence=15)."
+   "check": "t6 evidence #11 (rg 'WITH assisted AS'), #12 (read analytics.dao.ts 1564-1603), #13 (rg shipRateDelta/mergeRateDelta), #14 (rg honoured in +page.server.ts) all precede this message (after_evidence=15).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.68,
+    "p": {
+     "supported": 0.78,
+     "unsupported": 0.18,
+     "contradicted": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m2-c3",
@@ -1062,7 +2204,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #12 line 1574: `WHERE t.stack_id = ... AND t.deleted_at IS NULL AND mam.role = 'assistant' AND ${MEANINGFUL_WORK}` with no created_at bound (sibling subqueries at 1564-1565 and 1595-1596 have bounds). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): absent at f8530c7899, added at ad1ea31674 lines 1303-1304."
+   "check": "t6 evidence #12 line 1574: `WHERE t.stack_id = ... AND t.deleted_at IS NULL AND mam.role = 'assistant' AND ${MEANINGFUL_WORK}` with no created_at bound (sibling subqueries at 1564-1565 and 1595-1596 have bounds). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): absent at f8530c7899, added at ad1ea31674 lines 1303-1304.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "contradicted": 0.0,
+     "unsupported": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m2-c4",
@@ -1074,7 +2226,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #13: analytics.service.ts:456 `pointDelta(shipRate ?? 0, priorShipRate ?? 0)` and :566 `pointDelta(ratePct(...) ?? 0, ratePct(...) ?? 0)`."
+   "check": "t6 evidence #13: analytics.service.ts:456 `pointDelta(shipRate ?? 0, priorShipRate ?? 0)` and :566 `pointDelta(ratePct(...) ?? 0, ratePct(...) ?? 0)`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 1.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m2-c5",
@@ -1086,7 +2248,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #14 shows the comment at +page.server.ts:51-52. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at f8530c7899 analytics.dao.ts has 0 occurrences of 'filters'; deliveryRecords(scope, windowStart, windowEnd) and deliveryBreakdown(...) take no filters; service uses filters only in `filtersKey(filters)` cache variant (line 983) and echoes them back (line 1026). Also t7 evidence #3/#5/#8."
+   "check": "t6 evidence #14 shows the comment at +page.server.ts:51-52. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at f8530c7899 analytics.dao.ts has 0 occurrences of 'filters'; deliveryRecords(scope, windowStart, windowEnd) and deliveryBreakdown(...) take no filters; service uses filters only in `filtersKey(filters)` cache variant (line 983) and echoes them back (line 1026). Also t7 evidence #3/#5/#8.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "contradicted": 0.0,
+     "supported": 0.98,
+     "unsupported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c1",
@@ -1098,7 +2270,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #15 `gh pr comment 5743 -F -` returned https://github.com/SprintsAI/lightsprint/pull/5743#issuecomment-5676435791. GitHub API not reachable from grader (404 / repo not visible to gh account marcusjhang), packet evidence only."
+   "check": "t6 evidence #15 `gh pr comment 5743 -F -` returned https://github.com/SprintsAI/lightsprint/pull/5743#issuecomment-5676435791. GitHub API not reachable from grader (404 / repo not visible to gh account marcusjhang), packet evidence only.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c2",
@@ -1110,7 +2292,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #6 (DBA/raw-SQL review of DAO), #7 (Data/aggregation review of service), #8 (Frontend Svelte5/a11y review), #9 (Simplicity/correctness fresh-eyes review — Staff engineer), #10 (QA/edge-case + test-value review)."
+   "check": "t6 evidence #6 (DBA/raw-SQL review of DAO), #7 (Data/aggregation review of service), #8 (Frontend Svelte5/a11y review), #9 (Simplicity/correctness fresh-eyes review — Staff engineer), #10 (QA/edge-case + test-value review).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.92,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.04,
+     "supported": 0.95
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c3",
@@ -1122,7 +2314,17 @@
    "strength": "asserted",
    "label": "not_checkable",
    "evidenced_in_session": true,
-   "check": "Consolidated tally is the assistant's own grouping; the five agent reports are truncated in the packet (`…[N chars omitted]…`) so the full severity lists cannot be recovered. Visible raw highs: 1 (#6) + 3 (#9) + 2 (#10) = 6, grouped into 4 themes; the medium/critical totals are not recoverable. The posted comment (evidence #15 input) states the same figures but is self-report."
+   "check": "Consolidated tally is the assistant's own grouping; the five agent reports are truncated in the packet (`…[N chars omitted]…`) so the full severity lists cannot be recovered. Visible raw highs: 1 (#6) + 3 (#9) + 2 (#10) = 6, grouped into 4 themes; the medium/critical totals are not recoverable. The posted comment (evidence #15 input) states the same figures but is self-report.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.89,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.93,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c4",
@@ -1134,7 +2336,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #6 (DBA report, high, analytics.dao.ts:1574) and evidence #12 read of lines 1569-1576 showing no mam.created_at bound. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): confirmed at f8530c7899; fixed at ad1ea31674 lines 1303-1304."
+   "check": "t6 evidence #6 (DBA report, high, analytics.dao.ts:1574) and evidence #12 read of lines 1569-1576 showing no mam.created_at bound. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): confirmed at f8530c7899; fixed at ad1ea31674 lines 1303-1304.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c5",
@@ -1146,7 +2358,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show f8530c7899:app/src/lib/server/dao/analytics.dao.ts | grep -ci filters` = 0; service at f8530c7899 uses filters only in `filtersKey(filters)` (line 983) and the response payload (line 1026); deliveryRecords/deliveryBreakdown signatures take no filters. In-session: t7 evidence #3 (deliveryRecords signature) and #8 (computeRecords(scope, bounds))."
+   "check": "live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show f8530c7899:app/src/lib/server/dao/analytics.dao.ts | grep -ci filters` = 0; service at f8530c7899 uses filters only in `filtersKey(filters)` (line 983) and the response payload (line 1026); deliveryRecords/deliveryBreakdown signatures take no filters. In-session: t7 evidence #3 (deliveryRecords signature) and #8 (computeRecords(scope, bounds)).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.01,
+     "contradicted": 0.01,
+     "supported": 0.98
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c6",
@@ -1158,7 +2380,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #14: `51:\t// Filters are folded into every module's cache key and honoured by the` (continues `drilldown and dimension surfaces` on line 52). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show f8530c7899:.../+page.server.ts | sed -n 51,52p` matches."
+   "check": "t6 evidence #14: `51:\t// Filters are folded into every module's cache key and honoured by the` (continues `drilldown and dimension surfaces` on line 52). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show f8530c7899:.../+page.server.ts | sed -n 51,52p` matches.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.87,
+    "p": {
+     "contradicted": 0.07,
+     "unsupported": 0.01,
+     "supported": 0.92
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c7",
@@ -1170,7 +2402,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #10 (QA report, high): 'The entire \"rework additions\" raw-CTE block ... has **zero** integration coverage' and 'None of the 15 compute* module functions are exported or tested'. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): integration test at f8530c7899 calls only agentTaskOutcomes/runReliability/agentCostTotal/pullRequestOutcomes/plansCreatedSplit."
+   "check": "t6 evidence #10 (QA report, high): 'The entire \"rework additions\" raw-CTE block ... has **zero** integration coverage' and 'None of the 15 compute* module functions are exported or tested'. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): integration test at f8530c7899 calls only agentTaskOutcomes/runReliability/agentCostTotal/pullRequestOutcomes/plansCreatedSplit.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "unsupported": 0.0,
+     "supported": 0.99,
+     "contradicted": 0.01
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c8",
@@ -1182,7 +2424,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #10: integration test :120,:124,:132 exercise those three; evidence #9 same. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): grep at f8530c7899 shows analyticsDAO.runReliability(120), agentCostTotal(124), pullRequestOutcomes(132). Wording note: 'removed' is loose — the functions still existed in the DAO at that time (t7 evidence #12), which item 4 of the same message acknowledges; they were removed from the service's call path."
+   "check": "t6 evidence #10: integration test :120,:124,:132 exercise those three; evidence #9 same. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): grep at f8530c7899 shows analyticsDAO.runReliability(120), agentCostTotal(124), pullRequestOutcomes(132). Wording note: 'removed' is loose — the functions still existed in the DAO at that time (t7 evidence #12), which item 4 of the same message acknowledges; they were removed from the service's call path.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c9",
@@ -1194,7 +2446,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #9 (staff report, high) lists exactly eight; t7 evidence #12 rg finds all eight `async function` definitions. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): grep -c of the eight names at f8530c7899 = 8; at ad1ea31674 = 0."
+   "check": "t6 evidence #9 (staff report, high) lists exactly eight; t7 evidence #12 rg finds all eight `async function` definitions. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): grep -c of the eight names at f8530c7899 = 8; at ad1ea31674 = 0.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "supported": 1.0,
+     "unsupported": 0.0,
+     "contradicted": 0.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t6-m3-c10",
@@ -1206,7 +2468,17 @@
    "strength": "asserted",
    "label": "not_checkable",
    "evidenced_in_session": false,
-   "check": "The 'clean' verdicts would sit in the truncated middles of t6 evidence #6/#7/#9 (`…[N chars omitted]…`), which the packet does not preserve and the grader cannot independently certify a full-file tenancy/semantics audit."
+   "check": "The 'clean' verdicts would sit in the truncated middles of t6 evidence #6/#7/#9 (`…[N chars omitted]…`), which the packet does not preserve and the grader cannot independently certify a full-file tenancy/semantics audit.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.69,
+    "p": {
+     "contradicted": 0.2,
+     "unsupported": 0.01,
+     "supported": 0.79
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m7-c1",
@@ -1218,7 +2490,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #10: 'None of the 15 compute* module functions are exported or tested. The service tests only cover _internal helpers + buildKpiTiles.' t7 evidence #24-#25 show the `_internal` export contains no compute* functions."
+   "check": "t6 evidence #10: 'None of the 15 compute* module functions are exported or tested. The service tests only cover _internal helpers + buildKpiTiles.' t7 evidence #24-#25 show the `_internal` export contains no compute* functions.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.96,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.97,
+     "contradicted": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c1",
@@ -1230,7 +2512,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 edits #1 (window), #4/#7/#9/#10/#11 (filters), #14/#16/#19/#20/#22 (dead code), #26/#27/#28/#29 (tests); tests #31 pass. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at ad1ea31674 — dao lines 1303-1304 window bounds; RecordFilters + sql.join at 1478-1515; zero matches for the 8 dead fns/interfaces/registrations; integration test retargeted; 8 `it(` in analytics.compute.test.ts."
+   "check": "t7 edits #1 (window), #4/#7/#9/#10/#11 (filters), #14/#16/#19/#20/#22 (dead code), #26/#27/#28/#29 (tests); tests #31 pass. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at ad1ea31674 — dao lines 1303-1304 window bounds; RecordFilters + sql.join at 1478-1515; zero matches for the 8 dead fns/interfaces/registrations; integration test retargeted; 8 `it(` in analytics.compute.test.ts.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.31,
+    "p": {
+     "supported": 0.54,
+     "contradicted": 0.42,
+     "unsupported": 0.04
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c2",
@@ -1242,7 +2534,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #36 `git commit` → `ad1ea31674 fix(analytics): address review findings…`; evidence #37 push → `f8530c7899..ad1ea31674 HEAD -> ls/2060-implement-rework-the-workspace-analytics-iJrh`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): branch later rebased; identical-message commit 7c7e22b0cc is in origin/ls/2060 history."
+   "check": "t7 evidence #36 `git commit` → `ad1ea31674 fix(analytics): address review findings…`; evidence #37 push → `f8530c7899..ad1ea31674 HEAD -> ls/2060-implement-rework-the-workspace-analytics-iJrh`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): branch later rebased; identical-message commit 7c7e22b0cc is in origin/ls/2060 history.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.99,
+    "p": {
+     "contradicted": 0.01,
+     "unsupported": 0.0,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c3",
@@ -1254,7 +2556,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #1 edit of analytics.dao.ts (tail shows `ate.created_at < ${windowEnd.toISOString()}::timestamptz` cap). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show ad1ea31674:.../analytics.dao.ts` lines 1303-1304 `AND mam.created_at >= ${windowStart...} AND mam.created_at < ${windowEnd...}`."
+   "check": "t7 evidence #1 edit of analytics.dao.ts (tail shows `ate.created_at < ${windowEnd.toISOString()}::timestamptz` cap). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `git show ad1ea31674:.../analytics.dao.ts` lines 1303-1304 `AND mam.created_at >= ${windowStart...} AND mam.created_at < ${windowEnd...}`.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.25,
+    "p": {
+     "unsupported": 0.5,
+     "contradicted": 0.14,
+     "supported": 0.36
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c4",
@@ -1266,7 +2578,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #4 edit adds `RecordFilters { origin, model, repository, status }` and a filters parameter; evidence #9/#10 pass filters through computeRecords. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 dao 1478 RecordFilters, 1489 `filters: RecordFilters = {}`, 1515 `sql.join(conditions, sql\\` AND \\`)`."
+   "check": "t7 evidence #4 edit adds `RecordFilters { origin, model, repository, status }` and a filters parameter; evidence #9/#10 pass filters through computeRecords. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 dao 1478 RecordFilters, 1489 `filters: RecordFilters = {}`, 1515 `sql.join(conditions, sql\\` AND \\`)`.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.66,
+    "p": {
+     "contradicted": 0.78,
+     "unsupported": 0.2,
+     "supported": 0.02
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c5",
@@ -1278,7 +2600,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #7 (service docblock edit) and #11 (+page.server.ts comment edit). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 +page.server.ts lines 51-53 'applied to the record drilldown'; service line 68 'the record drilldown (`computeRecords`). Aggregate modules are not yet'."
+   "check": "t7 evidence #7 (service docblock edit) and #11 (+page.server.ts comment edit). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 +page.server.ts lines 51-53 'applied to the record drilldown'; service line 68 'the record drilldown (`computeRecords`). Aggregate modules are not yet'.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.97,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.01,
+     "supported": 0.99
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c6",
@@ -1290,7 +2622,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #27 edit (newString shows sessionHealthSummary and pullRequestSizeOutcomes). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at ad1ea31674 the test calls analyticsDAO.sessionHealthSummary(:120), efficiencyTotals(:128), pullRequestSizeOutcomes(:138); the old three are gone."
+   "check": "t7 evidence #27 edit (newString shows sessionHealthSummary and pullRequestSizeOutcomes). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at ad1ea31674 the test calls analyticsDAO.sessionHealthSummary(:120), efficiencyTotals(:128), pullRequestSizeOutcomes(:138); the old three are gone.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.62,
+    "p": {
+     "contradicted": 0.74,
+     "unsupported": 0.01,
+     "supported": 0.25
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c7",
@@ -1302,7 +2644,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #28 write + #29 edit of analytics.compute.test.ts; evidence #35 `A  .../analytics.compute.test.ts`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `grep -cE '^\\s*it\\(' ` on the file at ad1ea31674 = 8; test count went 94 (t2 ev #115, packet-002) → 102 (t7 ev #31)."
+   "check": "t7 evidence #28 write + #29 edit of analytics.compute.test.ts; evidence #35 `A  .../analytics.compute.test.ts`. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): `grep -cE '^\\s*it\\(' ` on the file at ad1ea31674 = 8; test count went 94 (t2 ev #115, packet-002) → 102 (t7 ev #31).",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.18,
+    "p": {
+     "supported": 0.19,
+     "contradicted": 0.35,
+     "unsupported": 0.46
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c8",
@@ -1314,7 +2666,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): test names at ad1ea31674 — computeTaskOutcomes 'derives ship rate and point delta'; computeEfficiency 'computes coverage and cost-per-shipped' + 'withholds cost-per-shipped when coverage is incomplete'; computeAutomations 'keeps canceled invocations in the success-rate denominator'; computeDelivery 'derives merge rate and work-to-merge percentiles'; computePullRequests 'computes merge rate and PR size percentiles'. In-session: t7 evidence #28/#29 (content truncated)."
+   "check": "live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): test names at ad1ea31674 — computeTaskOutcomes 'derives ship rate and point delta'; computeEfficiency 'computes coverage and cost-per-shipped' + 'withholds cost-per-shipped when coverage is incomplete'; computeAutomations 'keeps canceled invocations in the success-rate denominator'; computeDelivery 'derives merge rate and work-to-merge percentiles'; computePullRequests 'computes merge rate and PR size percentiles'. In-session: t7 evidence #28/#29 (content truncated).",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.46,
+    "p": {
+     "supported": 0.02,
+     "unsupported": 0.34,
+     "contradicted": 0.64
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c9",
@@ -1326,7 +2688,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 edits #14, #16, #19, #20 (function/interface removals) and #22 (class registrations). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): grep at ad1ea31674 for the eight function names, four interfaces and their `x = x;` registrations returns nothing (exit 1); at f8530c7899 all eight present."
+   "check": "t7 edits #14, #16, #19, #20 (function/interface removals) and #22 (class registrations). live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): grep at ad1ea31674 for the eight function names, four interfaces and their `x = x;` registrations returns nothing (exit 1); at f8530c7899 all eight present.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.7,
+    "p": {
+     "supported": 0.8,
+     "unsupported": 0.02,
+     "contradicted": 0.18
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c10",
@@ -1338,7 +2710,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #30: `rg \"analytics\"` over svelte-check output printed nothing, then `svelte-check found 11 errors and 253 warnings in 69 files`. Baseline: packet-002 turn 2 evidence #90/#109/#114 also reported exactly 11 errors / 253 warnings / 69 files before this turn's edits."
+   "check": "t7 evidence #30: `rg \"analytics\"` over svelte-check output printed nothing, then `svelte-check found 11 errors and 253 warnings in 69 files`. Baseline: packet-002 turn 2 evidence #90/#109/#114 also reported exactly 11 errors / 253 warnings / 69 files before this turn's edits.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.31,
+    "p": {
+     "supported": 0.02,
+     "contradicted": 0.54,
+     "unsupported": 0.44
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c11",
@@ -1350,7 +2732,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #32: `node scripts/verify.js --only=lint` → `✓ ✓ lint 2s   total 2s`."
+   "check": "t7 evidence #32: `node scripts/verify.js --only=lint` → `✓ ✓ lint 2s   total 2s`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c12",
@@ -1362,7 +2754,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #31: `Test Files  9 passed (9)` / `Tests  102 passed (102)`."
+   "check": "t7 evidence #31: `Test Files  9 passed (9)` / `Tests  102 passed (102)`.",
+   "jev": {
+    "label": "supported",
+    "confidence": 1.0,
+    "p": {
+     "unsupported": 0.0,
+     "contradicted": 0.0,
+     "supported": 1.0
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c13",
@@ -1374,7 +2776,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "packet-002 turn 2 evidence #110 and #115: identical vitest paths → `Test Files  8 passed (8)` / `Tests  94 passed (94)`."
+   "check": "packet-002 turn 2 evidence #110 and #115: identical vitest paths → `Test Files  8 passed (8)` / `Tests  94 passed (94)`.",
+   "jev": {
+    "label": "unsupported",
+    "confidence": 0.65,
+    "p": {
+     "contradicted": 0.23,
+     "supported": 0.0,
+     "unsupported": 0.77
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c14",
@@ -1386,7 +2798,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t7 evidence #31 ran `src/lib/server/growth/analytics` (where the new file lives); test files went 8 → 9 and tests 94 → 102 (+8 = the new file's `it(` count)."
+   "check": "t7 evidence #31 ran `src/lib/server/growth/analytics` (where the new file lives); test files went 8 → 9 and tests 94 → 102 (+8 = the new file's `it(` count).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.22,
+    "p": {
+     "supported": 0.47,
+     "unsupported": 0.34,
+     "contradicted": 0.19
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c15",
@@ -1398,7 +2820,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "No t7 edit touches shipRateDelta/mergeRateDelta, deliveryBreakdown, AnalyticsRecordsTable or tokenTotal. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 service lines 458/568 still contain `pointDelta(shipRate ?? 0, priorShipRate ?? 0)` / `ratePct(...) ?? 0`."
+   "check": "No t7 edit touches shipRateDelta/mergeRateDelta, deliveryBreakdown, AnalyticsRecordsTable or tokenTotal. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): ad1ea31674 service lines 458/568 still contain `pointDelta(shipRate ?? 0, priorShipRate ?? 0)` / `ratePct(...) ?? 0`.",
+   "jev": {
+    "label": "contradicted",
+    "confidence": 0.76,
+    "p": {
+     "unsupported": 0.09,
+     "supported": 0.07,
+     "contradicted": 0.84
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c16",
@@ -1410,7 +2842,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #13: `shipRateDelta: prior.assisted === 0 ? null : pointDelta(shipRate ?? 0, priorShipRate ?? 0)` — guards only on prior; t6 evidence #7 (data report) describes exactly this failure for :456 and :566."
+   "check": "t6 evidence #13: `shipRateDelta: prior.assisted === 0 ? null : pointDelta(shipRate ?? 0, priorShipRate ?? 0)` — guards only on prior; t6 evidence #7 (data report) describes exactly this failure for :456 and :566.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.88,
+    "p": {
+     "unsupported": 0.01,
+     "supported": 0.92,
+     "contradicted": 0.07
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c17",
@@ -1422,7 +2864,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #6 (DBA report, medium, analytics.dao.ts:1667): repo CTE yields N rows per task and `count(DISTINCT r.task_id)` only de-dups within a repo."
+   "check": "t6 evidence #6 (DBA report, medium, analytics.dao.ts:1667): repo CTE yields N rows per task and `count(DISTINCT r.task_id)` only de-dups within a repo.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.79,
+    "p": {
+     "unsupported": 0.03,
+     "supported": 0.86,
+     "contradicted": 0.11
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c18",
@@ -1434,7 +2886,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #8 (frontend report, medium): `AnalyticsRecordsTable.svelte:89` + `analytics.dao.ts:1777,1788-1806` — '{#each rows as row (row.id)} keys on the task id, but deliveryRecords…' (rest truncated). Corroborated by later branch commit b0d8723161 'fix(analytics): deduplicate drilldown tasks' (later checkout)."
+   "check": "t6 evidence #8 (frontend report, medium): `AnalyticsRecordsTable.svelte:89` + `analytics.dao.ts:1777,1788-1806` — '{#each rows as row (row.id)} keys on the task id, but deliveryRecords…' (rest truncated). Corroborated by later branch commit b0d8723161 'fix(analytics): deduplicate drilldown tasks' (later checkout).",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.88,
+    "p": {
+     "supported": 0.92,
+     "unsupported": 0.02,
+     "contradicted": 0.06
+    },
+    "truncated": false
+   }
   },
   {
    "id": "t7-m8-c19",
@@ -1446,7 +2908,17 @@
    "strength": "asserted",
    "label": "supported",
    "evidenced_in_session": true,
-   "check": "t6 evidence #9 blind-spots line references 'the `role='assistant'` filter divergence'. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at f8530c7899 efficiencyTotals line 1188 has `mam.role = 'assistant'`; tokenTotal (lines 785-799) has no role predicate."
+   "check": "t6 evidence #9 blind-spots line references 'the `role='assistant'` filter divergence'. live check in later checkout lime-course (origin/main; session commits f8530c7899 and ad1ea31674 still in object store, PR branch since rebased): at f8530c7899 efficiencyTotals line 1188 has `mam.role = 'assistant'`; tokenTotal (lines 785-799) has no role predicate.",
+   "jev": {
+    "label": "supported",
+    "confidence": 0.6,
+    "p": {
+     "contradicted": 0.04,
+     "supported": 0.73,
+     "unsupported": 0.23
+    },
+    "truncated": false
+   }
   }
  ]
 }
